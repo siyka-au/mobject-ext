@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_MoveAbsoluteBuilder" Id="{3bec0c1c-5c22-455b-a56d-1be546d9f9c0}">
+    <Declaration><![CDATA[INTERFACE I_MoveAbsoluteBuilder EXTENDS __System.IQueryInterface]]></Declaration>
+    <Method Name="Acceleration" Id="{267589aa-e6fd-4ad2-87c1-9ab40c4ddf19}">
+      <Declaration><![CDATA[METHOD Acceleration : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="BufferMode" Id="{ea185b02-ee32-4eb3-9fe7-08d63955e36f}">
+      <Declaration><![CDATA[METHOD BufferMode : I_MoveBuilder
+VAR_INPUT
+	mode : AxisBufferMode;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="BuildMoveAbsoluteCommand" Id="{b64b64a3-acaf-4a84-93b7-852d72488c67}">
+      <Declaration><![CDATA[METHOD BuildMoveAbsoluteCommand : I_MoveCommand]]></Declaration>
+    </Method>
+    <Method Name="Deceleration" Id="{63818b15-6931-4c6d-9063-81b52745b60a}">
+      <Declaration><![CDATA[METHOD Deceleration : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Jerk" Id="{2908d956-995c-496c-9d8c-623f2055369e}">
+      <Declaration><![CDATA[METHOD Jerk : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Position" Id="{1ceaa94b-2372-4ada-b6dc-b2f7c1f5da4f}">
+      <Declaration><![CDATA[METHOD Position : I_MoveAbsoluteBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Velocity" Id="{52bea9bf-aeee-4c6c-96e3-b47fb00e3560}">
+      <Declaration><![CDATA[METHOD Velocity : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

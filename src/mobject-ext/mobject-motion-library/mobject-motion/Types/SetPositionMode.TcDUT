@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="SetPositionMode" Id="{86b5d3dd-945c-4891-abff-5e5cf95d4ea2}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE SetPositionMode :
+(
+	Absolute,
+	Relative
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_DefaultHomingBuilder" Id="{5ea10c40-2902-4ebb-9cb2-4e71ecc68835}">
+    <Declaration><![CDATA[INTERFACE I_DefaultHomingBuilder EXTENDS __System.IQueryInterface]]></Declaration>
+    <Method Name="BuildDefaultHomingCommand" Id="{3dc16efd-5cb8-45e4-8d34-7cce92aaad75}">
+      <Declaration><![CDATA[METHOD BuildDefaultHomingCommand : I_HomingCommand]]></Declaration>
+    </Method>
+    <Method Name="Cam" Id="{c1d8e263-3982-4713-948b-cc0ec7a108ac}">
+      <Declaration><![CDATA[METHOD Cam : I_DefaultHomingBuilder
+VAR_INPUT
+	value : REFERENCE TO BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ClearLag" Id="{d3c63066-cd1a-48b8-9819-bf97ba0ad83e}">
+      <Declaration><![CDATA[METHOD ClearLag : I_PositioningHomingBuilder]]></Declaration>
+    </Method>
+    <Method Name="KeepLag" Id="{d473dabf-8ee5-4466-b736-393d1842fb4b}">
+      <Declaration><![CDATA[METHOD KeepLag : I_PositioningHomingBuilder]]></Declaration>
+    </Method>
+    <Method Name="Position" Id="{85eefe23-3d7c-493a-a578-54830cc3878b}">
+      <Declaration><![CDATA[METHOD Position : I_PositioningHomingBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ReferenceMode" Id="{2b594bd4-7168-4ca5-8d51-5740d31c94ba}">
+      <Declaration><![CDATA[METHOD ReferenceMode : I_DefaultHomingBuilder
+VAR_INPUT
+	value : EncoderReferenceMode;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="SearchDirection" Id="{f65bac35-534a-4861-b4b4-02efc84a84b8}">
+      <Declaration><![CDATA[METHOD SearchDirection : I_DefaultHomingBuilder
+VAR_INPUT
+	value : Direction;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="SearchVelocity" Id="{8e5e7dd0-6ef6-413e-a368-3487e41d4b51}">
+      <Declaration><![CDATA[METHOD SearchVelocity : I_DefaultHomingBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="SyncDirection" Id="{14b7130d-d9df-4207-bd4f-34c428bfaf5b}">
+      <Declaration><![CDATA[METHOD SyncDirection : I_DefaultHomingBuilder
+VAR_INPUT
+	value : Direction;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="SyncVelocity" Id="{e4f7a142-d8a7-4720-8b79-8be80462907c}">
+      <Declaration><![CDATA[METHOD SyncVelocity : I_DefaultHomingBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

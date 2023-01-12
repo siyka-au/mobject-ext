@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="EncoderReferenceMode" Id="{c188b5dd-41c2-45d1-9be9-26ba8838bc5d}">
+    <Declaration><![CDATA[// https://infosys.beckhoff.com/english.php?content=../content/1033/ax5000_system_doku_hw2/649689099.html&id=
+{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE EncoderReferenceMode :
+(
+	Default := ENCODERREFERENCEMODE_DEFAULT,
+	PLCCam := ENCODERREFERENCEMODE_PLCCAM,
+	HardwareSync := ENCODERREFERENCEMODE_HARDWARESYNC,
+	HardwareLatchPositive := ENCODERREFERENCEMODE_HARDWARELATCHPOS,
+	HardwareLatchNegative := ENCODERREFERENCEMODE_HARDWARELATCHNEG,
+	SoftwareSync := ENCODERREFERENCEMODE_SOFTWARESYNC,
+	SoftwareLatchPositive := ENCODERREFERENCEMODE_SOFTDRIVELATCHPOS,
+	SoftwareLatchNegative := ENCODERREFERENCEMODE_SOFTDRIVELATCHNEG
+) UDINT;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

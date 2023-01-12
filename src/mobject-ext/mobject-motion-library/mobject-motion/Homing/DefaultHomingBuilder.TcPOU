@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="DefaultHomingBuilder" Id="{f8c09a37-3872-4c76-9ad7-78df88afe57e}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK DefaultHomingBuilder IMPLEMENTS I_HomingBuilder, I_PositioningHomingBuilder, I_DefaultHomingBuilder
+VAR
+	_axisRef : REFERENCE TO Axis;
+	_position : LREAL;
+	_options : ST_HomingOptions;
+	_cam : REFERENCE TO BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Builders" Id="{acb2335d-7e37-4096-bebb-815ba4dfd342}" />
+    <Folder Name="Property Setters" Id="{4a604d78-4592-4df9-b8bc-f4f35e4ceb1e}" />
+    <Method Name="BuildDefaultHomingCommand" Id="{60cdb31b-248f-4a5e-a6c7-53ec1d7013c8}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildDefaultHomingCommand : I_HomingCommand
+VAR
+	pCmd : POINTER TO HomingCommand;
+	cmd : I_HomingCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(HomingCommand(
+	axisRef := _axisRef,
+	position := _position,
+	mode := HomingMode.Default,
+	options := _options,
+	cam := _cam
+));
+BuildDefaultHomingCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildDirectHomingCommand" Id="{dd77a1a7-1a20-4bf4-a585-a10b4cce35ce}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildDirectHomingCommand : I_HomingCommand
+VAR
+	pCmd : POINTER TO HomingCommand;
+	cmd : I_HomingCommand;
+	null : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(HomingCommand(
+	axisRef := _axisRef,
+	position := _position,
+	mode := HomingMode.Direct,
+	options := _options,
+	cam := null
+));
+BuildDirectHomingCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildForceCalibrationCommand" Id="{1fed35d2-767b-4b68-ba0c-a819755b2e4c}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildForceCalibrationCommand : I_HomingCommand
+VAR
+	pCmd : POINTER TO HomingCommand;
+	cmd : I_HomingCommand;
+	null : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(HomingCommand(
+	axisRef := _axisRef,
+	position := _position,
+	mode := HomingMode.ForceCalibration,
+	options := _options,
+	cam := null
+));
+BuildForceCalibrationCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildResetCalibrationCommand" Id="{7a12bfc3-4c4b-44ca-99fa-53cd3375db3e}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildResetCalibrationCommand : I_HomingCommand
+VAR
+	pCmd : POINTER TO HomingCommand;
+	cmd : I_HomingCommand;
+	null : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(HomingCommand(
+	axisRef := _axisRef,
+	position := _position,
+	mode := HomingMode.ResetCalibration,
+	options := _options,
+	cam := null
+));
+BuildResetCalibrationCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Cam" Id="{b59a248a-e19b-478f-a37b-a81f0685cd4d}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Cam : I_DefaultHomingBuilder
+VAR_INPUT
+	value : REFERENCE TO BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_cam REF= value;
+Cam := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ClearLag" Id="{fc0cb63b-b614-4397-a1e5-160469549e44}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD ClearLag : I_PositioningHomingBuilder]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_options.ClearPositionLag := TRUE;
+ClearLag := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{f0140b19-f229-4aba-97db-41810c48608c}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	axisRef : REFERENCE TO Axis;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_axisRef REF= axisRef;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="KeepLag" Id="{61d79078-56a0-4b74-a1b7-95dea3c1eab5}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD KeepLag : I_PositioningHomingBuilder]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_options.ClearPositionLag := FALSE;
+KeepLag := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Position" Id="{2a021c4c-3804-43d5-9d7b-1d9e6d7a80a4}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Position : I_PositioningHomingBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_position := value;
+Position := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ReferenceMode" Id="{04a1bc16-ae5b-4c82-8fbd-81d5e8756c2f}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD ReferenceMode : I_DefaultHomingBuilder
+VAR_INPUT
+	value : EncoderReferenceMode;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_options.ReferenceMode := value;
+ReferenceMode := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SearchDirection" Id="{52af2548-e1fc-4cc4-814c-5c68f8ecbf54}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD SearchDirection : I_DefaultHomingBuilder
+VAR_INPUT
+	value : Direction;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_options.SearchDirection := value;
+SearchDirection := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SearchVelocity" Id="{72bab1cd-20d2-4cac-a28e-2b0ac440d737}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD SearchVelocity : I_DefaultHomingBuilder
+VAR_INPUT
+	value	: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_options.SearchVelocity := value;
+SearchVelocity := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SyncDirection" Id="{5172015f-cffd-48df-ba6e-c06d8d8cd959}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD SyncDirection : I_DefaultHomingBuilder
+VAR_INPUT
+	value : Direction;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_options.SyncDirection := value;
+SyncDirection := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SyncVelocity" Id="{8403b227-9b1f-492f-bacd-40076f055bf2}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD SyncVelocity : I_DefaultHomingBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_options.SyncVelocity := value;
+SyncVelocity := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="DefaultHomingBuilder">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.BuildDefaultHomingCommand">
+      <LineId Id="5" Count="2" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.BuildDirectHomingCommand">
+      <LineId Id="7" Count="4" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.BuildForceCalibrationCommand">
+      <LineId Id="12" Count="6" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.BuildResetCalibrationCommand">
+      <LineId Id="12" Count="6" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.Cam">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.ClearLag">
+      <LineId Id="6" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.FB_init">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.KeepLag">
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.Position">
+      <LineId Id="7" Count="1" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.ReferenceMode">
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.SearchDirection">
+      <LineId Id="7" Count="1" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.SearchVelocity">
+      <LineId Id="7" Count="1" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.SyncDirection">
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultHomingBuilder.SyncVelocity">
+      <LineId Id="7" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

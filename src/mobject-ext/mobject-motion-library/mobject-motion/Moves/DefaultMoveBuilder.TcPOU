@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="DefaultMoveBuilder" Id="{825d4ead-368b-4c60-84d1-d77a39a41a4b}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK DefaultMoveBuilder IMPLEMENTS I_MoveBuilder, I_MoveAbsoluteBuilder, I_MoveRelativeBuilder
+VAR
+	_axisRef : REFERENCE TO Axis;
+	_position : LREAL;
+	_distance : LREAL;
+	_velocity : LREAL;
+	_acceleration: LREAL;
+	_deceleration: LREAL;
+	_jerk: LREAL;
+	_bufferMode: AxisBufferMode;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Builders" Id="{7d62c1e3-7514-4e84-8ffc-b98ce6d2e432}" />
+    <Folder Name="Constructor" Id="{f807a982-49ba-4dd7-9ec2-e1570a6c97bf}" />
+    <Folder Name="Property Setters" Id="{b66f7037-2fe6-4aea-b80e-94446af0a964}" />
+    <Method Name="Acceleration" Id="{ec03430a-e80a-40d9-8e48-b1e12b198d00}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Acceleration : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_acceleration := value;
+Acceleration := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BufferMode" Id="{2d0f4c94-0cb5-48e5-a9b3-f44e499ad175}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD BufferMode : I_MoveBuilder
+VAR_INPUT
+	mode : AxisBufferMode;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_bufferMode := mode;
+BufferMode := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildMoveAbsoluteCommand" Id="{733bb99d-343f-41fb-901d-e3a9a3a78c05}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildMoveAbsoluteCommand : I_MoveCommand
+VAR
+	pCmd : POINTER TO MoveAbsoluteCommand;
+	cmd : I_MoveCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(MoveAbsoluteCommand(
+	axisRef := _axisRef,
+	position := _position,
+	velocity := _velocity,
+	acceleration := _acceleration,
+	deceleration := _deceleration,
+	jerk := _jerk,
+	bufferMode := _bufferMode
+));
+BuildMoveAbsoluteCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildMoveAdditiveCommand" Id="{eaf960a2-3fc1-4c11-90ba-254bd777ecf7}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildMoveAdditiveCommand : I_MoveCommand
+VAR
+	pCmd : POINTER TO MoveAdditiveCommand;
+	cmd : I_MoveCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(MoveAdditiveCommand(
+	axisRef := _axisRef,
+	distance := _distance,
+	velocity := _velocity,
+	acceleration := _acceleration,
+	deceleration := _deceleration,
+	jerk := _jerk,
+	bufferMode := _bufferMode
+));
+BuildMoveAdditiveCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildMoveRelativeCommand" Id="{9f1a1cda-bbf1-44f3-8b42-fee19e72b447}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildMoveRelativeCommand : I_MoveCommand
+VAR
+	pCmd : POINTER TO MoveRelativeCommand;
+	cmd : I_MoveCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(MoveRelativeCommand(
+	axisRef := _axisRef,
+	distance := _distance,
+	velocity := _velocity,
+	acceleration := _acceleration,
+	deceleration := _deceleration,
+	jerk := _jerk,
+	bufferMode := _bufferMode
+));
+BuildMoveRelativeCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildMoveVelocityCommand" Id="{32bbf258-a34a-4e22-b9e4-d61626652304}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD BuildMoveVelocityCommand : I_MoveCommand
+VAR
+	pCmd : POINTER TO MoveVelocityCommand;
+	cmd : I_MoveCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(MoveVelocityCommand(
+	axisRef := _axisRef,
+	velocity := _velocity,
+	acceleration := _acceleration,
+	deceleration := _deceleration,
+	jerk := _jerk,
+	bufferMode := _bufferMode
+));
+BuildMoveVelocityCommand := pCmd^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Deceleration" Id="{4af86363-85e2-48f2-ab69-3cab5e73f184}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Deceleration : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_deceleration := value;
+Deceleration := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Distance" Id="{b263d895-40ab-48e1-a2e9-27af2c754030}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Distance : I_MoveRelativeBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_distance := value;
+Distance := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{49d0d298-9eab-4f96-a580-8b4d3cf67021}" FolderPath="Constructor\">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	axisRef : REFERENCE TO Axis;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_axisRef REF= axisRef;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Jerk" Id="{37012915-44db-449b-8bc8-74a80b32747a}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Jerk : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_jerk := value;
+Jerk := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Position" Id="{232effef-9259-4d37-bb96-1d79aee9e8fe}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Position : I_MoveAbsoluteBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_position := value;
+Position := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Velocity" Id="{87a6a725-01c7-40d0-8e57-7a87bc138f34}" FolderPath="Property Setters\">
+      <Declaration><![CDATA[METHOD Velocity : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF value <= 0 THEN
+	_velocity := _axisRef._InternalParameterSet.fDriveVeloReferenz;
+ELSE
+	_velocity := value;
+END_IF
+Velocity := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="DefaultMoveBuilder">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.Acceleration">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.BufferMode">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.BuildMoveAbsoluteCommand">
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="6" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.BuildMoveAdditiveCommand">
+      <LineId Id="7" Count="8" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.BuildMoveRelativeCommand">
+      <LineId Id="7" Count="8" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.BuildMoveVelocityCommand">
+      <LineId Id="7" Count="1" />
+      <LineId Id="10" Count="5" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.Deceleration">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.Distance">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.FB_init">
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.Jerk">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.Position">
+      <LineId Id="16" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="DefaultMoveBuilder.Velocity">
+      <LineId Id="25" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

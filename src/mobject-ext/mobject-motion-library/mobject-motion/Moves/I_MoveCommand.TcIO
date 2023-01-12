@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_MoveCommand" Id="{ace235f2-e3c9-4384-9979-8089e1813370}">
+    <Declaration><![CDATA[INTERFACE I_MoveCommand EXTENDS I_Command]]></Declaration>
+  </Itf>
+</TcPlcObject>

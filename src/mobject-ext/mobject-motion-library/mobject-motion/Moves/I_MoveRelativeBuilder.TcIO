@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_MoveRelativeBuilder" Id="{83805e76-e82f-445a-bf86-ad3b937b2ce4}">
+    <Declaration><![CDATA[INTERFACE I_MoveRelativeBuilder EXTENDS __System.IQueryInterface]]></Declaration>
+    <Method Name="Acceleration" Id="{2b0c1819-7d1e-4f02-8258-a07827843587}">
+      <Declaration><![CDATA[METHOD Acceleration : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="BufferMode" Id="{c7d326ae-4e85-4ad2-bdbd-a04fe2ccfb81}">
+      <Declaration><![CDATA[METHOD BufferMode : I_MoveBuilder
+VAR_INPUT
+	mode : AxisBufferMode;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="BuildMoveAdditiveCommand" Id="{f27ce51e-cac9-4d0d-b223-742fb1e1adc2}">
+      <Declaration><![CDATA[METHOD BuildMoveAdditiveCommand : I_MoveCommand]]></Declaration>
+    </Method>
+    <Method Name="BuildMoveRelativeCommand" Id="{1880f5cc-3bbe-4697-8179-b2f037df9a02}">
+      <Declaration><![CDATA[METHOD BuildMoveRelativeCommand : I_MoveCommand]]></Declaration>
+    </Method>
+    <Method Name="Deceleration" Id="{d7af80d5-7c3e-4f49-9c71-4f8c71fe38da}">
+      <Declaration><![CDATA[METHOD Deceleration : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Distance" Id="{01e4fc80-a2f4-4853-aa9a-53b5f8838cfd}">
+      <Declaration><![CDATA[METHOD Distance : I_MoveRelativeBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Jerk" Id="{42ee08f9-b465-4de1-98e0-dcdbf9630868}">
+      <Declaration><![CDATA[METHOD Jerk : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Velocity" Id="{23bf6177-3ed8-45db-932a-527b27b0f3a3}">
+      <Declaration><![CDATA[METHOD Velocity : I_MoveBuilder
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

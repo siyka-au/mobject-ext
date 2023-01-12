@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="SetPositionCommand" Id="{4cdb3db2-5511-4618-b19e-e8c99b999c4f}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK SetPositionCommand EXTENDS AxisCommand
+VAR
+	_position : LREAL;
+	_mode : SetPositionMode;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Constructor" Id="{b7dd30ac-bab1-44d9-a58f-2d5e6daac3d0}" />
+    <Method Name="FB_init" Id="{73cd683d-e018-4190-beed-2e076e3f972c}" FolderPath="Constructor\">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	axisRef : REFERENCE TO Axis;
+	position : LREAL;
+	mode : SetPositionMode;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_axisRef REF= axisRef;
+_position := position;
+_mode := mode;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WhileBusy" Id="{3ec3d9d2-53d5-410d-bbee-fb8ae959523c}">
+      <Declaration><![CDATA[METHOD PROTECTED  WhileBusy
+VAR_INPUT
+	CommandState : I_CommandBusyState;
+END_VAR
+VAR_INST
+	_fb : MC_SetPosition;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	Axis := _axisRef._InternalAxisRef,
+	Execute := TRUE,
+	Position := _position,
+	Mode := (_mode = SetPositionMode.Relative)
+);
+
+IF _fb.Busy THEN
+	RETURN;
+END_IF
+
+_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+
+IF _fb.Error THEN
+	CommandState.SetError(_fb.ErrorID);
+	RETURN;
+END_IF
+
+CommandState.SetDone();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="SetPositionCommand">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="SetPositionCommand.FB_init">
+      <LineId Id="7" Count="0" />
+      <LineId Id="15" Count="1" />
+    </LineIds>
+    <LineIds Name="SetPositionCommand.WhileBusy">
+      <LineId Id="6" Count="0" />
+      <LineId Id="11" Count="1" />
+      <LineId Id="55" Count="1" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="40" Count="5" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

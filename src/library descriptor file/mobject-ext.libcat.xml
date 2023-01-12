@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LibraryCategories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="LibraryCategories.xsd">
+    <LibraryCategory>
+        <Id>01602e6d-7837-4ab8-adae-3186df3dd292</Id>
+        <Version>1.0.0.0</Version>
+        <DefaultName>mobject.io-ext</DefaultName>
+    </LibraryCategory>
+</LibraryCategories>

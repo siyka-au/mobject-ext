@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="AxisBufferMode" Id="{a4d0ebc8-09c2-4042-bfff-0db46c83e4b4}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE AxisBufferMode :
+(
+	Aborting := MC_Aborting,
+	Buffered := MC_Buffered,
+	BlendingLow := MC_BlendingLow,
+	BlendingPrevious := MC_BlendingPrevious,
+	BlendingNext := MC_BlendingNext,
+	BlendingHigh := MC_BlendingHigh
+) UINT;
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

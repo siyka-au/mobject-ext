@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_HomingCommand" Id="{4aeda662-6f6c-4461-bfe4-562f47fed1ce}">
+    <Declaration><![CDATA[INTERFACE I_HomingCommand EXTENDS I_AxisCommand]]></Declaration>
+  </Itf>
+</TcPlcObject>

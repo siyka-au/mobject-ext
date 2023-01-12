@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Axis" Id="{2aaf2d97-dcbd-4e4f-bb30-8168c2228304}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK Axis EXTENDS CyclicInstance
+VAR
+	_axisRef : Tc2_MC2.AXIS_REF;
+	_power : MC_Power;
+	_jog : MC_Jog;
+	_readStatus : MC_ReadStatus;
+	_parameterSet : ST_AxisParameterSet;
+	
+	_enable : BOOL;
+	_enablePositive : BOOL;
+	_enableNegative : BOOL;
+	
+	_override : LREAL := 100.0;
+	_powerBufferMode : AxisBufferMode := AxisBufferMode.Aborting;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Actions" Id="{d3a6f6e5-0dc6-41bb-8fed-2d69291737e9}" />
+    <Folder Name="Builders" Id="{8b93d50b-0153-46ae-83ea-c4e3e102f098}" />
+    <Folder Name="Internal Methods" Id="{a404c9ad-82b3-4270-92e5-46406a4ee946}" />
+    <Folder Name="Internal Properties" Id="{ff3545d4-cf9d-4f1c-9c6a-4608c8343033}" />
+    <Folder Name="Properties" Id="{bcfa7b74-d450-4ebb-b173-8da30bff7c11}" />
+    <Property Name="_InternalAxisRef" Id="{90609a99-e5bd-4b83-a58a-33c30ccc26cb}" FolderPath="Internal Properties\">
+      <Declaration><![CDATA[PROPERTY INTERNAL _InternalAxisRef : REFERENCE TO Tc2_MC2.AXIS_REF]]></Declaration>
+      <Get Name="Get" Id="{3b2ee038-497c-4033-a9b8-e83a2391191c}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_InternalAxisRef REF= _axisRef;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_InternalJog" Id="{81758ae0-123d-466a-a4f8-f7ea636e9aab}" FolderPath="Internal Properties\">
+      <Declaration><![CDATA[PROPERTY INTERNAL _InternalJog : REFERENCE TO MC_Jog]]></Declaration>
+      <Get Name="Get" Id="{8cd6a88b-f9db-4297-8b57-8b361f25d990}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_InternalJog REF= _jog;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_InternalParameterSet" Id="{247c45f2-47fd-4c00-8a9c-f77b32401e79}" FolderPath="Internal Properties\">
+      <Declaration><![CDATA[PROPERTY INTERNAL _InternalParameterSet : REFERENCE TO ST_AxisParameterSet]]></Declaration>
+      <Get Name="Get" Id="{e12d2eff-e487-46f7-9fd3-f34e9951cc7f}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_InternalParameterSet REF= _parameterSet;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="BufferMode" Id="{d3f9ce10-8ed2-4c86-bbbf-2cd31077c031}" FolderPath="Properties\">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY BufferMode : Tc2_MC2.MC_BufferMode
+]]></Declaration>
+      <Get Name="Get" Id="{cb7a3b58-9630-4fcc-a8b2-6febff3711f9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{90ad7435-fc63-4033-8f56-5ec9006dd1f3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Busy" Id="{c365381d-4981-4e80-ad93-d15d1877f546}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY Busy : BOOL]]></Declaration>
+      <Get Name="Get" Id="{bb4c1cbb-227d-474b-b0fd-1dc32af91f9d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="CyclicCall" Id="{d18012b0-9520-4a5f-86ea-978a26c54f8e}" FolderPath="Internal Methods\">
+      <Declaration><![CDATA[METHOD  CyclicCall
+VAR_INST
+	_readParameterSet : MC_ReadParameterSet;
+	parameterSetRead : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_power(
+	Axis := THIS^._axisRef,
+	Enable := THIS^._enable,
+	Enable_Positive := THIS^._enablePositive,
+	Enable_Negative := THIS^._enableNegative,
+	Override := THIS^._override,
+	BufferMode := THIS^._powerBufferMode
+);
+
+_readStatus(
+	Axis := THIS^._axisRef,
+	Enable := _enable
+);
+
+IF NOT parameterSetRead THEN
+	_readParameterSet(
+		Axis := THIS^._axisRef,
+		Parameter := _parameterSet,
+		Execute := TRUE
+	);
+	
+	IF NOT _readParameterSet.Busy THEN
+		_readParameterSet(
+			Axis := THIS^._axisRef,
+			Parameter := _parameterSet,
+			Execute := TRUE
+		);
+		IF _readParameterSet.Done THEN
+			parameterSetRead := TRUE;
+		END_IF
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Disable" Id="{17b30872-fcd4-488a-b1b6-7fa79c000037}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD Disable]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_enable := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="DisableNegative" Id="{09f6abf1-b00f-4bfb-88e9-6ee7e9ba6e8f}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD DisableNegative]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_enableNegative := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="DisablePositive" Id="{59728fb8-b0dd-4aa9-bc80-abeb26875c9a}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD DisablePositive]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_enablePositive := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enable" Id="{c9911178-c912-485d-91e6-84927ecfc191}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD Enable
+VAR_INPUT
+	bufferMode : AxisBufferMode;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_enable := TRUE;
+_powerBufferMode := bufferMode;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EnableNegative" Id="{4800b13a-5042-4e28-861b-962c18550409}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD EnableNegative : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_enableNegative := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EnablePositive" Id="{f7745032-8e58-4ba9-a609-48f560d8e17f}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD EnablePositive]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_enablePositive := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ErrorId" Id="{ca7b6c5d-7148-4955-9c48-485f289f249e}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY ErrorId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{248416d9-c77b-4a42-bcab-47b4bf745b98}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorId := _readStatus.ErrorID;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Halt" Id="{382b5bff-1007-4126-99ae-6487c254db90}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD Halt
+VAR_INPUT
+	feedback : I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO HaltCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(HaltCommand(axisRef := THIS^));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="HasError" Id="{8b59e8d8-b8ff-463f-bd21-156952931aa9}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY HasError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{ebd77229-528e-47c1-afbb-2dd2d9fa797c}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasError := _readStatus.Error;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HomingBuilder" Id="{eff276be-bb3a-49d8-a728-ded3ab0a5295}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD HomingBuilder : I_HomingBuilder
+VAR_INST
+	builder : DefaultHomingBuilder(axisRef := THIS^);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[HomingBuilder := builder;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IsAccelerating" Id="{af076db1-4a05-447d-9648-e82349655e5d}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsAccelerating : BOOL]]></Declaration>
+      <Get Name="Get" Id="{3f9cd521-8eaf-450d-aeaa-ad5759d3a6ca}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsAccelerating := _readStatus.Accelerating;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsAtConstantVelocity" Id="{a3739dbf-55c6-4ddc-b18a-6ca6e64d6d09}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsAtConstantVelocity : BOOL]]></Declaration>
+      <Get Name="Get" Id="{09f674dd-45ed-4115-a5f6-2d1775113eff}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsAtConstantVelocity := _readStatus.ConstantVelocity;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsAtStandStill" Id="{015a7b8b-a87e-4641-922b-b2dc302a276a}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsAtStandStill : BOOL]]></Declaration>
+      <Get Name="Get" Id="{8da82d91-c4f0-439c-bd3d-90ccc4b5b090}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsAtStandStill := _readStatus.StandStill;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsDecelerating" Id="{fee796ca-7d3a-4909-9ac5-028d4d20a128}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsDecelerating : BOOL]]></Declaration>
+      <Get Name="Get" Id="{c3ee7dee-9c69-4ca2-9379-dccd4ab16938}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsDecelerating := _readStatus.Decelerating;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsErrorStopped" Id="{7db399a5-d190-443c-a64a-3aaf9b464e29}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsErrorStopped : BOOL]]></Declaration>
+      <Get Name="Get" Id="{dcf2e2ef-7614-46d2-870d-814ff9464a9e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsErrorStopped := _readStatus.ErrorStop;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsHoming" Id="{1ddbd359-0a25-48b4-b010-3b06b077febf}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsHoming : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4a60d080-4980-4525-b072-ea2241349744}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsHoming := _readStatus.Homing;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsInContinuousMotion" Id="{d630d362-4c31-4edc-bbbc-0ee50039562c}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsInContinuousMotion : BOOL]]></Declaration>
+      <Get Name="Get" Id="{44f97cb0-0fe0-4081-a420-5ac66cc2aee1}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsInContinuousMotion := _readStatus.ContinuousMotion;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsInDiscreteMotion" Id="{55832b77-a03b-4968-80c6-15cdd3cedf1e}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsInDiscreteMotion : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9ff7d675-0443-4b48-acce-a748fe5b301d}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsInDiscreteMotion := _readStatus.DiscreteMotion;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsInSynchronizedMotion" Id="{dcdf15cb-4b28-4e0e-9d50-c12a0ebeb79f}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsInSynchronizedMotion : BOOL]]></Declaration>
+      <Get Name="Get" Id="{96ce6fd9-96bc-4849-aa22-4fe6df2c1bc4}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsInSynchronizedMotion := _readStatus.SynchronizedMotion;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsReady" Id="{b54c065f-5a64-4c0d-8d6f-34322fb086f7}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsReady : BOOL]]></Declaration>
+      <Get Name="Get" Id="{35fca6b4-6504-482b-92aa-baa42de86f16}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsReady := _power.Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsStatusValid" Id="{5d176b49-ddfd-493b-a76c-4eedfca85975}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsStatusValid : BOOL]]></Declaration>
+      <Get Name="Get" Id="{3159d9ae-bc8b-4b0b-9615-6ab7905dbab0}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsStatusValid := _readStatus.Valid;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsStopping" Id="{71248b21-bd4b-4d2b-8b0c-0bbaf737574b}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsStopping : BOOL]]></Declaration>
+      <Get Name="Get" Id="{a6e22c24-2be4-45bf-b856-bcb0459941d8}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsStopping := _readStatus.Stopping;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="JogBackwards" Id="{a7cfbd72-0a93-4039-b1d1-fcfceccd872a}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD JogBackwards
+VAR_INPUT
+	velocity : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_jog(
+	Axis := _axisRef,
+	JogForward := FALSE,
+	JogBackwards := TRUE,
+	Mode := MC_JOGMODE_CONTINOUS,
+	Velocity := velocity
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="JogForward" Id="{cbd173e2-a265-46eb-94b8-308978a0bc52}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD JogForward
+VAR_INPUT
+	velocity : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_jog(
+	Axis := _axisRef,
+	JogForward := TRUE,
+	JogBackwards := FALSE,
+	Mode := MC_JOGMODE_CONTINOUS,
+	Velocity := velocity
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveBuilder" Id="{b4b2cd80-1567-4959-8de3-bde7b18dc77d}" FolderPath="Builders\">
+      <Declaration><![CDATA[METHOD MoveBuilder : I_MoveBuilder
+VAR_INST
+	builder : DefaultMoveBuilder(axisRef := THIS^);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[MoveBuilder := builder;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Override" Id="{a8028f42-b9a9-4eb1-a0b7-86a2bf0543d0}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY Override : LREAL]]></Declaration>
+      <Get Name="Get" Id="{5efb0fe9-a3fb-4d2d-9237-646a4db962e7}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Override := _override;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{bb3b3dd2-c751-4d86-9a0c-4a3568e49fe6}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_override := Override;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Reset" Id="{8e153cc3-92a5-4e6b-b7b2-9baa243ed4c1}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD Reset
+VAR_INPUT
+	feedback : I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO ResetCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(ResetCommand(axisRef := THIS^));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetPositionAbsolute" Id="{889cfb23-a044-4223-ac9f-9539fa2ab6e4}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD SetPositionAbsolute
+VAR_INPUT
+	positionToSet : LREAL;
+	feedback : I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO SetPositionCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(SetPositionCommand(axisRef := THIS^, position := positionToSet, mode := SetPositionMode.Absolute));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetPositionRelative" Id="{b7781aa1-05ad-429c-b757-7906b6bcdcd3}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD SetPositionRelative
+VAR_INPUT
+	distanceToShift : LREAL;
+	feedback : I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO SetPositionCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(SetPositionCommand(axisRef := THIS^, position := distanceToShift, mode := SetPositionMode.Relative));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{d6deae41-9d85-4fbd-8130-99bdb4cd48bd}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD Stop
+VAR_INPUT
+	feedback : I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO StopCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(StopCommand(axisRef := THIS^));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StopJogging" Id="{889afa4c-09c7-4dfc-8836-229afe5087d6}" FolderPath="Actions\">
+      <Declaration><![CDATA[METHOD StopJogging]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_jog(
+	Axis := _axisRef,
+	JogForward := FALSE,
+	JogBackwards := FALSE,
+);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="Axis">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis._InternalAxisRef.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis._InternalJog.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis._InternalParameterSet.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.BufferMode.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.BufferMode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Busy.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.CyclicCall">
+      <LineId Id="5" Count="6" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="43" Count="3" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="30" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Disable">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.DisableNegative">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.DisablePositive">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Enable">
+      <LineId Id="4" Count="0" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.EnableNegative">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.EnablePositive">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.ErrorId.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Halt">
+      <LineId Id="16" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.HasError.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.HomingBuilder">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsAccelerating.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsAtConstantVelocity.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsAtStandStill.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsDecelerating.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsErrorStopped.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsHoming.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsInContinuousMotion.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsInDiscreteMotion.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsInSynchronizedMotion.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsReady.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsStatusValid.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.IsStopping.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.JogBackwards">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="3" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.JogForward">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="3" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.MoveBuilder">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Override.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Override.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Reset">
+      <LineId Id="16" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.SetPositionAbsolute">
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.SetPositionRelative">
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.Stop">
+      <LineId Id="16" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="Axis.StopJogging">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

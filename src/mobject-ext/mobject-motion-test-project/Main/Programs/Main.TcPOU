@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Main" Id="{2e61a8d4-f677-443a-9a2d-e2cd0bfcaaea}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Main
+VAR
+	task : Task;
+	
+	axis1 : Axis;	
+	
+	enable: BOOL;
+	disable: BOOL;
+	reset: BOOL;
+	halt: BOOL;
+	stop: BOOL;
+	
+	startHoming : BOOL;
+	homePosition : LREAL := 10;
+	homeCam : BOOL;
+	
+	setPositionAbsolute : BOOL;
+	setPositionRelative : BOOL;
+	setPositionValue : LREAL;
+
+	jogForward : BOOL;
+	jogBackwards : BOOL;
+	
+	startMove1 : BOOL;
+	startMove2 : BOOL;	
+	moveVelocity : LREAL := 200;
+	movePosition1 : LREAL := 1000;
+	movePosition2 : LREAL := 0;
+	
+	homingFeedback : I_CommandFeedback;
+	setPositionFeedback : I_CommandFeedback;
+	resetFeedback : I_CommandFeedback;
+	haltFeedback : I_CommandFeedback;
+	stopFeedback : I_CommandFeedback;
+	feedback : I_CommandFeedback;
+	feedback2 : I_CommandFeedback;
+	
+	feedbackToDisplay : I_CommandFeedback;
+	fbBusy : BOOL;
+	fbDone : BOOL;
+	fbError: BOOL;
+	fbErrorId: UDINT;
+	fbAborting: BOOL;
+	fbAborted: BOOL;
+	
+	isStatusValid: BOOL;
+	isAtStandStill: BOOL;
+	isAccelerating: BOOL;
+	isAtConstantVelocity: BOOL;
+	isDecelerating: BOOL;
+	isStopping: BOOL;	
+	isInContinuousMotion: BOOL;
+	isInDiscreteMotion: BOOL;
+	isInSynchronizedMotion: BOOL;
+	isErrorStopped: BOOL;
+	hasError: BOOL;
+	errorId: UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[task.CyclicCall();
+IF enable THEN
+	enable := FALSE;
+	axis1.Enable(AxisBufferMode.Buffered);
+	axis1.EnablePositive();
+	axis1.EnableNegative();
+END_IF
+IF disable THEN
+	disable := FALSE;
+	axis1.Disable();
+END_IF
+IF reset THEN
+	reset := FALSE;
+	axis1.Reset(resetFeedback);
+END_IF
+IF halt THEN
+	halt := FALSE;
+	axis1.Halt(haltFeedback);
+END_IF
+IF stop THEN
+	stop := FALSE;
+	axis1.Stop(stopFeedback);
+END_IF
+IF jogForward THEN
+	axis1.JogForward(100);
+ELSIF jogBackwards THEN
+	axis1.JogBackwards(100);
+ELSE
+	// Don't like this, since jogging now acts like MC_MoveVelocity
+	// although I guess that is what it is exactly
+	axis1.StopJogging();
+END_IF
+
+IF startHoming THEN
+	startHoming := FALSE;
+	(*axis1.HomingBuilder()
+		.Position(homePosition)
+		.BuildDirectHomingCommand()
+		.Execute(homingFeedback)
+		.ThenRelease();*)
+	axis1.HomingBuilder()
+		.Position(homePosition)
+		.Cam(homeCam)
+		.ReferenceMode(EncoderReferenceMode.PLCCam)
+		.BuildDefaultHomingCommand()
+		.Execute(homingFeedback)
+		.ThenRelease();
+END_IF
+
+IF setPositionAbsolute THEN
+	setPositionAbsolute := FALSE;
+	axis1.SetPositionAbsolute(setPositionValue, setPositionFeedback);
+END_IF
+
+IF setPositionRelative THEN
+	setPositionRelative := FALSE;
+	axis1.SetPositionRelative(setPositionValue, setPositionFeedback);
+END_IF
+
+IF startMove1 THEN
+	startMove1 := FALSE;
+	axis1.MoveBuilder()
+		.Velocity(100)
+		.BufferMode(AxisBufferMode.Aborting)
+		.Position(movePosition1)
+		.BuildMoveAbsoluteCommand()
+		.Execute(feedback)
+		.ThenRelease();
+END_IF
+
+IF startMove2 THEN
+	startMove2 := FALSE;
+	axis1.MoveBuilder()
+		.Velocity(100)
+		.BufferMode(AxisBufferMode.Buffered)
+		.Position(movePosition2)
+		.BuildMoveAbsoluteCommand()
+		.Execute(feedback)
+		.ThenRelease();
+END_IF
+
+feedbackToDisplay := homingFeedback;
+IF feedbackToDisplay <> 0 THEN
+	fbBusy := feedbackToDisplay.Busy;
+	fbDone := feedbackToDisplay.Done;
+	fbError := feedbackToDisplay.Error;
+	fbErrorId := feedbackToDisplay.ErrorId;
+	fbAborting := feedbackToDisplay.Aborting;
+	fbAborted := feedbackToDisplay.Aborted;
+END_IF
+
+isStatusValid := axis1.IsStatusValid;
+IF axis1.IsStatusValid THEN
+	isAtStandStill := axis1.IsAtStandStill;
+	isAccelerating := axis1.IsAccelerating;
+	isAtConstantVelocity := axis1.IsAtConstantVelocity;
+	isDecelerating := axis1.IsDecelerating;
+	isStopping := axis1.IsStopping;	
+	isInContinuousMotion := axis1.IsInContinuousMotion;
+	isInDiscreteMotion := axis1.IsInDiscreteMotion;
+	isInSynchronizedMotion := axis1.IsInSynchronizedMotion;
+	isErrorStopped := axis1.IsErrorStopped;
+	hasError := axis1.HasError;
+	errorId := axis1.ErrorId;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="Main">
+      <LineId Id="69" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="375" Count="1" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="156" Count="2" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="501" Count="2" />
+      <LineId Id="442" Count="0" />
+      <LineId Id="506" Count="2" />
+      <LineId Id="504" Count="0" />
+      <LineId Id="443" Count="1" />
+      <LineId Id="446" Count="0" />
+      <LineId Id="445" Count="0" />
+      <LineId Id="431" Count="1" />
+      <LineId Id="436" Count="2" />
+      <LineId Id="440" Count="1" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="434" Count="0" />
+      <LineId Id="536" Count="2" />
+      <LineId Id="614" Count="4" />
+      <LineId Id="623" Count="0" />
+      <LineId Id="619" Count="0" />
+      <LineId Id="624" Count="1" />
+      <LineId Id="620" Count="1" />
+      <LineId Id="549" Count="0" />
+      <LineId Id="539" Count="0" />
+      <LineId Id="512" Count="2" />
+      <LineId Id="516" Count="0" />
+      <LineId Id="515" Count="0" />
+      <LineId Id="522" Count="3" />
+      <LineId Id="521" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="355" Count="1" />
+      <LineId Id="423" Count="0" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="362" Count="2" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="319" Count="1" />
+      <LineId Id="366" Count="1" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="368" Count="0" />
+      <LineId Id="448" Count="0" />
+      <LineId Id="370" Count="0" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="318" Count="0" />
+      <LineId Id="613" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="214" Count="1" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="223" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="300" Count="6" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="307" Count="2" />
+      <LineId Id="290" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

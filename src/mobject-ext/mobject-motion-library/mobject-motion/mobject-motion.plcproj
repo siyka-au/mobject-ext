@@ -1,0 +1,177 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{75e95a17-51a2-48fc-9b86-832207d21d62}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <DownloadApplicationInfo>true</DownloadApplicationInfo>
+    <WriteProductVersion>true</WriteProductVersion>
+    <GenerateTpy>false</GenerateTpy>
+    <Name>mobject_motion</Name>
+    <ProgramVersion>3.1.4023.0</ProgramVersion>
+    <Application>{34f3f2f1-68ae-426e-a372-9778e39c6adf}</Application>
+    <TypeSystem>{9a5a824c-7593-4e33-b7a9-9487a21a4e78}</TypeSystem>
+    <Implicit_Task_Info>{dffdf0a5-bb90-4d9b-930e-2840082ea5a5}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{14d70d6f-fe5e-462e-bb41-f90b7e382942}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{25f05dbe-bd45-4d1b-86e7-7e5889a9a724}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{895f7036-fe64-4306-b72a-ee7b9a522803}</LibraryReferences>
+    <Company>mobject-io-ext</Company>
+    <Released>false</Released>
+    <ProjectVersion>0.0.1</ProjectVersion>
+    <DefaultNamespace>mobject-motion</DefaultNamespace>
+    <Title>mobject-motion</Title>
+    <Author>mobject dev team</Author>
+    <CombineIds>true</CombineIds>
+    <LibraryCategories>
+      <LibraryCategory xmlns="">
+        <Id>{01602e6d-7837-4ab8-adae-3186df3dd292}</Id>
+        <Version>1.0.0.0</Version>
+        <DefaultName>mobject.io-ext</DefaultName>
+      </LibraryCategory>
+    </LibraryCategories>
+    <SelectedLibraryCategories>
+      <Id xmlns="">{01602e6d-7837-4ab8-adae-3186df3dd292}</Id>
+    </SelectedLibraryCategories>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Administrative" />
+    <Folder Include="Axis" />
+    <Folder Include="Base" />
+    <Folder Include="Homing" />
+    <Folder Include="Moves" />
+    <Folder Include="Stops" />
+    <Folder Include="Types" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Administrative\ResetCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Administrative\SetPositionCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Axis\Axis.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Base\AxisCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Base\I_AxisCommand.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Homing\DefaultHomingBuilder.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Homing\HomingCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Homing\I_DefaultHomingBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Homing\I_HomingBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Homing\I_HomingCommand.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Homing\I_PositioningHomingBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\DefaultMoveBuilder.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\I_JogMoveBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\I_MoveAbsoluteBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\I_MoveBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\I_MoveCommand.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\I_MoveRelativeBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\MoveAbsoluteCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\MoveAdditiveCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\MoveCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\MoveRelativeCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Moves\MoveVelocityCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Stops\HaltCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Stops\StopCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\AxisBufferMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\Direction.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\EncoderReferenceMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\HomingMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\SetPositionMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="mobject-core">
+      <DefaultResolution>mobject-core, * (mobject.io)</DefaultResolution>
+      <Namespace>mobject_core</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_MC2">
+      <DefaultResolution>Tc2_MC2, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_MC2</Namespace>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mobject-motion.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
+        <o>
+          <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="String">
+            <v>ActiveVisuProfile</v>
+            <v>IR0whWr8bwfwBwAAiD2qpQAAAABVAgAA37x72QAAAAABAAAAAAAAAAEaUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwACTHsAZgA5ADUAYgBiADQAMgA2AC0ANQA1ADIANAAtADQAYgA0ADUALQA5ADQAMAAwAC0AZgBiADAAZgAyAGUANwA3AGUANQAxAGIAfQADCE4AYQBtAGUABDBUAHcAaQBuAEMAQQBUACAAMwAuADEAIABCAHUAaQBsAGQAIAA0ADAAMgA0AC4ANwAFFlAAcgBvAGYAaQBsAGUARABhAHQAYQAGTHsAMQA2AGUANQA1AGIANgAwAC0ANwAwADQAMwAtADQAYQA2ADMALQBiADYANQBiAC0ANgAxADQANwAxADMAOAA3ADgAZAA0ADIAfQAHEkwAaQBiAHIAYQByAGkAZQBzAAhMewAzAGIAZgBkADUANAA1ADkALQBiADAANwBmAC0ANABkADYAZQAtAGEAZQAxAGEALQBhADgAMwAzADUANgBhADUANQAxADQAMgB9AAlMewA5AGMAOQA1ADgAOQA2ADgALQAyAGMAOAA1AC0ANAAxAGIAYgAtADgAOAA3ADEALQA4ADkANQBmAGYAMQBmAGUAZABlADEAYQB9AAoOVgBlAHIAcwBpAG8AbgALBmkAbgB0AAwKVQBzAGEAZwBlAA0KVABpAHQAbABlAA4aVgBpAHMAdQBFAGwAZQBtAE0AZQB0AGUAcgAPDkMAbwBtAHAAYQBuAHkAEAxTAHkAcwB0AGUAbQARElYAaQBzAHUARQBsAGUAbQBzABIwVgBpAHMAdQBFAGwAZQBtAHMAUwBwAGUAYwBpAGEAbABDAG8AbgB0AHIAbwBsAHMAEyhWAGkAcwB1AEUAbABlAG0AcwBXAGkAbgBDAG8AbgB0AHIAbwBsAHMAFCRWAGkAcwB1AEUAbABlAG0AVABlAHgAdABFAGQAaQB0AG8AcgAVIlYAaQBzAHUATgBhAHQAaQB2AGUAQwBvAG4AdAByAG8AbAAWFHYAaQBzAHUAaQBuAHAAdQB0AHMAFwxzAHkAcwB0AGUAbQAYGFYAaQBzAHUARQBsAGUAbQBCAGEAcwBlABkmRABlAHYAUABsAGEAYwBlAGgAbwBsAGQAZQByAHMAVQBzAGUAZAAaCGIAbwBvAGwAGyJQAGwAdQBnAGkAbgBDAG8AbgBzAHQAcgBhAGkAbgB0AHMAHEx7ADQAMwBkADUAMgBiAGMAZQAtADkANAAyAGMALQA0ADQAZAA3AC0AOQBlADkANAAtADEAYgBmAGQAZgAzADEAMABlADYAMwBjAH0AHRxBAHQATABlAGEAcwB0AFYAZQByAHMAaQBvAG4AHhRQAGwAdQBnAGkAbgBHAHUAaQBkAB8WUwB5AHMAdABlAG0ALgBHAHUAaQBkACBIYQBmAGMAZAA1ADQANAA2AC0ANAA5ADEANAAtADQAZgBlADcALQBiAGIANwA4AC0AOQBiAGYAZgBlAGIANwAwAGYAZAAxADcAIRRVAHAAZABhAHQAZQBJAG4AZgBvACJMewBiADAAMwAzADYANgBhADgALQBiADUAYwAwAC0ANABiADkAYQAtAGEAMAAwAGUALQBlAGIAOAA2ADAAMQAxADEAMAA0AGMAMwB9ACMOVQBwAGQAYQB0AGUAcwAkTHsAMQA4ADYAOABmAGYAYwA5AC0AZQA0AGYAYwAtADQANQAzADIALQBhAGMAMAA2AC0AMQBlADMAOQBiAGIANQA1ADcAYgA2ADkAfQAlTHsAYQA1AGIAZAA0ADgAYwAzAC0AMABkADEANwAtADQAMQBiADUALQBiADEANgA0AC0ANQBmAGMANgBhAGQAMgBiADkANgBiADcAfQAmFk8AYgBqAGUAYwB0AHMAVAB5AHAAZQAnVFUAcABkAGEAdABlAEwAYQBuAGcAdQBhAGcAZQBNAG8AZABlAGwARgBvAHIAQwBvAG4AdgBlAHIAdABpAGIAbABlAEwAaQBiAHIAYQByAGkAZQBzACgQTABpAGIAVABpAHQAbABlACkUTABpAGIAQwBvAG0AcABhAG4AeQAqHlUAcABkAGEAdABlAFAAcgBvAHYAaQBkAGUAcgBzACs4UwB5AHMAdABlAG0ALgBDAG8AbABsAGUAYwB0AGkAbwBuAHMALgBIAGEAcwBoAHQAYQBiAGwAZQAsEnYAaQBzAHUAZQBsAGUAbQBzAC1INgBjAGIAMQBjAGQAZQAxAC0AZAA1AGQAYwAtADQAYQAzAGIALQA5ADAANQA0AC0AMgAxAGYAYQA3ADUANgBhADMAZgBhADQALihJAG4AdABlAHIAZgBhAGMAZQBWAGUAcgBzAGkAbwBuAEkAbgBmAG8AL0x7AGMANgAxADEAZQA0ADAAMAAtADcAZgBiADkALQA0AGMAMwA1AC0AYgA5AGEAYwAtADQAZQAzADEANABiADUAOQA5ADYANAAzAH0AMBhNAGEAagBvAHIAVgBlAHIAcwBpAG8AbgAxGE0AaQBuAG8AcgBWAGUAcgBzAGkAbwBuADIMTABlAGcAYQBjAHkAMzBMAGEAbgBnAHUAYQBnAGUATQBvAGQAZQBsAFYAZQByAHMAaQBvAG4ASQBuAGYAbwA0MEwAbwBhAGQATABpAGIAcgBhAHIAaQBlAHMASQBuAHQAbwBQAHIAbwBqAGUAYwB0ADUaQwBvAG0AcABhAHQAaQBiAGkAbABpAHQAeQDQAAIaA9ADAS0E0AUGGgfQBwgaAUUHCQjQAAkaBEUKCwQDAAAABQAAAA0AAAAAAAAA0AwLrQIAAADQDQEtDtAPAS0Q0AAJGgRFCgsEAwAAAAUAAAANAAAAKAAAANAMC60BAAAA0A0BLRHQDwEtENAACRoERQoLBAMAAAAFAAAADQAAAAAAAADQDAutAgAAANANAS0S0A8BLRDQAAkaBEUKCwQDAAAABQAAAA0AAAAUAAAA0AwLrQIAAADQDQEtE9APAS0Q0AAJGgRFCgsEAwAAAAUAAAANAAAAAAAAANAMC60CAAAA0A0BLRTQDwEtENAACRoERQoLBAMAAAAFAAAADQAAAAAAAADQDAutAgAAANANAS0V0A8BLRDQAAkaBEUKCwQDAAAABQAAAA0AAAAAAAAA0AwLrQIAAADQDQEtFtAPAS0X0AAJGgRFCgsEAwAAAAUAAAANAAAAKAAAANAMC60EAAAA0A0BLRjQDwEtENAZGq0BRRscAdAAHBoCRR0LBAMAAAAFAAAADQAAAAAAAADQHh8tINAhIhoCRSMkAtAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAAAAANADAS0n0CgBLRHQKQEtENAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAQAAANADAS0n0CgBLRHQKQEtEJoqKwFFAAEC0AABLSzQAAEtF9AAHy0t0C4vGgPQMAutAQAAANAxC60XAAAA0DIarQDQMy8aA9AwC60CAAAA0DELrQMAAADQMhqtANA0Gq0A0DUarQA=</v>
+          </d>
+        </o>
+      </d>
+      <d n="Values" t="Hashtable" />
+    </o>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

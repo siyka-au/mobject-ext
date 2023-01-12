@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MoveAbsoluteCommand" Id="{f2bf5d21-cab0-4b95-ae14-e4f31a338d45}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK INTERNAL MoveAbsoluteCommand EXTENDS MoveCommand
+VAR
+	_fb : MC_MoveAbsolute;
+	_position : LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Constructor" Id="{ac24e1f2-7bc9-4ec0-98ca-84b69e8381bb}" />
+    <Method Name="FB_init" Id="{304daf3f-1f91-4d37-b06b-2471eab077be}" FolderPath="Constructor\">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	axisRef : REFERENCE TO Axis;
+	position : LREAL;
+	velocity : LREAL;
+	acceleration : LREAL;
+	deceleration : LREAL;
+	jerk : LREAL;
+	bufferMode : AxisBufferMode;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_axisRef REF= axisRef;
+_position := position;
+_velocity := velocity;
+_acceleration := acceleration;
+_deceleration := deceleration;
+_jerk := jerk;
+_bufferMode := bufferMode;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WhileBusy" Id="{51d7502a-7fb5-4811-b305-b98249d64ac5}">
+      <Declaration><![CDATA[METHOD PROTECTED WhileBusy
+VAR_INPUT
+	CommandState : I_CommandBusyState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	Axis := _axisRef._InternalAxisRef,
+	Execute := TRUE,
+	Position := _position,
+	Velocity := _velocity,
+	Acceleration := _acceleration,
+	Deceleration := _deceleration,
+	Jerk := _jerk,
+	BufferMode := _bufferMode
+);
+
+IF _fb.Busy THEN
+	RETURN;
+END_IF
+
+IF _fb.CommandAborted THEN
+	_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+	CommandState.SetAborting();
+	RETURN;
+END_IF
+
+IF _fb.Error THEN
+	_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+	CommandState.SetError(_fb.ErrorID);
+	RETURN;
+END_IF
+
+_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+CommandState.SetDone();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="MoveAbsoluteCommand">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="MoveAbsoluteCommand.FB_init">
+      <LineId Id="46" Count="5" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="MoveAbsoluteCommand.WhileBusy">
+      <LineId Id="10" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="42" Count="2" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="50" Count="16" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
