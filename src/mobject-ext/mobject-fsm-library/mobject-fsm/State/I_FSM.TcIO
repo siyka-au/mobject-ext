@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_FSM" Id="{4e01c3db-1ac2-03ab-2dbe-1551dcfb6cab}">
+    <Declaration><![CDATA[INTERFACE I_FSM]]></Declaration>
+    <Method Name="Event" Id="{1c98c286-66af-04ea-2402-d61edcdfeaa5}">
+      <Declaration><![CDATA[METHOD Event
+VAR_INPUT
+	e : INT;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

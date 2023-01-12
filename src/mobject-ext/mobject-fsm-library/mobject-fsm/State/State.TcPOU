@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="State" Id="{80ad0bd5-49ad-0ee9-008f-f7949e0ce51f}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK State IMPLEMENTS I_State
+VAR
+	_name : STRING;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Execute" Id="{debb21bd-04af-0171-3ce7-4f63e3de10b8}">
+      <Declaration><![CDATA[METHOD Execute]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{ca57a798-fce6-0d46-0659-f20420d8fe5a}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	name : STRING;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_name := name;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Name" Id="{9d326383-68d4-0c07-3410-82ebca9c5e80}">
+      <Declaration><![CDATA[PROPERTY Name : STRING
+]]></Declaration>
+      <Get Name="Get" Id="{c0646918-1e60-0d15-2d86-d7d578e7a8db}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Name := _name;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="OnEntry" Id="{82854e59-864e-0f50-0bb9-4d65044e3598}">
+      <Declaration><![CDATA[METHOD OnEntry]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnExit" Id="{3f50052d-45d0-0488-3160-4a4d7f734745}">
+      <Declaration><![CDATA[METHOD OnExit]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="State">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="State.Execute">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="State.FB_init">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="State.Name.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="State.OnEntry">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="State.OnExit">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

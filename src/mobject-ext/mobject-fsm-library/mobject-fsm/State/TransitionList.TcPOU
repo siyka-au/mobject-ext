@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="TransitionList" Id="{10710ab3-1a18-0405-2905-634af37d2937}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TransitionList
+VAR
+	_transition : REFERENCE TO Transition;
+	_next : REFERENCE TO TransitionList;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{c00e1da8-e74a-0e15-1ae8-63d2ded94a9d}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	transition : REFERENCE TO Transition;
+	next : REFERENCE TO TransitionList;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF __ISVALIDREF(transition) THEN
+	_transition REF= transition;
+END_IF
+
+IF __ISVALIDREF(next) THEN
+	_next REF= next;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="HasNext" Id="{43ed9a79-3f32-0f0e-1836-960b2b9b4096}">
+      <Declaration><![CDATA[PROPERTY HasNext : BOOL]]></Declaration>
+      <Get Name="Get" Id="{252b315d-3b84-0d3d-2309-00a8b4f35879}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasNext := __ISVALIDREF(_next);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Next" Id="{ac24626f-556b-0ebd-00db-32d0c87cb410}">
+      <Declaration><![CDATA[PROPERTY Next : REFERENCE TO TransitionList]]></Declaration>
+      <Get Name="Get" Id="{0b61a511-38b4-0f52-0710-f04027b5e534}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF HasNext THEN
+	Next REF= _next;
+ELSE
+	Next REF= 0;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Value" Id="{eb54e75a-e298-046f-1898-eee9ca8e944c}">
+      <Declaration><![CDATA[PROPERTY Value : REFERENCE TO Transition]]></Declaration>
+      <Get Name="Get" Id="{66ca52f1-7435-09ad-1a58-c9fac039412a}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF __ISVALIDREF(_transition) THEN
+	Value REF= _transition;
+ELSE
+	Value REF= 0;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="TransitionList">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="TransitionList.FB_init">
+      <LineId Id="21" Count="1" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="9" Count="1" />
+    </LineIds>
+    <LineIds Name="TransitionList.HasNext.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="TransitionList.Next.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="TransitionList.Value.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

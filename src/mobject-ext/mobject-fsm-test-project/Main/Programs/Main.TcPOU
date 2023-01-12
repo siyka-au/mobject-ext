@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Main" Id="{25a681c5-a485-0a21-120a-598f1114fe63}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Main
+VAR
+	machine : TestMachine;
+	currentState : STRING;
+	start : BOOL;
+	stop : BOOL;
+	reset : BOOL;
+	clear : BOOL;
+	abort : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF start THEN
+	start := FALSE;
+	machine.Start();
+END_IF
+
+IF stop THEN
+	stop := FALSE;
+	machine.Stop();
+END_IF
+
+IF reset THEN
+	reset := FALSE;
+	machine.Reset();
+END_IF
+
+IF clear THEN
+	clear := FALSE;
+	machine.Clear();
+END_IF
+
+IF abort THEN
+	abort := FALSE;
+	machine.Abort();
+END_IF
+
+currentState := machine.CurrentStateName;]]></ST>
+    </Implementation>
+    <LineIds Name="Main">
+      <LineId Id="5" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="56" Count="3" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="63" Count="3" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="68" Count="3" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="73" Count="3" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="78" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

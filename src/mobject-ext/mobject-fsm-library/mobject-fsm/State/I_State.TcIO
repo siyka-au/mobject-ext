@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_State" Id="{ffd42d10-eba7-0ded-0838-25f0e9b01e95}">
+    <Declaration><![CDATA[INTERFACE I_State]]></Declaration>
+    <Method Name="Execute" Id="{339f8b31-fc52-004c-17f6-c628a14c29f9}">
+      <Declaration><![CDATA[METHOD Execute]]></Declaration>
+    </Method>
+    <Property Name="Name" Id="{89adc5fb-2e73-0650-306e-70919788ddc6}">
+      <Declaration><![CDATA[PROPERTY Name : STRING]]></Declaration>
+      <Get Name="Get" Id="{65df2e94-70c8-04c9-03fc-4a256b782655}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="OnEntry" Id="{0cb9de10-47c6-0557-2a8b-0d981bd44305}">
+      <Declaration><![CDATA[METHOD OnEntry]]></Declaration>
+    </Method>
+    <Method Name="OnExit" Id="{147f60a6-0f6f-0957-0b01-dc21ca030f56}">
+      <Declaration><![CDATA[METHOD OnExit]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

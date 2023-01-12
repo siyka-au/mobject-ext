@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="TestMachine" Id="{8b5ec37e-8862-0370-1ebd-55ab2aab7536}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TestMachine
+VAR
+	idleState : State(name := 'Idle');
+	runningState : State(name := 'Running');
+	stoppedState : State(name := 'Stopped');
+	abortedState : State(name := 'Aborted');
+	
+	t2 : Transition(event := TestMachineEvents.Start, sourceState := idleState, destinationState := runningState);
+	t1 : Transition(event := TestMachineEvents.Stop, sourceState := runningState, destinationState := stoppedState);
+	t3 : Transition(event := TestMachineEvents.Abort, sourceState := idleState, destinationState := abortedState);
+	t4 : Transition(event := TestMachineEvents.Abort, sourceState := runningState, destinationState := abortedState);
+	t5 : Transition(event := TestMachineEvents.Abort, sourceState := stoppedState, destinationState := abortedState);
+	t6 : Transition(event := TestMachineEvents.Reset, sourceState := stoppedState, destinationState := idleState);
+	t7 : Transition(event := TestMachineEvents.Clear, sourceState := abortedState, destinationState := IdleState);
+	
+	tl1 : TransitionList(t1, 0);
+	tl2 : TransitionList(t2, tl1);
+	tl3 : TransitionList(t3, tl2);
+	tl4 : TransitionList(t4, tl3);
+	tl5 : TransitionList(t5, tl4);
+	tl6 : TransitionList(t6, tl5);
+	tl7 : TransitionList(t7, tl6);
+	
+	fsm : FSM(defaultState := idleState, transitions := tl7);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Abort" Id="{953cbf8d-b997-0fa3-1be9-e595a0db8ff1}">
+      <Declaration><![CDATA[METHOD Abort
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fsm.Event(TestMachineEvents.Abort);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clear" Id="{6b7c39d1-a0a2-04ea-0fa2-3ea744929cfb}">
+      <Declaration><![CDATA[METHOD Clear]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fsm.Event(TestMachineEvents.Clear);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="CurrentStateName" Id="{caa27d60-67f5-06b8-145e-377dbcc4d634}">
+      <Declaration><![CDATA[PROPERTY CurrentStateName : STRING]]></Declaration>
+      <Get Name="Get" Id="{0ce5915d-a6ed-071e-38ae-d6ed542ce3be}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CurrentStateName := fsm.CurrentState.Name;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Reset" Id="{d5e64aa2-5467-0e48-2a4f-6f2b51e34206}">
+      <Declaration><![CDATA[METHOD Reset]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fsm.Event(TestMachineEvents.Reset);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{9d261092-ac5f-02c2-0728-62d6a9a253f0}">
+      <Declaration><![CDATA[METHOD Start]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fsm.Event(TestMachineEvents.Start);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{ae065239-f384-02d3-327d-8b491fa1362b}">
+      <Declaration><![CDATA[METHOD Stop]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fsm.Event(TestMachineEvents.Stop);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="TestMachine">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="TestMachine.Abort">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="TestMachine.Clear">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="TestMachine.CurrentStateName.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="TestMachine.Reset">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="TestMachine.Start">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="TestMachine.Stop">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

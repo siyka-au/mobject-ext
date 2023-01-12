@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FSM" Id="{0dc3d6f4-57e5-0130-0e0c-03a7966afdf1}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FSM IMPLEMENTS I_FSM
+VAR
+	_defaultState : I_State;
+	_currentState : I_State;
+	_transitions : REFERENCE TO TransitionList;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="CurrentState" Id="{8156f63d-86b5-079a-2fec-06dc666bfd3b}">
+      <Declaration><![CDATA[PROPERTY CurrentState : I_State]]></Declaration>
+      <Get Name="Get" Id="{36e31111-09d2-0110-2f2a-51b8aac47331}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CurrentState := _currentState;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Event" Id="{611815ba-7891-0c65-04d0-e52e86d31b71}">
+      <Declaration><![CDATA[METHOD Event
+VAR_INPUT
+	e : INT;
+END_VAR
+VAR
+	i, j : DINT;
+	ti : REFERENCE TO TransitionList;
+	trans : REFERENCE TO Transition;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ti REF= _transitions;
+WHILE __ISVALIDREF(ti) DO
+	trans REF= ti.Value;
+	IF __ISVALIDREF(trans) AND_THEN e = trans.Event AND_THEN _currentState = trans.SourceState THEN
+		_currentState.OnExit();
+		_currentState := trans.DestinationState;
+		_currentState.OnEntry();
+		RETURN;
+	END_IF
+	ti REF= ti.Next;
+END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{0bae76ac-2dfc-0de7-290d-e2c25ae52f00}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	defaultState : I_State;
+	transitions : REFERENCE TO TransitionList;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_defaultState := defaultState;
+_currentState := defaultState;
+_transitions REF= transitions;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FSM">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FSM.CurrentState.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FSM.Event">
+      <LineId Id="14" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="46" Count="0" />
+    </LineIds>
+    <LineIds Name="FSM.FB_init">
+      <LineId Id="10" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

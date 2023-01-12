@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Transition" Id="{dc5f1b9e-c438-09f5-22ef-0034eaac9a00}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK Transition
+VAR
+	_event : INT;
+	_sourceState : I_State;
+	_destinationState : I_State;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="DestinationState" Id="{4993eb70-6edd-053d-1481-92a7d4ccd47a}">
+      <Declaration><![CDATA[PROPERTY DestinationState : I_State]]></Declaration>
+      <Get Name="Get" Id="{011cb777-ebb6-0de5-2327-77b2d0d60d38}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[DestinationState := _destinationState;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Event" Id="{d8bf9cc5-cfbb-0115-09a0-d58ba54880ed}">
+      <Declaration><![CDATA[PROPERTY Event : INT]]></Declaration>
+      <Get Name="Get" Id="{eae50424-bdd0-0841-3db5-c744f290613e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Event := _event;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="FB_init" Id="{6efdf76e-b6a7-00cc-3942-2a94fd8de71f}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	event : INT;
+	sourceState : I_State;
+	destinationState : I_State;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_event := event;
+_sourceState := sourceState;
+_destinationState := destinationState;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SourceState" Id="{19edc98a-9329-089d-030b-6ae21625bbc5}">
+      <Declaration><![CDATA[PROPERTY SourceState : I_State]]></Declaration>
+      <Get Name="Get" Id="{e1f63828-71b5-05ab-0468-7fafb6020c6d}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SourceState := _sourceState;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="Transition">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="Transition.DestinationState.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Transition.Event.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="Transition.FB_init">
+      <LineId Id="7" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="Transition.SourceState.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
