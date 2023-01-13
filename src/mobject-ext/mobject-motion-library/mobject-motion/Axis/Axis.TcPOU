@@ -54,6 +54,15 @@ END_VAR]]></Declaration>
         </Implementation>
       </Get>
     </Property>
+    <Property Name="AxisId" Id="{67de2fd0-4aba-0578-2c2c-7b4e6a0d9ac8}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY AxisId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{821606fd-2277-088b-2511-fa15594f6c0e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[AxisId := _axisRef.NcToPlc.AxisId;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="BufferMode" Id="{d3f9ce10-8ed2-4c86-bbbf-2cd31077c031}" FolderPath="Properties\">
       <Declaration><![CDATA[{warning 'add property implementation'}
 PROPERTY BufferMode : Tc2_MC2.MC_BufferMode
@@ -179,7 +188,7 @@ _powerBufferMode := bufferMode;]]></ST>
     <Method Name="Halt" Id="{382b5bff-1007-4126-99ae-6487c254db90}" FolderPath="Actions\">
       <Declaration><![CDATA[METHOD Halt
 VAR_INPUT
-	feedback : I_CommandFeedback;
+	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO HaltCommand;
@@ -372,7 +381,7 @@ END_VAR]]></Declaration>
     <Method Name="Reset" Id="{8e153cc3-92a5-4e6b-b7b2-9baa243ed4c1}" FolderPath="Actions\">
       <Declaration><![CDATA[METHOD Reset
 VAR_INPUT
-	feedback : I_CommandFeedback;
+	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO ResetCommand;
@@ -386,7 +395,7 @@ pCmd^.Execute(feedback).ThenRelease();]]></ST>
       <Declaration><![CDATA[METHOD SetPositionAbsolute
 VAR_INPUT
 	positionToSet : LREAL;
-	feedback : I_CommandFeedback;
+	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO SetPositionCommand;
@@ -400,7 +409,7 @@ pCmd^.Execute(feedback).ThenRelease();]]></ST>
       <Declaration><![CDATA[METHOD SetPositionRelative
 VAR_INPUT
 	distanceToShift : LREAL;
-	feedback : I_CommandFeedback;
+	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO SetPositionCommand;
@@ -413,7 +422,7 @@ pCmd^.Execute(feedback).ThenRelease();]]></ST>
     <Method Name="Stop" Id="{d6deae41-9d85-4fbd-8130-99bdb4cd48bd}" FolderPath="Actions\">
       <Declaration><![CDATA[METHOD Stop
 VAR_INPUT
-	feedback : I_CommandFeedback;
+	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO StopCommand;
@@ -433,158 +442,5 @@ pCmd^.Execute(feedback).ThenRelease();]]></ST>
 );]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="Axis">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis._InternalAxisRef.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis._InternalJog.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis._InternalParameterSet.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.BufferMode.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.BufferMode.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Busy.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.CyclicCall">
-      <LineId Id="5" Count="6" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="27" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="36" Count="1" />
-      <LineId Id="43" Count="3" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="40" Count="1" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="30" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Disable">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.DisableNegative">
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.DisablePositive">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Enable">
-      <LineId Id="4" Count="0" />
-      <LineId Id="13" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.EnableNegative">
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.EnablePositive">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.ErrorId.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Halt">
-      <LineId Id="16" Count="0" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.HasError.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.HomingBuilder">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsAccelerating.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsAtConstantVelocity.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsAtStandStill.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsDecelerating.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsErrorStopped.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsHoming.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsInContinuousMotion.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsInDiscreteMotion.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsInSynchronizedMotion.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsReady.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsStatusValid.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.IsStopping.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.JogBackwards">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="3" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.JogForward">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="3" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.MoveBuilder">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Override.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Override.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Reset">
-      <LineId Id="16" Count="0" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.SetPositionAbsolute">
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.SetPositionRelative">
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.Stop">
-      <LineId Id="16" Count="0" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="Axis.StopJogging">
-      <LineId Id="6" Count="3" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

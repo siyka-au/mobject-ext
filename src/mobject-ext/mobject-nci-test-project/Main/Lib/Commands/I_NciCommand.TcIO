@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_NciCommand" Id="{31172878-ef3e-095d-0185-2a29859dec6d}">
+    <Declaration><![CDATA[INTERFACE I_NciCommand EXTENDS I_Command]]></Declaration>
+  </Itf>
+</TcPlcObject>

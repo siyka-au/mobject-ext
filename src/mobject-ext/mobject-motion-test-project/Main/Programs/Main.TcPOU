@@ -67,22 +67,27 @@ IF enable THEN
 	axis1.EnablePositive();
 	axis1.EnableNegative();
 END_IF
+
 IF disable THEN
 	disable := FALSE;
 	axis1.Disable();
 END_IF
+
 IF reset THEN
 	reset := FALSE;
 	axis1.Reset(resetFeedback);
 END_IF
+
 IF halt THEN
 	halt := FALSE;
 	axis1.Halt(haltFeedback);
 END_IF
+
 IF stop THEN
 	stop := FALSE;
 	axis1.Stop(stopFeedback);
 END_IF
+
 IF jogForward THEN
 	axis1.JogForward(100);
 ELSIF jogBackwards THEN
@@ -141,7 +146,7 @@ IF startMove2 THEN
 		.ThenRelease();
 END_IF
 
-feedbackToDisplay := homingFeedback;
+feedbackToDisplay := stopFeedback;
 IF feedbackToDisplay <> 0 THEN
 	fbBusy := feedbackToDisplay.Busy;
 	fbDone := feedbackToDisplay.Done;
@@ -166,73 +171,5 @@ IF axis1.IsStatusValid THEN
 	errorId := axis1.ErrorId;
 END_IF]]></ST>
     </Implementation>
-    <LineIds Name="Main">
-      <LineId Id="69" Count="0" />
-      <LineId Id="177" Count="0" />
-      <LineId Id="150" Count="0" />
-      <LineId Id="152" Count="0" />
-      <LineId Id="375" Count="1" />
-      <LineId Id="151" Count="0" />
-      <LineId Id="156" Count="2" />
-      <LineId Id="153" Count="0" />
-      <LineId Id="501" Count="2" />
-      <LineId Id="442" Count="0" />
-      <LineId Id="506" Count="2" />
-      <LineId Id="504" Count="0" />
-      <LineId Id="443" Count="1" />
-      <LineId Id="446" Count="0" />
-      <LineId Id="445" Count="0" />
-      <LineId Id="431" Count="1" />
-      <LineId Id="436" Count="2" />
-      <LineId Id="440" Count="1" />
-      <LineId Id="439" Count="0" />
-      <LineId Id="434" Count="0" />
-      <LineId Id="536" Count="2" />
-      <LineId Id="614" Count="4" />
-      <LineId Id="623" Count="0" />
-      <LineId Id="619" Count="0" />
-      <LineId Id="624" Count="1" />
-      <LineId Id="620" Count="1" />
-      <LineId Id="549" Count="0" />
-      <LineId Id="539" Count="0" />
-      <LineId Id="512" Count="2" />
-      <LineId Id="516" Count="0" />
-      <LineId Id="515" Count="0" />
-      <LineId Id="522" Count="3" />
-      <LineId Id="521" Count="0" />
-      <LineId Id="201" Count="0" />
-      <LineId Id="200" Count="0" />
-      <LineId Id="202" Count="0" />
-      <LineId Id="355" Count="1" />
-      <LineId Id="423" Count="0" />
-      <LineId Id="360" Count="0" />
-      <LineId Id="362" Count="2" />
-      <LineId Id="203" Count="0" />
-      <LineId Id="317" Count="0" />
-      <LineId Id="319" Count="1" />
-      <LineId Id="366" Count="1" />
-      <LineId Id="378" Count="0" />
-      <LineId Id="368" Count="0" />
-      <LineId Id="448" Count="0" />
-      <LineId Id="370" Count="0" />
-      <LineId Id="365" Count="0" />
-      <LineId Id="318" Count="0" />
-      <LineId Id="613" Count="0" />
-      <LineId Id="207" Count="0" />
-      <LineId Id="206" Count="0" />
-      <LineId Id="208" Count="0" />
-      <LineId Id="210" Count="0" />
-      <LineId Id="214" Count="1" />
-      <LineId Id="219" Count="0" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="209" Count="0" />
-      <LineId Id="299" Count="0" />
-      <LineId Id="288" Count="0" />
-      <LineId Id="287" Count="0" />
-      <LineId Id="300" Count="6" />
-      <LineId Id="289" Count="0" />
-      <LineId Id="307" Count="2" />
-      <LineId Id="290" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

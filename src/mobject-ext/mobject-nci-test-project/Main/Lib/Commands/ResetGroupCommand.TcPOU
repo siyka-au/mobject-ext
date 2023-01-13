@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="ResetGroupCommand" Id="{d4defed5-a731-40bc-8b88-b0e450582365}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK ResetGroupCommand EXTENDS NciCommand
+VAR
+	_fb : CfgReconfigGroup;
+	_groupId : UDINT;
+	_timeout : TIME;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{c5637d5b-b1fe-452e-a302-54ee7e177d31}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	nciRef : REFERENCE TO Nci;
+	timeout : TIME;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF __ISVALIDREF(nciRef) THEN
+	_groupId := nciRef.GroupId;
+END_IF
+
+_timeout := timeout;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WhileBusy" Id="{7806ec84-349c-4aa7-943c-7bd1a08a1af2}">
+      <Declaration><![CDATA[METHOD PROTECTED  WhileBusy
+VAR_INPUT
+	CommandState : I_CommandBusyState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	bExecute := TRUE,
+	nGroupId := _groupId,
+	tTimeOut := _timeout
+);
+
+Debug.location := 'ResetGroupCommand.WhileBusy';
+Debug.groupId := _groupId;
+Debug.timeout := _timeout;
+Debug.busy := _fb.bBusy;
+Debug.error := _fb.bErr;
+Debug.errorId := _fb.nErrId;
+Debug.executeCounter := Debug.executeCounter + 1;
+
+IF _fb.bBusy THEN
+	RETURN;
+END_IF
+
+IF _fb.bErr THEN
+	_fb(bExecute := FALSE);
+	CommandState.SetError(_fb.nErrId);
+	RETURN;
+END_IF
+
+_fb(bExecute := FALSE);
+CommandState.SetDone();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

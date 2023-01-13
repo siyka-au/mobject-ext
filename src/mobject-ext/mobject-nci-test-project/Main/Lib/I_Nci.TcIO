@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_Nci" Id="{9cb56599-d602-0d93-2451-e9202554fbf0}">
+    <Declaration><![CDATA[INTERFACE I_Nci EXTENDS __System.IQueryInterface]]></Declaration>
+  </Itf>
+</TcPlcObject>

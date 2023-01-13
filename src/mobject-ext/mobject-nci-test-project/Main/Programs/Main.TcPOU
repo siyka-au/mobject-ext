@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Main" Id="{d3d637b3-4c83-0f73-3d0f-050dde662cdf}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Main
+VAR
+	task : Task;
+	
+	axis1 : Axis;
+	axis2 : Axis;
+	nci : Nci;
+	
+	state : (INIT, RESETTING_GROUP, BUILDING_GROUP, DONE, ERROR);
+	startConfig : BOOL;
+	timeout : TIME := T#1S;
+	feedback : I_CommandFeedback;
+	feedbackBusy: BOOL;
+	feedbackDone: BOOL;
+	feedbackError: BOOL;
+	feedbackAborted: BOOL;
+	feedbackAborting: BOOL;
+	feedbackErrorId: UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[task.CyclicCall();
+
+CASE state OF
+	INIT:
+		IF startConfig THEN
+			startConfig := FALSE;
+			nci.ResetGroup(timeout, feedback);
+			state := RESETTING_GROUP;
+		END_IF
+		
+	RESETTING_GROUP:
+		IF feedback <> 0 AND_THEN NOT feedback.Busy THEN
+			IF feedback.Error THEN
+				state := ERROR;
+			ELSE
+				nci.BuildXYGroup(axis1, axis2, timeout, feedback);
+				state := BUILDING_GROUP;
+			END_IF			 
+		END_IF
+		
+	BUILDING_GROUP:
+		IF feedback <> 0 AND_THEN NOT feedback.Busy THEN
+			IF feedback.Error THEN
+				state := ERROR;
+			ELSE
+				state := DONE;
+			END_IF			 
+		END_IF
+
+	DONE:
+		state := INIT;
+END_CASE
+
+IF feedback <> 0 THEN
+	feedbackBusy := feedback.Busy;
+	feedbackDone := feedback.Done;
+	feedbackAborted := feedback.Aborted;
+	feedbackAborting := feedback.Aborting;
+	feedbackError := feedback.Error;
+	feedbackErrorId := feedback.ErrorId;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

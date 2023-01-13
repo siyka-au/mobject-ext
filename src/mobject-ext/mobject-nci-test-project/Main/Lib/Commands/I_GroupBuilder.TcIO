@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_GroupBuilder" Id="{67e4f0d6-3ff4-4b2b-8fd7-8b7bc2c1c622}">
+    <Declaration><![CDATA[INTERFACE I_GroupBuilder]]></Declaration>
+  </Itf>
+</TcPlcObject>

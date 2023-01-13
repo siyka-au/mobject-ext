@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="BuildXYZGroupCommand" Id="{6634e52b-6217-44df-9f6e-a45079c2a5d1}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK BuildXYZGroupCommand EXTENDS NciCommand
+VAR
+	_fb : CfgBuild3DGroup;
+	_groupId : UDINT;
+	_xAxisId : UDINT;
+	_yAxisId : UDINT;
+	_zAxisId : UDINT;
+	_timeout : TIME;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{e16004c1-785a-4019-860f-c00cd7df7b44}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	nciRef : REFERENCE TO Nci;
+	xAxisRef : REFERENCE TO Axis;
+	yAxisRef : REFERENCE TO Axis;
+	zAxisRef : REFERENCE TO Axis;
+	timeout : TIME;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF __ISVALIDREF(nciRef) THEN
+	_groupId := nciRef.GroupId;
+END_IF
+
+IF __ISVALIDREF(xAxisRef) THEN
+	_xAxisId := xAxisRef.AxisId;
+END_IF
+
+IF __ISVALIDREF(yAxisRef) THEN
+	_yAxisId := yAxisRef.AxisId;
+END_IF
+
+IF __ISVALIDREF(zAxisRef) THEN
+	_zAxisId := zAxisRef.AxisId;
+END_IF
+
+_timeout := timeout;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnExecuteComplete" Id="{3345d304-905a-485c-96c7-563a9baa4766}">
+      <Declaration><![CDATA[METHOD PROTECTED OnExecuteComplete]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(bExecute := FALSE);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WhileBusyPre" Id="{e99d4978-150b-432d-95cc-1655ec87ec11}">
+      <Declaration><![CDATA[METHOD PROTECTED  WhileBusyPre
+VAR_INPUT
+	CommandState : I_CommandBusyState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	bExecute := TRUE,
+	nGroupId := _groupId,
+	nXAxisId := _xAxisId,
+	nYAxisId := _yAxisId,
+	nZAxisId := _zAxisId,
+	tTimeOut := _timeout,
+	bBusy => _busy,
+	bErr => _error,
+	nErrId => _errorId
+);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Nci" Id="{f4f57f23-d325-0909-0740-6ef1501e4700}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+FUNCTION_BLOCK Nci EXTENDS CyclicInstance IMPLEMENTS I_Nci
+VAR
+	_nciToPlc AT %I* : NcToPlc_NciChannel_Ref;
+	_plcToNci AT %Q* : PlcToNc_NciChannel_Ref;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Configuration" Id="{88eb77e5-8505-0b13-208d-06ae6cb833ec}" />
+    <Folder Name="Methods" Id="{eb3c7eaf-dfb5-0372-0016-cb165d65c918}" />
+    <Folder Name="Properties" Id="{9b308d9c-cf3d-093c-3584-5ad4df15e20d}" />
+    <Method Name="AddAxisToGroup" Id="{5d45a9a7-6d05-0d2b-27b5-79ba5b2eb2c7}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD AddAxisToGroup
+VAR_INPUT
+	axisToAdd : REFERENCE TO Axis;
+	insertIndex : UDINT;
+	commandTimeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO AddAxisToGroupCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(AddAxisToGroupCommand(nciRef := THIS^, axisRef := axisToAdd, index := insertIndex, timeout := commandTimeout));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="BlockNumber" Id="{ed372b87-29b3-0a1a-0b74-a10370d405f8}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY BlockNumber : UDINT]]></Declaration>
+      <Get Name="Get" Id="{f93c51fc-0941-0b17-1306-659017cf0a9e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[BlockNumber := ItpGetBlockNumber(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="BuildXYGroup" Id="{9849a2df-cafa-0395-3040-8d89f7219b15}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD BuildXYGroup
+VAR_INPUT
+	xAxis : REFERENCE TO Axis;
+	yAxis : REFERENCE TO Axis;
+	commandTimeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR
+	null : REFERENCE TO Axis;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[BuildXYZGroup(xAxis, yAxis, null, commandTimeout, feedback);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="BuildXYZGroup" Id="{d4df4ca0-a512-0b57-3ad2-c0cda1e1758d}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD BuildXYZGroup
+VAR_INPUT
+	xAxis : REFERENCE TO Axis;
+	yAxis : REFERENCE TO Axis;
+	zAxis : REFERENCE TO Axis;
+	commandTimeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO BuildXYZGroupCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(BuildXYZGroupCommand(
+	nciRef := THIS^,
+	xAxisRef := xAxis,
+	yAxisRef := yAxis,
+	zAxisRef := zAxis,
+	timeout := commandTimeout
+));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ChannelId" Id="{09b3ab1e-9925-01cb-30ce-90054bf786f8}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY ChannelId : UINT]]></Declaration>
+      <Get Name="Get" Id="{b6a23344-1051-0c06-1d5e-15387b416b28}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ChannelId := ItpGetChannelId(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ChannelType" Id="{d49fd91a-aca9-0237-2591-75a0198a0fa3}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY ChannelType : NCIChannelType]]></Declaration>
+      <Get Name="Get" Id="{d55f81ea-7033-0dd4-2311-969f8baef65a}">
+        <Declaration><![CDATA[VAR
+	inter : INT;
+	pInter : POINTER TO NCIChannelType;
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[// Don't know how to do the type conversion with NCIChannelType being strict
+inter := ItpGetChannelType(THIS^._nciToPlc);
+pInter := ADR(inter);
+ChannelType := pInter^;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="CyclicCall" Id="{838887cb-7f06-09de-3df5-bf0a2be36fcc}">
+      <Declaration><![CDATA[METHOD  CyclicCall]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ErrorId" Id="{f369e32b-cc56-0313-12c3-ecf9c674699a}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY ErrorId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{82008dd1-ebe7-0696-160f-5c73506db06e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorId := ItpGetError(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="GetGroupAxisIds" Id="{f7a6d126-e2b6-0bc6-3a4d-c5d6738f9962}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD GetGroupAxisIds : DWORD
+VAR_IN_OUT
+	axisIds : ARRAY[1..8] OF DWORD;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetGroupAxisIds := ItpGetGroupAxisIds(axisIds, THIS^._nciToPlc);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetOverride" Id="{58a4283c-4b05-0d2c-31b9-e1ff0c76c9f9}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD GetOverride : LREAL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetOverride := ItpGetOverridePercent(THIS^._plcToNci);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="GroupId" Id="{e0517028-3a9d-026a-385e-bb8ac1a641ff}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY GroupId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{1e32072f-7668-0272-02e1-9e42282c0086}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[GroupId := ItpGetGroupId(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="HandshakeableMFunction" Id="{8c10b698-bef7-04d2-3038-563b4f835b24}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY HandshakeableMFunction : INT]]></Declaration>
+      <Get Name="Get" Id="{f652a4d7-1be6-0813-2d9f-e4a827a80355}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HandshakeableMFunction := ItpGetHskMFunc(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="HasError" Id="{9263d7f0-3daa-0052-0803-c5e977270099}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY HasError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{55a3aeeb-4e6b-0ba1-1f66-c461721621fd}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasError := ItpHasError(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="HParam" Id="{d73b387f-5953-0d9f-35c1-153b9d3dd768}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY HParam : DINT]]></Declaration>
+      <Get Name="Get" Id="{a22b731f-839f-0871-3aee-c7b6cb2aee37}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HParam := ItpGetHParam(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="InterpreterState" Id="{57655ad1-7d01-0963-122c-3c0563f86dc5}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY InterpreterState : UDINT]]></Declaration>
+      <Get Name="Get" Id="{0088775a-c1e4-0e2e-368b-b3d2d41914a6}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[InterpreterState := ItpGetStateInterpreter(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsEstop" Id="{96e5e85e-3ad3-0eca-0c9c-5fbe002bf275}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsEstop : BOOL]]></Declaration>
+      <Get Name="Get" Id="{233bff47-1521-030d-10bc-d381218d2a38}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsEstop := ItpIsEStopEx(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="IsFastMFunctionPresent" Id="{5732f7c0-a406-0419-3cac-84082892815a}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD IsFastMFunctionPresent : BOOL
+VAR_INPUT
+	functionNumber : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFastMFunctionPresent := ItpIsFastMFunc(functionNumber, THIS^._nciToPlc);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsHandshakeableMFunctionPresent" Id="{a0aa6003-b6a8-0bc9-0a46-c04aaee12e44}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD IsHandshakeableMFunctionPresent : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsHandshakeableMFunctionPresent := ItpIsHskMFunc(THIS^._nciToPlc);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ReadCyclicLRealParameter" Id="{ac0a4f2b-e74e-05a9-1ba2-7e50dbd409c9}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD ReadCyclicLRealParameter : LREAL
+VAR_INPUT
+	parameterNumber : UINT(1..4);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE parameterNumber OF
+	1: ReadCyclicLRealParameter := ItpReadCyclicLRealParam1(THIS^._nciToPlc);
+	2: ReadCyclicLRealParameter := ItpReadCyclicLRealParam2(THIS^._nciToPlc);
+	3: ReadCyclicLRealParameter := ItpReadCyclicLRealParam3(THIS^._nciToPlc);
+	4: ReadCyclicLRealParameter := ItpReadCyclicLRealParam4(THIS^._nciToPlc);
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ReadCyclicUdintParameter" Id="{e83684d5-4fdf-0d03-343e-dff776ded206}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD ReadCyclicUdintParameter : UDINT
+VAR_INPUT
+	parameterNumber : UINT(1..4);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE parameterNumber OF
+	1: ReadCyclicUdintParameter := ItpReadCyclicUdintParam1(THIS^._nciToPlc);
+	2: ReadCyclicUdintParameter := ItpReadCyclicUdintParam2(THIS^._nciToPlc);
+	3: ReadCyclicUdintParameter := ItpReadCyclicUdintParam3(THIS^._nciToPlc);
+	4: ReadCyclicUdintParameter := ItpReadCyclicUdintParam4(THIS^._nciToPlc);
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ReleaseAxis" Id="{85630d2c-a95a-07c1-0581-d3d81b1fea01}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD ReleaseAxis
+VAR_INPUT
+	axisToRemove : REFERENCE TO Axis;
+	commandTimeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO ReleaseAxisCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(ReleaseAxisCommand(axisRef := axisToRemove, timeout := commandTimeout));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ResetGroup" Id="{5a4cbab8-254e-0c2f-3388-108e0e893560}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD ResetGroup
+VAR_INPUT
+	commandTimeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR_INST
+	pCmd : POINTER TO ResetGroupCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pCmd := __NEW(ResetGroupCommand(nciRef := THIS^, timeout := commandTimeout));
+pCmd^.Execute(feedback).ThenRelease();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetOverride" Id="{ff5194d3-333b-0a27-00d0-c5c7f97bb8c5}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetOverride : BOOL
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SetOverride := ItpSetOverridePercent(value, THIS^._plcToNci);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SetPathVelocity" Id="{f2a4b773-26ea-0bc8-160f-854fdb045118}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY SetPathVelocity : LREAL]]></Declaration>
+      <Get Name="Get" Id="{5fc7a4ac-330b-09a8-0c99-cb103ef06c27}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SetPathVelocity := ItpGetSetPathVelocity(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="SParam" Id="{cd33a989-617f-0769-2aaa-454de48eef34}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY SParam : UINT]]></Declaration>
+      <Get Name="Get" Id="{8db5b9d4-d342-0a82-2573-ba894df90968}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SParam := ItpGetSParam(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="TParam" Id="{cde84c08-7c26-0d10-322b-8c504543b0d6}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY TParam : UINT]]></Declaration>
+      <Get Name="Get" Id="{23b4bd45-55ff-098b-30a0-b2f28dae9e2e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TParam := ItpGetTParam(THIS^._nciToPlc);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>
