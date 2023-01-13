@@ -20,20 +20,18 @@ END_VAR]]></Declaration>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	nciRef : REFERENCE TO Nci;
-	axisRef : REFERENCE TO Axis;
+	nci : I_Nci;
+	axis : I_Axis;
 	index : UDINT;
 	timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF __ISVALIDREF(nciRef) THEN
-	_groupId := nciRef.GroupId;
+        <ST><![CDATA[IF nci <> 0 THEN
+	_groupId := nci.GroupId;
 END_IF
-
-IF __ISVALIDREF(axisRef) THEN
-	_axisId := axisRef.AxisId;
+IF axis <> 0 THEN
+	_axisId := axis.AxisId;
 END_IF
-
 _index := index;
 _timeout := timeout;]]></ST>
       </Implementation>
@@ -51,14 +49,6 @@ END_VAR]]></Declaration>
 	nIndex := _index,
 	tTimeOut := _timeout
 );
-
-Debug.location := 'AddAxisToGroupCommand.WhileBusy';
-Debug.groupId := _groupId;
-Debug.axisId1 := _axisId;
-Debug.timeout := _timeout;
-Debug.busy := _fb.bBusy;
-Debug.error := _fb.bErr;
-Debug.errorId := _fb.nErrId;
 
 IF _fb.bBusy THEN
 	RETURN;

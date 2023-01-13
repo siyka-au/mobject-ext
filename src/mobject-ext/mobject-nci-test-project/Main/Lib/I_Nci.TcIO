@@ -2,5 +2,165 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <Itf Name="I_Nci" Id="{9cb56599-d602-0d93-2451-e9202554fbf0}">
     <Declaration><![CDATA[INTERFACE I_Nci EXTENDS __System.IQueryInterface]]></Declaration>
+    <Folder Name="Configuration" Id="{f2118258-b57f-4767-99e7-bc1e8d2cf535}" />
+    <Folder Name="Methods" Id="{871b622b-8363-44ca-a967-d80a64f97c1f}" />
+    <Folder Name="Properties" Id="{9d345953-5f88-4a51-aeba-4340a76db315}" />
+    <Method Name="AddAxisToGroup" Id="{e7dbd1f1-f487-4c9a-8ae2-674c9fc9e2ea}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD AddAxisToGroup
+VAR_INPUT
+	axis : I_Axis;
+	index : UDINT;
+	timeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR]]></Declaration>
+    </Method>
+    <Property Name="BlockNumber" Id="{5fb16e84-6492-4595-b031-6decbdc6e804}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY BlockNumber : UDINT]]></Declaration>
+      <Get Name="Get" Id="{a846b7f8-fdff-4d4e-95cd-a5fdc1599cdf}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="BuildXYGroup" Id="{c2bb8082-bc15-4846-85c0-6e5b28194acd}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD BuildXYGroup
+VAR_INPUT
+	xAxis : I_Axis;
+	yAxis : I_Axis;
+	timeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="BuildXYZGroup" Id="{bab4cff1-0d4b-440f-8c72-91138940947a}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD BuildXYZGroup
+VAR_INPUT
+	xAxis : I_Axis;
+	yAxis : I_Axis;
+	zAxis : I_Axis;
+	timeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR]]></Declaration>
+    </Method>
+    <Property Name="ChannelId" Id="{a52cb414-b610-41b5-a96b-647717f91959}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY ChannelId : UINT]]></Declaration>
+      <Get Name="Get" Id="{db22e2eb-6132-48cf-978e-386fb1f39b4b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="ChannelType" Id="{1b75734a-c502-444b-9e7f-64c819b2f69b}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY ChannelType : NCIChannelType]]></Declaration>
+      <Get Name="Get" Id="{4f39029a-e97a-4221-b4d5-d4926f3c3b5d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="ErrorId" Id="{dc3d9f5f-10f1-4848-8e1d-0e680c2a2bf2}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY ErrorId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{c2e54342-adb4-4768-86ae-9829adcc5640}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="GetGroupAxisIds" Id="{36ec3fa9-0b8f-4dd6-8d3f-032286348ca1}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD GetGroupAxisIds : DWORD
+VAR_IN_OUT
+	axisIds : ARRAY[1..8] OF DWORD;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="GetOverride" Id="{1890d70a-2727-4d57-974d-356c9e0774fe}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD GetOverride : LREAL]]></Declaration>
+    </Method>
+    <Property Name="GroupId" Id="{e5ffcde0-5680-4fe8-bab8-75633adcdaa5}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY GroupId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{7cd94ecd-347c-4a10-9c00-1b338a03781c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="HandshakeableMFunction" Id="{990b3235-5d07-446e-b98b-51967924d27f}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY HandshakeableMFunction : INT]]></Declaration>
+      <Get Name="Get" Id="{25ef9a0f-67c7-44d3-b18e-7ef095a8df2c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="HasError" Id="{8ac51747-dcf2-491c-b875-443bac9d9e2e}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY HasError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{28ae5050-49d4-4c98-ab34-4206d0cb4d89}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="HParam" Id="{4da47040-8511-479f-9546-f8b69b5b5b59}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY HParam : DINT]]></Declaration>
+      <Get Name="Get" Id="{de653742-f8f6-4a28-9513-7c8cc4f54501}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="InterpreterState" Id="{2e362acf-8076-4832-81e7-9ec162012976}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY InterpreterState : UDINT]]></Declaration>
+      <Get Name="Get" Id="{cb793e99-51b1-49c5-9174-0eb5eafce23b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="IsEstop" Id="{65136c42-3770-4f63-925a-e3a1b7e0eeb8}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY IsEstop : BOOL]]></Declaration>
+      <Get Name="Get" Id="{680f5fd3-d1e3-4985-b1b2-08d2a603c581}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="IsFastMFunctionPresent" Id="{df75cd30-b206-4f22-b1b1-63ef2441427d}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD IsFastMFunctionPresent : BOOL
+VAR_INPUT
+	functionNumber : INT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="IsHandshakeableMFunctionPresent" Id="{ccf0a161-0813-4fb9-88dd-414c7384e609}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD IsHandshakeableMFunctionPresent : BOOL]]></Declaration>
+    </Method>
+    <Method Name="ReadCyclicLRealParameter" Id="{8432a0ed-d2db-45e6-a401-cd4e061bfc92}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD ReadCyclicLRealParameter : LREAL
+VAR_INPUT
+	parameterNumber : UINT(1..4);
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ReadCyclicUdintParameter" Id="{09391866-8d8c-4bd3-896a-0dabb7752d60}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD ReadCyclicUdintParameter : UDINT
+VAR_INPUT
+	parameterNumber : UINT(1..4);
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ReleaseAxis" Id="{d60bef3d-dda4-4cc7-9ccb-9b6c6952e00a}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD ReleaseAxis
+VAR_INPUT
+	axis : I_Axis;
+	timeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ResetGroup" Id="{1989b2ee-aee3-4c46-9869-ad41a61bf75b}" FolderPath="Configuration\">
+      <Declaration><![CDATA[METHOD ResetGroup
+VAR_INPUT
+	timeout : TIME;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="SetOverride" Id="{ceadb3ab-bf98-4419-b34a-e50bfeaefde7}" FolderPath="Methods\">
+      <Declaration><![CDATA[METHOD SetOverride : BOOL
+VAR_INPUT
+	value : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Property Name="SetPathVelocity" Id="{630998f0-274c-45a3-8198-081fa6f74b28}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY SetPathVelocity : LREAL]]></Declaration>
+      <Get Name="Get" Id="{4238931f-38b1-4da3-96f1-5646633ba701}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="SParam" Id="{86c5750d-a81b-45e1-8679-700950105ac3}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY SParam : UINT]]></Declaration>
+      <Get Name="Get" Id="{f590094c-6484-4b50-a854-e8870fc0c431}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="TParam" Id="{c27bf301-b66d-4d59-9c53-5e09faba50b4}" FolderPath="Properties\">
+      <Declaration><![CDATA[PROPERTY TParam : UINT]]></Declaration>
+      <Get Name="Get" Id="{1fda02e8-4089-4d80-830c-a72ac80f8d70}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
   </Itf>
 </TcPlcObject>

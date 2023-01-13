@@ -17,16 +17,42 @@ END_VAR]]></Declaration>
     <Method Name="AddAxisToGroup" Id="{5d45a9a7-6d05-0d2b-27b5-79ba5b2eb2c7}" FolderPath="Configuration\">
       <Declaration><![CDATA[METHOD AddAxisToGroup
 VAR_INPUT
-	axisToAdd : REFERENCE TO Axis;
-	insertIndex : UDINT;
-	commandTimeout : TIME;
+	axis : I_Axis;
+	index : UDINT;
+	timeout : TIME;
 	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO AddAxisToGroupCommand;
+END_VAR
+VAR
+	_axis : I_Axis;
+	_index : UDINT;
+	_timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(AddAxisToGroupCommand(nciRef := THIS^, axisRef := axisToAdd, index := insertIndex, timeout := commandTimeout));
+        <ST><![CDATA[_axis := axis;
+_index := index;
+_timeout := timeout;
+
+pCmd := __NEW(AddAxisToGroupCommand(
+	nci := THIS^,
+	axis := _axis,
+	index := _index,
+	timeout := _timeout
+));
+
+(*
+This doesn't work hence the horrible hack with intermediate values
+
+pCmd := __NEW(AddAxisToGroupCommand(
+	nci := THIS^,
+	axis := axis,
+	index := index,
+	timeout := timeout
+));
+*)
+
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>
@@ -42,38 +68,62 @@ pCmd^.Execute(feedback).ThenRelease();]]></ST>
     <Method Name="BuildXYGroup" Id="{9849a2df-cafa-0395-3040-8d89f7219b15}" FolderPath="Configuration\">
       <Declaration><![CDATA[METHOD BuildXYGroup
 VAR_INPUT
-	xAxis : REFERENCE TO Axis;
-	yAxis : REFERENCE TO Axis;
-	commandTimeout : TIME;
+	xAxis : I_Axis;
+	yAxis : I_Axis;
+	timeout : TIME;
 	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR
-	null : REFERENCE TO Axis;
+	null : I_Axis;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[BuildXYZGroup(xAxis, yAxis, null, commandTimeout, feedback);]]></ST>
+        <ST><![CDATA[BuildXYZGroup(xAxis, yAxis, null, timeout, feedback);]]></ST>
       </Implementation>
     </Method>
     <Method Name="BuildXYZGroup" Id="{d4df4ca0-a512-0b57-3ad2-c0cda1e1758d}" FolderPath="Configuration\">
       <Declaration><![CDATA[METHOD BuildXYZGroup
 VAR_INPUT
-	xAxis : REFERENCE TO Axis;
-	yAxis : REFERENCE TO Axis;
-	zAxis : REFERENCE TO Axis;
-	commandTimeout : TIME;
+	xAxis : I_Axis;
+	yAxis : I_Axis;
+	zAxis : I_Axis;
+	timeout : TIME;
 	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO BuildXYZGroupCommand;
+END_VAR
+VAR
+	_xAxis : I_Axis;
+	_yAxis : I_Axis;
+	_zAxis : I_Axis;
+	_timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(BuildXYZGroupCommand(
-	nciRef := THIS^,
-	xAxisRef := xAxis,
-	yAxisRef := yAxis,
-	zAxisRef := zAxis,
+        <ST><![CDATA[_xAxis := xAxis;
+_yAxis := yAxis;
+_zAxis := zAxis;
+_timeout := timeout;
+
+pCmd := __NEW(BuildXYZGroupCommand(
+	nci := THIS^,
+	xAxis := _xAxis,
+	yAxis := _yAxis,
+	zAxis := _zAxis,
+	timeout := _timeout
+));
+
+(*
+This doesn't work hence the horrible hack with intermediate values
+
+pCmd := __NEW(BuildXYZGroupCommand(
+	nci := THIS^,
+	xAxis := xAxis,
+	yAxis := yAxis,
+	zAxis := zAxis,
 	timeout := commandTimeout
 ));
+*)
+
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>
@@ -231,29 +281,66 @@ END_CASE]]></ST>
     <Method Name="ReleaseAxis" Id="{85630d2c-a95a-07c1-0581-d3d81b1fea01}" FolderPath="Configuration\">
       <Declaration><![CDATA[METHOD ReleaseAxis
 VAR_INPUT
-	axisToRemove : REFERENCE TO Axis;
-	commandTimeout : TIME;
+	axis : I_Axis;
+	timeout : TIME;
 	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO ReleaseAxisCommand;
+END_VAR
+VAR
+	_axis : I_Axis;
+	_timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(ReleaseAxisCommand(axisRef := axisToRemove, timeout := commandTimeout));
+        <ST><![CDATA[_axis := axis;
+_timeout := timeout;
+
+pCmd := __NEW(ReleaseAxisCommand(
+	axis := _axis,
+	timeout := _timeout
+));
+
+(*
+This doesn't work hence the horrible hack with intermediate values
+
+pCmd := __NEW(ReleaseAxisCommand(
+	axis := axis,
+	timeout := timeout
+));
+*)
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>
     <Method Name="ResetGroup" Id="{5a4cbab8-254e-0c2f-3388-108e0e893560}" FolderPath="Configuration\">
       <Declaration><![CDATA[METHOD ResetGroup
 VAR_INPUT
-	commandTimeout : TIME;
+	timeout : TIME;
 	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR
 VAR_INST
 	pCmd : POINTER TO ResetGroupCommand;
+END_VAR
+VAR
+	_timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(ResetGroupCommand(nciRef := THIS^, timeout := commandTimeout));
+        <ST><![CDATA[_timeout := timeout;
+
+pCmd := __NEW(ResetGroupCommand(
+	nci := THIS^,
+	timeout := _timeout
+));
+
+(*
+This doesn't work hence the horrible hack with intermediate values
+
+pCmd := __NEW(ResetGroupCommand(
+	nci := THIS^,
+	timeout := timeout
+));
+*)
+
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>

@@ -40,10 +40,6 @@
     <Compile Include="Lib\Commands\NciCommand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Debug.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
     <Compile Include="Lib\NciChannelType.TcDUT">
       <SubType>Code</SubType>
     </Compile>

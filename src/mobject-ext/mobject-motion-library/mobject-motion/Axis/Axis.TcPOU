@@ -3,7 +3,6 @@
   <POU Name="Axis" Id="{2aaf2d97-dcbd-4e4f-bb30-8168c2228304}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'linkalways'} 
 {attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
-{attribute 'enable_dynamic_creation'}
 FUNCTION_BLOCK Axis EXTENDS CyclicInstance IMPLEMENTS I_Axis
 VAR
 	_axisRef : Tc2_MC2.AXIS_REF;

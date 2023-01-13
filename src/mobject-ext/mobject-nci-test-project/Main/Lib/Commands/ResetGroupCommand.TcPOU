@@ -18,14 +18,13 @@ END_VAR]]></Declaration>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	nciRef : REFERENCE TO Nci;
+	nci : I_Nci;
 	timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF __ISVALIDREF(nciRef) THEN
-	_groupId := nciRef.GroupId;
+        <ST><![CDATA[IF nci <> 0 THEN
+	_groupId := nci.GroupId;
 END_IF
-
 _timeout := timeout;]]></ST>
       </Implementation>
     </Method>
@@ -40,14 +39,6 @@ END_VAR]]></Declaration>
 	nGroupId := _groupId,
 	tTimeOut := _timeout
 );
-
-Debug.location := 'ResetGroupCommand.WhileBusy';
-Debug.groupId := _groupId;
-Debug.timeout := _timeout;
-Debug.busy := _fb.bBusy;
-Debug.error := _fb.bErr;
-Debug.errorId := _fb.nErrId;
-Debug.executeCounter := Debug.executeCounter + 1;
 
 IF _fb.bBusy THEN
 	RETURN;
