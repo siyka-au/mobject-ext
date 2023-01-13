@@ -52,6 +52,9 @@
     <Compile Include="Axis\Axis.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Axis\I_Axis.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Base\AxisCommand.TcPOU">
       <SubType>Code</SubType>
     </Compile>

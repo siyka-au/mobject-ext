@@ -6,13 +6,10 @@
 {attribute 'enable_dynamic_creation'}
 FUNCTION_BLOCK ABSTRACT AxisCommand EXTENDS Command IMPLEMENTS I_AxisCommand
 VAR
-	_axisRef : REFERENCE TO Axis;
+	_axis : I_Axis;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <LineIds Name="AxisCommand">
-      <LineId Id="9" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

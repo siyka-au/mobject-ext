@@ -4,7 +4,7 @@
     <Declaration><![CDATA[{attribute 'linkalways'} 
 {attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK Axis EXTENDS CyclicInstance
+FUNCTION_BLOCK Axis EXTENDS CyclicInstance IMPLEMENTS I_Axis
 VAR
 	_axisRef : Tc2_MC2.AXIS_REF;
 	_power : MC_Power;
@@ -28,7 +28,7 @@ END_VAR]]></Declaration>
     <Folder Name="Internal Properties" Id="{ff3545d4-cf9d-4f1c-9c6a-4608c8343033}" />
     <Folder Name="Properties" Id="{bcfa7b74-d450-4ebb-b173-8da30bff7c11}" />
     <Property Name="_InternalAxisRef" Id="{90609a99-e5bd-4b83-a58a-33c30ccc26cb}" FolderPath="Internal Properties\">
-      <Declaration><![CDATA[PROPERTY INTERNAL _InternalAxisRef : REFERENCE TO Tc2_MC2.AXIS_REF]]></Declaration>
+      <Declaration><![CDATA[PROPERTY PUBLIC _InternalAxisRef : REFERENCE TO Tc2_MC2.AXIS_REF]]></Declaration>
       <Get Name="Get" Id="{3b2ee038-497c-4033-a9b8-e83a2391191c}">
         <Declaration><![CDATA[]]></Declaration>
         <Implementation>
@@ -37,7 +37,7 @@ END_VAR]]></Declaration>
       </Get>
     </Property>
     <Property Name="_InternalJog" Id="{81758ae0-123d-466a-a4f8-f7ea636e9aab}" FolderPath="Internal Properties\">
-      <Declaration><![CDATA[PROPERTY INTERNAL _InternalJog : REFERENCE TO MC_Jog]]></Declaration>
+      <Declaration><![CDATA[PROPERTY PUBLIC _InternalJog : REFERENCE TO MC_Jog]]></Declaration>
       <Get Name="Get" Id="{8cd6a88b-f9db-4297-8b57-8b361f25d990}">
         <Declaration><![CDATA[]]></Declaration>
         <Implementation>
@@ -46,7 +46,7 @@ END_VAR]]></Declaration>
       </Get>
     </Property>
     <Property Name="_InternalParameterSet" Id="{247c45f2-47fd-4c00-8a9c-f77b32401e79}" FolderPath="Internal Properties\">
-      <Declaration><![CDATA[PROPERTY INTERNAL _InternalParameterSet : REFERENCE TO ST_AxisParameterSet]]></Declaration>
+      <Declaration><![CDATA[PROPERTY PUBLIC _InternalParameterSet : REFERENCE TO ST_AxisParameterSet]]></Declaration>
       <Get Name="Get" Id="{e12d2eff-e487-46f7-9fd3-f34e9951cc7f}">
         <Declaration><![CDATA[]]></Declaration>
         <Implementation>
@@ -194,7 +194,7 @@ VAR_INST
 	pCmd : POINTER TO HaltCommand;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(HaltCommand(axisRef := THIS^));
+        <ST><![CDATA[pCmd := __NEW(HaltCommand(axis := THIS^));
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>
@@ -210,7 +210,7 @@ pCmd^.Execute(feedback).ThenRelease();]]></ST>
     <Method Name="HomingBuilder" Id="{eff276be-bb3a-49d8-a728-ded3ab0a5295}" FolderPath="Builders\">
       <Declaration><![CDATA[METHOD HomingBuilder : I_HomingBuilder
 VAR_INST
-	builder : DefaultHomingBuilder(axisRef := THIS^);
+	builder : DefaultHomingBuilder(axis := THIS^);
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[HomingBuilder := builder;]]></ST>
@@ -357,7 +357,7 @@ END_VAR]]></Declaration>
     <Method Name="MoveBuilder" Id="{b4b2cd80-1567-4959-8de3-bde7b18dc77d}" FolderPath="Builders\">
       <Declaration><![CDATA[METHOD MoveBuilder : I_MoveBuilder
 VAR_INST
-	builder : DefaultMoveBuilder(axisRef := THIS^);
+	builder : DefaultMoveBuilder(axis := THIS^);
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[MoveBuilder := builder;]]></ST>
@@ -387,7 +387,7 @@ VAR_INST
 	pCmd : POINTER TO ResetCommand;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(ResetCommand(axisRef := THIS^));
+        <ST><![CDATA[pCmd := __NEW(ResetCommand(axis := THIS^));
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>
@@ -401,7 +401,7 @@ VAR_INST
 	pCmd : POINTER TO SetPositionCommand;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(SetPositionCommand(axisRef := THIS^, position := positionToSet, mode := SetPositionMode.Absolute));
+        <ST><![CDATA[pCmd := __NEW(SetPositionCommand(axis := THIS^, position := positionToSet, mode := SetPositionMode.Absolute));
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>
@@ -415,7 +415,7 @@ VAR_INST
 	pCmd : POINTER TO SetPositionCommand;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(SetPositionCommand(axisRef := THIS^, position := distanceToShift, mode := SetPositionMode.Relative));
+        <ST><![CDATA[pCmd := __NEW(SetPositionCommand(axis := THIS^, position := distanceToShift, mode := SetPositionMode.Relative));
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>
@@ -428,7 +428,7 @@ VAR_INST
 	pCmd : POINTER TO StopCommand;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pCmd := __NEW(StopCommand(axisRef := THIS^));
+        <ST><![CDATA[pCmd := __NEW(StopCommand(axis := THIS^));
 pCmd^.Execute(feedback).ThenRelease();]]></ST>
       </Implementation>
     </Method>

@@ -18,7 +18,7 @@ END_VAR]]></Declaration>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	axisRef : REFERENCE TO Axis;
+	axis : I_Axis;
 	position : LREAL;
 	velocity : LREAL;
 	acceleration : LREAL;
@@ -27,7 +27,7 @@ VAR_INPUT
 	bufferMode : AxisBufferMode;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_axisRef REF= axisRef;
+        <ST><![CDATA[_axis := axis;
 _position := position;
 _velocity := velocity;
 _acceleration := acceleration;
@@ -43,7 +43,7 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[_fb(
-	Axis := _axisRef._InternalAxisRef,
+	Axis := _axis._InternalAxisRef,
 	Execute := TRUE,
 	Position := _position,
 	Velocity := _velocity,
@@ -58,39 +58,20 @@ IF _fb.Busy THEN
 END_IF
 
 IF _fb.CommandAborted THEN
-	_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+	_fb(Axis := _axis._InternalAxisRef, Execute := FALSE);
 	CommandState.SetAborting();
 	RETURN;
 END_IF
 
 IF _fb.Error THEN
-	_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+	_fb(Axis := _axis._InternalAxisRef, Execute := FALSE);
 	CommandState.SetError(_fb.ErrorID);
 	RETURN;
 END_IF
 
-_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+_fb(Axis := _axis._InternalAxisRef, Execute := FALSE);
 CommandState.SetDone();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="MoveAbsoluteCommand">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="MoveAbsoluteCommand.FB_init">
-      <LineId Id="46" Count="5" />
-      <LineId Id="24" Count="0" />
-    </LineIds>
-    <LineIds Name="MoveAbsoluteCommand.WhileBusy">
-      <LineId Id="10" Count="0" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="42" Count="2" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="50" Count="16" />
-      <LineId Id="19" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

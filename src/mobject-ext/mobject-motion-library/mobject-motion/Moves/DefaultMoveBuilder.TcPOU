@@ -6,7 +6,7 @@
 {attribute 'enable_dynamic_creation'}
 FUNCTION_BLOCK DefaultMoveBuilder IMPLEMENTS I_MoveBuilder, I_MoveAbsoluteBuilder, I_MoveRelativeBuilder
 VAR
-	_axisRef : REFERENCE TO Axis;
+	_axis : I_Axis;
 	_position : LREAL;
 	_distance : LREAL;
 	_velocity : LREAL;
@@ -49,7 +49,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(MoveAbsoluteCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	position := _position,
 	velocity := _velocity,
 	acceleration := _acceleration,
@@ -68,7 +68,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(MoveAdditiveCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	distance := _distance,
 	velocity := _velocity,
 	acceleration := _acceleration,
@@ -87,7 +87,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(MoveRelativeCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	distance := _distance,
 	velocity := _velocity,
 	acceleration := _acceleration,
@@ -106,7 +106,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(MoveVelocityCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	velocity := _velocity,
 	acceleration := _acceleration,
 	deceleration := _deceleration,
@@ -141,10 +141,10 @@ Distance := THIS^;]]></ST>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	axisRef : REFERENCE TO Axis;
+	axis : I_Axis;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_axisRef REF= axisRef;]]></ST>
+        <ST><![CDATA[_axis := axis;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Jerk" Id="{37012915-44db-449b-8bc8-74a80b32747a}" FolderPath="Property Setters\">
@@ -174,65 +174,12 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF value <= 0 THEN
-	_velocity := _axisRef._InternalParameterSet.fDriveVeloReferenz;
+	_velocity := _axis._InternalParameterSet.fDriveVeloReferenz;
 ELSE
 	_velocity := value;
 END_IF
 Velocity := THIS^;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="DefaultMoveBuilder">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.Acceleration">
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.BufferMode">
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.BuildMoveAbsoluteCommand">
-      <LineId Id="7" Count="0" />
-      <LineId Id="10" Count="6" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.BuildMoveAdditiveCommand">
-      <LineId Id="7" Count="8" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.BuildMoveRelativeCommand">
-      <LineId Id="7" Count="8" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.BuildMoveVelocityCommand">
-      <LineId Id="7" Count="1" />
-      <LineId Id="10" Count="5" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.Deceleration">
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.Distance">
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.FB_init">
-      <LineId Id="13" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.Jerk">
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.Position">
-      <LineId Id="16" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultMoveBuilder.Velocity">
-      <LineId Id="25" Count="4" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

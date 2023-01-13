@@ -6,7 +6,7 @@
 {attribute 'enable_dynamic_creation'}
 FUNCTION_BLOCK DefaultHomingBuilder IMPLEMENTS I_HomingBuilder, I_PositioningHomingBuilder, I_DefaultHomingBuilder
 VAR
-	_axisRef : REFERENCE TO Axis;
+	_axis : I_Axis;
 	_position : LREAL;
 	_options : ST_HomingOptions;
 	_cam : REFERENCE TO BOOL;
@@ -24,7 +24,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(HomingCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	position := _position,
 	mode := HomingMode.Default,
 	options := _options,
@@ -42,7 +42,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(HomingCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	position := _position,
 	mode := HomingMode.Direct,
 	options := _options,
@@ -60,7 +60,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(HomingCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	position := _position,
 	mode := HomingMode.ForceCalibration,
 	options := _options,
@@ -78,7 +78,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pCmd := __NEW(HomingCommand(
-	axisRef := _axisRef,
+	axis := _axis,
 	position := _position,
 	mode := HomingMode.ResetCalibration,
 	options := _options,
@@ -110,11 +110,11 @@ ClearLag := THIS^;]]></ST>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	axisRef : REFERENCE TO Axis;
+	axis : I_Axis;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_axisRef REF= axisRef;]]></ST>
+        <ST><![CDATA[_axis := axis;]]></ST>
       </Implementation>
     </Method>
     <Method Name="KeepLag" Id="{61d79078-56a0-4b74-a1b7-95dea3c1eab5}" FolderPath="Property Setters\">
@@ -184,64 +184,5 @@ END_VAR]]></Declaration>
 SyncVelocity := THIS^;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="DefaultHomingBuilder">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.BuildDefaultHomingCommand">
-      <LineId Id="5" Count="2" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="18" Count="1" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.BuildDirectHomingCommand">
-      <LineId Id="7" Count="4" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.BuildForceCalibrationCommand">
-      <LineId Id="12" Count="6" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.BuildResetCalibrationCommand">
-      <LineId Id="12" Count="6" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.Cam">
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.ClearLag">
-      <LineId Id="6" Count="0" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.FB_init">
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.KeepLag">
-      <LineId Id="5" Count="0" />
-      <LineId Id="4" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.Position">
-      <LineId Id="7" Count="1" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.ReferenceMode">
-      <LineId Id="8" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.SearchDirection">
-      <LineId Id="7" Count="1" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.SearchVelocity">
-      <LineId Id="7" Count="1" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.SyncDirection">
-      <LineId Id="8" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="DefaultHomingBuilder.SyncVelocity">
-      <LineId Id="7" Count="1" />
-    </LineIds>
   </POU>
 </TcPlcObject>

@@ -4,9 +4,8 @@
     <Declaration><![CDATA[{attribute 'linkalways'} 
 {attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK ABSTRACT MoveCommand EXTENDS Command IMPLEMENTS I_MoveCommand
+FUNCTION_BLOCK ABSTRACT MoveCommand EXTENDS AxisCommand IMPLEMENTS I_MoveCommand
 VAR
-	_axisRef : REFERENCE TO Axis;
 	_velocity : LREAL;
 	_acceleration: LREAL;
 	_deceleration: LREAL;
@@ -16,8 +15,5 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <LineIds Name="MoveCommand">
-      <LineId Id="9" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

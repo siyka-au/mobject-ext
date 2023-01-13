@@ -18,10 +18,10 @@ END_VAR]]></Declaration>
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	axisRef : REFERENCE TO Axis;
+	axis : I_Axis;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_axisRef REF= axisRef;]]></ST>
+        <ST><![CDATA[_axis := axis;]]></ST>
       </Implementation>
     </Method>
     <Method Name="WhileBusy" Id="{0538c416-e656-406a-91d4-185131119da4}">
@@ -34,7 +34,7 @@ VAR_INST
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[_fb(
-	Axis := _axisRef._InternalAxisRef,
+	Axis := _axis._InternalAxisRef,
 	Execute := TRUE,
 	Deceleration := _deceleration,
 	Jerk := _jerk
@@ -44,27 +44,9 @@ IF NOT _fb.Done THEN
 	RETURN;
 END_IF
 
-_fb(Axis := _axisRef._InternalAxisRef, Execute := FALSE);
+_fb(Axis := _axis._InternalAxisRef, Execute := FALSE);
 CommandState.SetDone();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="StopCommand">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="StopCommand.FB_init">
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="StopCommand.WhileBusy">
-      <LineId Id="6" Count="0" />
-      <LineId Id="11" Count="2" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="16" Count="1" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="45" Count="0" />
-      <LineId Id="18" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
