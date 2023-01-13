@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="Lib" />
     <Folder Include="Lib\Commands" />
+    <Folder Include="Lib\Types" />
     <Folder Include="Programs" />
   </ItemGroup>
   <ItemGroup>
@@ -40,13 +41,13 @@
     <Compile Include="Lib\Commands\NciCommand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\NciChannelType.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Lib\I_Nci.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Lib\Nci.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Types\NciChannelType.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">

@@ -61,8 +61,7 @@ IF feedback <> 0 THEN
 	feedbackAborting := feedback.Aborting;
 	feedbackError := feedback.Error;
 	feedbackErrorId := feedback.ErrorId;
-END_IF
-]]></ST>
+END_IF]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
