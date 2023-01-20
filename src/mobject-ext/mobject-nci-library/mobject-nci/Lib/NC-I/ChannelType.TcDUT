@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="ChannelType" Id="{e8df33f8-a9ee-032c-2457-afa9ef326e25}">
+  <DUT Name="ChannelType" Id="{a9768f8a-943a-49e2-a448-c8b465ed78bf}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 TYPE ChannelType :

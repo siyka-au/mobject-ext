@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="VertexSmoothingSubType" Id="{082b0b68-eba1-4e07-ac18-c95ddbc3ae3e}">
+  <DUT Name="VertexSmoothingSubType" Id="{deb27c41-727a-4705-90df-134189a119bb}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 TYPE VertexSmoothingSubType :

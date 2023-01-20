@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="Feeder" Id="{9a5868fd-98f5-4278-ae73-8005b348044c}" SpecialFunc="None">
+  <POU Name="Feeder" Id="{afa055f6-15fe-4e61-8d6b-20702e0efb2f}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'linkalways'} 
 {attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
 FUNCTION_BLOCK Feeder EXTENDS CyclicInstance IMPLEMENTS I_Feeder
@@ -32,24 +32,24 @@ END_VAR]]></Declaration>
 	command instances seems a bit iffy.
 *)]]></ST>
     </Implementation>
-    <Folder Name="Private" Id="{a1d31e47-2ba5-44af-8981-fc30e42a9a1f}" />
-    <Property Name="ChannelDone" Id="{ed0fa9b1-077c-4f88-8925-58f7dfbbd88b}">
+    <Folder Name="Private" Id="{89091e83-73bf-47cc-8b96-a37cc1f49d7b}" />
+    <Property Name="ChannelDone" Id="{5afb5868-f2a2-4372-8411-e438c1383ce3}">
       <Declaration><![CDATA[PROPERTY ChannelDone : BOOL]]></Declaration>
-      <Get Name="Get" Id="{3b7f5a0c-857f-4eec-9ba9-a9db8c40851f}">
+      <Get Name="Get" Id="{b1dcd2b0-9787-41aa-9687-673de1e31402}">
         <Declaration><![CDATA[]]></Declaration>
         <Implementation>
           <ST><![CDATA[ChannelDone := _fb.bChannelDone;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Method Name="ClearFeedback" Id="{645ee78f-8bc7-4ce0-8477-8b44494c673e}" FolderPath="Private\">
+    <Method Name="ClearFeedback" Id="{b51b8aee-a087-4d73-baff-d23f4ea2131d}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD ClearFeedback]]></Declaration>
       <Implementation>
         <ST><![CDATA[commandFeedback.Release();
 commandFeedback := 0;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="CompleteTheCommand" Id="{3d4cc3e1-4125-4e9c-8fad-85c94608003d}" FolderPath="Private\">
+    <Method Name="CompleteTheCommand" Id="{1d2a89c7-23cc-4f6a-be3a-76c9cf6751fa}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD CompleteTheCommand]]></Declaration>
       <Implementation>
         <ST><![CDATA[ClearFeedback();
@@ -63,7 +63,7 @@ END_IF
 commandHasCompleted := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="CyclicCall" Id="{de7ced26-3d49-47db-b260-0f80a2759ab5}">
+    <Method Name="CyclicCall" Id="{d6db967f-e96f-407c-8bd0-c8fd62de273e}">
       <Declaration><![CDATA[METHOD  CyclicCall]]></Declaration>
       <Implementation>
         <ST><![CDATA[CASE state OF
@@ -133,7 +133,7 @@ ELSE
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="FB_init" Id="{4010d0a1-1574-46fc-a665-815377c8f205}">
+    <Method Name="FB_init" Id="{f7a3b709-36af-4cf3-8b00-72d02378a520}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
@@ -146,7 +146,7 @@ END_VAR]]></Declaration>
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="FeedTable" Id="{720b2933-f33c-4197-a656-a808090743ba}">
+    <Method Name="FeedTable" Id="{8476d02f-5c4f-4f23-9c8e-b99f09d1c9a8}">
       <Declaration><![CDATA[METHOD FeedTable
 VAR_INPUT
 	table : I_Table;
@@ -160,7 +160,7 @@ END_VAR]]></Declaration>
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="HasCompleted" Id="{89ca7c60-b9cc-4d49-a9cd-6adbfc3aeb56}" FolderPath="Private\">
+    <Method Name="HasCompleted" Id="{9b97fae2-ce70-46a3-baea-d3d06af15a51}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD PRIVATE HasCompleted : BOOL]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF commandFeedback = 0 THEN
@@ -171,7 +171,7 @@ END_IF
 HasCompleted := NOT commandFeedback.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="IsAlreadyExecuting" Id="{138794bd-91e6-4dd8-b703-e7ba40a043b8}" FolderPath="Private\">
+    <Method Name="IsAlreadyExecuting" Id="{97fa980e-da7f-4a81-9761-2200ee61a9a9}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD PRIVATE IsAlreadyExecuting : BOOL]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF commandFeedback = 0 THEN
@@ -181,7 +181,7 @@ END_IF
 IsAlreadyExecuting := commandFeedback.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="IsStillBusyExecuting" Id="{cf7ee9af-95c6-40d7-91b6-b1968bc42e59}" FolderPath="Private\">
+    <Method Name="IsStillBusyExecuting" Id="{27f675ee-029d-491b-8649-ed12ad487a98}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD PRIVATE IsStillBusyExecuting : BOOL]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF commandFeedback = 0 THEN
@@ -191,23 +191,23 @@ END_IF
 IsStillBusyExecuting := commandFeedback.Busy AND NOT commandFeedback.Aborting;]]></ST>
       </Implementation>
     </Method>
-    <Property Name="LogFeederEntries" Id="{37494741-7336-4f81-ac4d-dd7d269806bc}">
+    <Property Name="LogFeederEntries" Id="{f6e57a52-533d-4308-9a0e-66fb75df4f5b}">
       <Declaration><![CDATA[PROPERTY LogFeederEntries : BOOL]]></Declaration>
-      <Get Name="Get" Id="{22d7e8ef-6858-407a-b994-080d1b377908}">
+      <Get Name="Get" Id="{f17eb77f-9d66-4c30-b212-f445faa48830}">
         <Declaration><![CDATA[]]></Declaration>
         <Implementation>
           <ST><![CDATA[LogFeederEntries := _fb.bLogFeederEntries;
 ]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{ed83cacf-d3cc-4cde-86b3-578f7b21a35a}">
+      <Set Name="Set" Id="{616289b1-a9a0-4937-9f75-c9a1e9efaf8c}">
         <Declaration><![CDATA[]]></Declaration>
         <Implementation>
           <ST><![CDATA[_fb.bLogFeederEntries := LogFeederEntries;]]></ST>
         </Implementation>
       </Set>
     </Property>
-    <Method Name="Reset" Id="{79731249-b062-4e54-8eeb-562b87724ed0}">
+    <Method Name="Reset" Id="{15b76a3e-649d-41c0-8436-e6992218e0a9}">
       <Declaration><![CDATA[METHOD Reset
 VAR_INPUT
 	feedback : REFERENCE TO I_CommandFeedback;
@@ -219,7 +219,7 @@ END_VAR]]></Declaration>
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="SetupFeedback" Id="{ad8afd8a-e417-4389-824b-d719d3e8a85d}" FolderPath="Private\">
+    <Method Name="SetupFeedback" Id="{307a438d-d424-4a14-bb33-75461029a1de}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD SetupFeedback : I_CommandFeedbackReadWrite
 VAR_INPUT
 	feedback : REFERENCE TO I_CommandFeedback;

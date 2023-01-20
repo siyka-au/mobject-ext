@@ -33,6 +33,103 @@
     <Author>mobject dev team</Author>
     <CombineIds>true</CombineIds>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Lib" />
+    <Folder Include="Lib\Feeder" />
+    <Folder Include="Lib\NC-I" />
+    <Folder Include="Lib\NC-I\Commands" />
+    <Folder Include="Lib\Table" />
+    <Folder Include="Lib\Table\Enums" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Lib\Feeder\Feeder.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Feeder\I_Feeder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\ChannelType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\AddAxisToGroupCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\BuildXYZGroupCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\I_NciCommand.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\NciCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\ReleaseAxisCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\ResetGroupCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\I_Nci.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Nci.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\NciAxis.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\NciPlc.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\FeedrateInterpolation.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\StandardPlane.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\TangentialFollowingBehaviour.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\VertexSmoothingBlendingType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\VertexSmoothingSubType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\I_Table.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Table.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="mobject-core">
+      <DefaultResolution>mobject-core, * (mobject.io)</DefaultResolution>
+      <Namespace>mobject_core</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="mobject-motion">
+      <DefaultResolution>mobject-motion, * (mobject-io-ext)</DefaultResolution>
+      <Namespace>mobject_motion</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_NCI">
+      <DefaultResolution>Tc2_NCI, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_NCI</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_PlcInterpolation">
+      <DefaultResolution>Tc2_PlcInterpolation, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_PlcInterpolation</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Module">
+      <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Module</Namespace>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mobject-nci.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="FeedrateInterpolation" Id="{99693232-259d-4d4e-a2eb-f524adca5c8e}">
+  <DUT Name="FeedrateInterpolation" Id="{27dd3381-484b-4b89-a6f1-ade266d21be3}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 TYPE FeedrateInterpolation :

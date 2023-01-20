@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="TangentialFollowingBehaviour" Id="{46bdb690-e2ba-4bab-bcfe-1942a8836205}">
+  <DUT Name="TangentialFollowingBehaviour" Id="{4d57c4f4-a273-431e-a249-bf2d49fb6169}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 {attribute 'strict'}
 TYPE TangentialFollowingBehaviour :

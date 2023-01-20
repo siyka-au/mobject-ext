@@ -1,47 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="BuildXYZGroupCommand" Id="{6634e52b-6217-44df-9f6e-a45079c2a5d1}" SpecialFunc="None">
+  <POU Name="AddAxisToGroupCommand" Id="{f4610d3d-1a4f-4c9c-9a33-0649e3af2673}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'linkalways'} 
 {attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK BuildXYZGroupCommand EXTENDS NciCommand
+FUNCTION_BLOCK AddAxisToGroupCommand EXTENDS NciCommand
 VAR
-	_fb : CfgBuild3DGroup;
+	_fb : CfgAddAxisToGroup;
 	_groupId : UDINT;
-	_xAxisId : UDINT;
-	_yAxisId : UDINT;
-	_zAxisId : UDINT;
+	_axisId : UDINT;
+	_index : UDINT;
 	_timeout : TIME;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="FB_init" Id="{e16004c1-785a-4019-860f-c00cd7df7b44}">
+    <Method Name="FB_init" Id="{c0a20dff-f31f-4710-b7cf-17effad3ed49}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	nci : I_Nci := 0;
-	xAxis : I_Axis := 0;
-	yAxis : I_Axis := 0;
-	zAxis : I_Axis := 0;
+	nci : I_Nci;
+	axis : I_Axis;
+	index : UDINT;
 	timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_groupId := nci.GroupId;
-IF xAxis <> 0 THEN
-	_xAxisId := xAxis.AxisId;
+        <ST><![CDATA[IF nci <> 0 THEN
+	_groupId := nci.GroupId;
 END_IF
-IF yAxis <> 0 THEN
-	_yAxisId := yAxis.AxisId;
+IF axis <> 0 THEN
+	_axisId := axis.AxisId;
 END_IF
-IF zAxis <> 0 THEN
-	_zAxisId := zAxis.AxisId;
-END_IF
+_index := index;
 _timeout := timeout;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="WhileBusy" Id="{e99d4978-150b-432d-95cc-1655ec87ec11}">
+    <Method Name="WhileBusy" Id="{cff8aa7b-ab55-4791-996e-a5c38bcaadb0}">
       <Declaration><![CDATA[METHOD PROTECTED  WhileBusy
 VAR_INPUT
 	CommandState : I_CommandBusyState;
@@ -50,10 +45,9 @@ END_VAR]]></Declaration>
         <ST><![CDATA[_fb(
 	bExecute := TRUE,
 	nGroupId := _groupId,
-	nXAxisId := _xAxisId,
-	nYAxisId := _yAxisId,
-	nZAxisId := _zAxisId,
-	tTimeOut := _timeout,
+	nAxisId := _axisId,
+	nIndex := _index,
+	tTimeOut := _timeout
 );
 
 IF _fb.bBusy THEN

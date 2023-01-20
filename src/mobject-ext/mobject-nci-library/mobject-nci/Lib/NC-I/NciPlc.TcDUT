@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <DUT Name="NciPlc" Id="{bea7a7ea-65e8-4dd7-b3d9-c3bb651e618b}">
+  <DUT Name="NciPlc" Id="{eecf8fdf-cee4-4994-8eaf-54a13a081492}">
     <Declaration><![CDATA[TYPE NciPlc :
 STRUCT
 	nciToPlc AT %I* : NcToPlc_NciChannel_Ref;

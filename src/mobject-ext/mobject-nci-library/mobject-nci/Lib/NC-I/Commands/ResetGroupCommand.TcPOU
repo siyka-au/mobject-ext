@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="ResetGroupCommand" Id="{d4defed5-a731-40bc-8b88-b0e450582365}" SpecialFunc="None">
+  <POU Name="ResetGroupCommand" Id="{08b0cd48-17e8-45c4-b0b6-52689ecf21a3}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'linkalways'} 
 {attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
 {attribute 'enable_dynamic_creation'}
@@ -13,7 +13,7 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="FB_init" Id="{c5637d5b-b1fe-452e-a302-54ee7e177d31}">
+    <Method Name="FB_init" Id="{b2a08d6d-889f-4734-ac25-2b6f23a6c11d}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
@@ -28,7 +28,7 @@ END_IF
 _timeout := timeout;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="WhileBusy" Id="{7806ec84-349c-4aa7-943c-7bd1a08a1af2}">
+    <Method Name="WhileBusy" Id="{a49afdd8-b1d2-4bd4-8035-703e0f6b7dca}">
       <Declaration><![CDATA[METHOD PROTECTED  WhileBusy
 VAR_INPUT
 	CommandState : I_CommandBusyState;

@@ -1,30 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <Itf Name="I_Feeder" Id="{3f04167c-ec0e-491e-ba15-287c9a032698}">
+  <Itf Name="I_Feeder" Id="{90f0d125-ef24-4569-9ac4-4f7342a389fc}">
     <Declaration><![CDATA[INTERFACE I_Feeder EXTENDS __System.IQueryInterface]]></Declaration>
-    <Property Name="ChannelDone" Id="{b329c136-7dd8-4e1d-add4-4c79481aed51}">
+    <Property Name="ChannelDone" Id="{f362c00d-151c-48c6-9d5b-102a557135a1}">
       <Declaration><![CDATA[PROPERTY ChannelDone : BOOL]]></Declaration>
-      <Get Name="Get" Id="{d2d91652-8d49-4d79-a9a8-c8c8192dd171}">
+      <Get Name="Get" Id="{cced9590-f3ad-424d-bfd2-70be40698c4a}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
-    <Method Name="FeedTable" Id="{a57c9c0f-9160-403a-97cb-312ff1f3cb4e}">
+    <Method Name="FeedTable" Id="{49cc79c3-964c-4ffd-9554-d0d63dda4849}">
       <Declaration><![CDATA[METHOD FeedTable
 VAR_INPUT
 	table : I_Table;
 	feedback : REFERENCE TO I_CommandFeedback;
 END_VAR]]></Declaration>
     </Method>
-    <Property Name="LogFeederEntries" Id="{a1e97437-2751-47df-89f8-d0f2a81bad0d}">
+    <Property Name="LogFeederEntries" Id="{842bf937-aea3-48a8-9b75-b038718dc4e1}">
       <Declaration><![CDATA[PROPERTY LogFeederEntries : BOOL]]></Declaration>
-      <Get Name="Get" Id="{fd8600f4-0dce-447e-b911-5edadf440a5d}">
+      <Get Name="Get" Id="{f61e51ac-7a23-431b-ac22-ffad0781b7af}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
-      <Set Name="Set" Id="{af6654f5-77f6-43ee-8351-ae67e2e5478f}">
+      <Set Name="Set" Id="{3551fe76-6a9e-4bda-ac8d-0f263ebec457}">
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>
-    <Method Name="Reset" Id="{cd15d590-c2af-4da4-b493-c4be73727d85}">
+    <Method Name="Reset" Id="{8e83ed26-83aa-457b-9792-44b856c96dd4}">
       <Declaration><![CDATA[METHOD Reset
 VAR_INPUT
 	feedback : REFERENCE TO I_CommandFeedback;
