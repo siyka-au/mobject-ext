@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="StandardPlane" Id="{3a0413c6-4c14-45a3-a32a-40bbee1cc24e}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE StandardPlane :
+(
+	XY := Tc2_PlcInterpolation.E_NciGeoPlane.E_NciGeoPlaneXY,
+	ZX := Tc2_PlcInterpolation.E_NciGeoPlane.E_NciGeoPlaneZX,
+	YZ := Tc2_PlcInterpolation.E_NciGeoPlane.E_NciGeoPlaneYZ
+) INT;
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

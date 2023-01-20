@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="NciAxis" Id="{797b133e-e203-4497-bc8f-08b4c84d7134}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE NciAxis :
+(
+	NONE := Tc2_PlcInterpolation.E_NciAxesInGroup.NoneAxis,
+	X_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.XAxis,
+	Y_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.YAxis,
+	Z_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.ZAxis,
+	Q1_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.Q1Axis,
+	Q2_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.Q2Axis,
+	Q3_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.Q3Axis,
+	Q4_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.Q4Axis,
+	Q5_AXIS := Tc2_PlcInterpolation.E_NciAxesInGroup.Q5Axis
+) INT;
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

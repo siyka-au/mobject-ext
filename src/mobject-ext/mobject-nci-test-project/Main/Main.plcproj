@@ -18,36 +18,79 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Lib" />
-    <Folder Include="Lib\Commands" />
-    <Folder Include="Lib\Types" />
+    <Folder Include="Lib\Feeder" />
+    <Folder Include="Lib\Feeder\Commands" />
+    <Folder Include="Lib\NC-I" />
+    <Folder Include="Lib\NC-I\Commands" />
+    <Folder Include="Lib\Table" />
+    <Folder Include="Lib\Table\Enums" />
     <Folder Include="Programs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lib\Commands\AddAxisToGroupCommand.TcPOU">
+    <Compile Include="Lib\Feeder\Commands\FeederCommand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Commands\BuildXYZGroupCommand.TcPOU">
+    <Compile Include="Lib\Feeder\Commands\FeedTableCommand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Commands\ReleaseAxisCommand.TcPOU">
+    <Compile Include="Lib\Feeder\Feeder.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Commands\ResetGroupCommand.TcPOU">
+    <Compile Include="Lib\Feeder\I_Feeder.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Commands\I_NciCommand.TcIO">
+    <Compile Include="Lib\NC-I\ChannelType.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Commands\NciCommand.TcPOU">
+    <Compile Include="Lib\NC-I\Commands\AddAxisToGroupCommand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\I_Nci.TcIO">
+    <Compile Include="Lib\NC-I\Commands\BuildXYZGroupCommand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Nci.TcPOU">
+    <Compile Include="Lib\NC-I\Commands\I_NciCommand.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Types\NciChannelType.TcDUT">
+    <Compile Include="Lib\NC-I\Commands\NciCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\ReleaseAxisCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Commands\ResetGroupCommand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\I_Nci.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\Nci.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\NciAxis.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\NC-I\NciPlc.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Table.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\FeedrateInterpolation.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\StandardPlane.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\TangentialFollowingBehaviour.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\VertexSmoothingBlendingType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\Enums\VertexSmoothingSubType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Table\I_Table.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
@@ -73,6 +116,10 @@
     <PlaceholderReference Include="Tc2_PlcInterpolation">
       <DefaultResolution>Tc2_PlcInterpolation, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_PlcInterpolation</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_System">
+      <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_System</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

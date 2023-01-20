@@ -1,34 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="ReleaseAxisCommand" Id="{16ac8cd7-e73a-426f-bc51-943c2011bc3d}" SpecialFunc="None">
+  <POU Name="ResetGroupCommand" Id="{d4defed5-a731-40bc-8b88-b0e450582365}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'linkalways'} 
 {attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK ReleaseAxisCommand EXTENDS NciCommand
+FUNCTION_BLOCK ResetGroupCommand EXTENDS NciCommand
 VAR
-	_fb : CfgReconfigAxis;
-	_axisId : UDINT;
+	_fb : CfgReconfigGroup;
+	_groupId : UDINT;
 	_timeout : TIME;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="FB_init" Id="{4ef8e16f-231e-408c-ab2f-7a7a9a269d88}">
+    <Method Name="FB_init" Id="{c5637d5b-b1fe-452e-a302-54ee7e177d31}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	axis : I_Axis;
+	nci : I_Nci;
 	timeout : TIME;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF axis <> 0 THEN
-	_axisId := axis.AxisId;
+        <ST><![CDATA[IF nci <> 0 THEN
+	_groupId := nci.GroupId;
 END_IF
 _timeout := timeout;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="WhileBusy" Id="{a1e125df-414f-4ee0-b2ae-446b7a0625df}">
+    <Method Name="WhileBusy" Id="{7806ec84-349c-4aa7-943c-7bd1a08a1af2}">
       <Declaration><![CDATA[METHOD PROTECTED  WhileBusy
 VAR_INPUT
 	CommandState : I_CommandBusyState;
@@ -36,7 +36,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[_fb(
 	bExecute := TRUE,
-	nAxisId := _axisId,
+	nGroupId := _groupId,
 	tTimeOut := _timeout
 );
 
@@ -45,8 +45,8 @@ IF _fb.bBusy THEN
 END_IF
 
 IF _fb.bErr THEN
-	_fb(bExecute := FALSE);
 	CommandState.SetError(_fb.nErrId);
+	_fb(bExecute := FALSE);
 	RETURN;
 END_IF
 

@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FeederCommand" Id="{49038797-4d13-4422-81fb-6ec6e688a537}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FeederCommand EXTENDS Command
+VAR
+	_nci : I_Nci;
+	_fb : REFERENCE TO FB_NciFeedTable;
+	_null : ST_NciFeedGroupTable;
+	_execute : REFERENCE TO BOOL;
+	_busy : REFERENCE TO BOOL;
+	_error : REFERENCE TO BOOL;
+	_errorId : REFERENCE TO UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{5152e1ba-ad10-43d6-a6f1-d59d6affceed}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	execute : REFERENCE TO BOOL;
+	busy : REFERENCE TO BOOL;
+	error : REFERENCE TO BOOL;
+	errorId : REFERENCE TO UDINT;
+	//nci : I_Nci;
+	//fb : REFERENCE TO FB_NciFeedTable;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF __ISVALIDREF(execute) THEN
+	_execute REF= execute;
+END_IF
+
+IF __ISVALIDREF(busy) THEN
+	_busy REF= busy;
+END_IF
+
+IF __ISVALIDREF(error) THEN
+	_error REF= error;
+END_IF
+
+IF __ISVALIDREF(errorId) THEN
+	_errorId REF= errorId;
+END_IF
+
+(*IF nci <> 0 THEN
+	_nci := nci;
+ELSE
+	AdsLogStr(
+		msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_MSGBOX,
+		msgFmtStr := 'PLC Msg.: Guarding time executed in SFC step: %s',
+		strArg := 'Invalid reference buddy fdfd'
+	);
+END_IF
+
+IF __ISVALIDREF(fb) THEN
+	_fb REF= fb;
+ELSE
+	AdsLogStr(
+		msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_MSGBOX,
+		msgFmtStr := 'PLC Msg.: Guarding time executed in SFC step: %s',
+		strArg := 'Invalid reference buddy'
+	);
+END_IF*)]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WhileBusy" Id="{a404085a-9992-4218-99b3-41c350db9fb0}">
+      <Declaration><![CDATA[METHOD PROTECTED WhileBusy
+VAR_INPUT
+	CommandState : I_CommandBusyState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _busy THEN
+	RETURN;
+END_IF
+
+IF _error THEN
+	CommandState.SetError(1);
+	_execute := FALSE;
+	RETURN;
+END_IF
+
+CommandState.SetDone();
+_execute := FALSE;
+
+(*RETURN;
+
+_fb(
+	bExecute := TRUE,
+	bReset := FALSE,
+	stNciToPlc := _nci._InternalNciToPlcRef,
+	stFeedGroupTable := _null
+);
+
+IF NOT _fb.bResetBusy THEN
+	RETURN;
+END_IF
+
+IF _fb.bError THEN
+	CommandState.SetError(_fb.nErrorId);
+	CleanUp();
+	RETURN;
+END_IF
+
+CleanUp();
+
+CommandState.SetDOne();*)]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

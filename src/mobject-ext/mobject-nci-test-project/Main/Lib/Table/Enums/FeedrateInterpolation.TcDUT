@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="FeedrateInterpolation" Id="{99693232-259d-4d4e-a2eb-f524adca5c8e}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE FeedrateInterpolation :
+(
+	CONST := Tc2_PlcInterpolation.E_NciFeedRateIpol.E_NciFeedrateIpolConstant,
+    LINEAR := Tc2_PlcInterpolation.E_NciFeedRateIpol.E_NciFeedrateIpolLinear
+) UINT;
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

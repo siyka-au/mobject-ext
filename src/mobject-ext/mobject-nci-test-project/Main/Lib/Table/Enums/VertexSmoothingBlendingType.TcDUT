@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="VertexSmoothingBlendingType" Id="{65664f03-4f44-4316-90dc-83dc5b4d0c34}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE VertexSmoothingBlendingType :
+(
+	NONE := 0, // Probably should check this is correct!
+	PARABOLIC := 2,
+	BI_QUADRATIC := 3,
+	BEZIER_3RD_ORDER := 4,
+	BEZIER_5TH_ORDER := 5
+) UDINT;
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

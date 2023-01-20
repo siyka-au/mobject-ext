@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Feeder" Id="{9a5868fd-98f5-4278-ae73-8005b348044c}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+FUNCTION_BLOCK Feeder EXTENDS CyclicInstance IMPLEMENTS I_Feeder
+VAR
+	_nci : I_Nci;
+	_fb : FB_NciFeedTable;
+	_table : ST_NciFeedGroupTable;
+	_execute : BOOL;
+	_reset : BOOL;
+	_feedDone : BOOL;
+	_channelDone : BOOL;
+	_feedBusy : BOOL;
+	_resetBusy : BOOL;
+	_error : BOOL;
+	_errorId : UDINT;
+	
+	state : (IDLE, RESETTING, FEEDING, DONE, ERROR);
+	command : (NONE, RESET, FEED);
+	
+	commandFeedback : I_CommandFeedbackReadWrite;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ChannelDone" Id="{ed0fa9b1-077c-4f88-8925-58f7dfbbd88b}">
+      <Declaration><![CDATA[PROPERTY ChannelDone : BOOL]]></Declaration>
+      <Get Name="Get" Id="{3b7f5a0c-857f-4eec-9ba9-a9db8c40851f}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ChannelDone := _fb.bChannelDone;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="CyclicCall" Id="{de7ced26-3d49-47db-b260-0f80a2759ab5}">
+      <Declaration><![CDATA[METHOD  CyclicCall]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE state OF
+	IDLE:
+		_fb(
+			bExecute := FALSE,
+			bReset := FALSE,
+			stNciToPlc := _nci._InternalNciPlcRef.nciToPlc,
+			stFeedGroupTable := _table,
+			bFeedingDone => _feedDone,
+			bChannelDone => _channelDone,
+			bFeedBusy => _feedBusy,
+			bResetBusy => _resetBusy,
+			bError => _error,
+			nErrorId => _errorId
+		);
+		
+		CASE command OF
+			RESET:
+				state := RESETTING;
+				command := NONE;
+				commandFeedback.SetBusy();
+			FEED:
+				state := FEEDING;
+				command := NONE;
+				commandFeedback.SetBusy();
+		END_CASE
+
+	RESETTING:
+		_fb(
+			bExecute := FALSE,
+			bReset := TRUE,
+			stNciToPlc := _nci._InternalNciPlcRef.nciToPlc,
+			stFeedGroupTable := _table,
+			bChannelDone => _channelDone,
+			bFeedBusy => _feedBusy,
+			bResetBusy => _resetBusy,
+			bError => _error,
+			nErrorId => _errorId
+		);
+		
+		IF NOT _fb.bResetBusy THEN		
+			IF _fb.bError THEN
+				state := ERROR;
+			ELSE
+				state := DONE;
+			END_IF
+		END_IF
+
+	FEEDING:
+		_fb(
+			bExecute := TRUE,
+			bReset := FALSE,
+			stNciToPlc := _nci._InternalNciPlcRef.nciToPlc,
+			stFeedGroupTable := _table,
+		);
+		
+		IF NOT _fb.bFeedBusy THEN
+			IF _fb.bError THEN
+				state := ERROR;
+			ELSIF _fb.bFeedingDone THEN
+				state := DONE;
+			END_IF
+		END_IF
+	
+	DONE:
+		IF commandFeedback <> 0 THEN
+			commandFeedback.SetDone();
+		END_IF
+		state := IDLE;		
+	ERROR:
+		IF commandFeedback <> 0 THEN
+			commandFeedback.SetError(_fb.nErrorId);
+		END_IF
+		state := IDLE;
+ELSE
+	state := IDLE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{4010d0a1-1574-46fc-a665-815377c8f205}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	nci : I_Nci;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nci <> 0 THEN
+	_nci := nci;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FeedTable" Id="{720b2933-f33c-4197-a656-a808090743ba}">
+      <Declaration><![CDATA[METHOD FeedTable
+VAR_INPUT
+	table : I_Table;
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR
+	pCmd : POINTER TO FeederCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT IsAlreadyExecuting() THEN
+	_table := table._InternalTable;
+	command := FEED;
+	SetupFeedback(Feedback);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsAlreadyExecuting" Id="{138794bd-91e6-4dd8-b703-e7ba40a043b8}">
+      <Declaration><![CDATA[METHOD PRIVATE IsAlreadyExecuting : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF commandFeedback = 0 THEN
+	RETURN;
+END_IF
+
+IsAlreadyExecuting := commandFeedback.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="LogFeederEntries" Id="{37494741-7336-4f81-ac4d-dd7d269806bc}">
+      <Declaration><![CDATA[PROPERTY LogFeederEntries : BOOL]]></Declaration>
+      <Get Name="Get" Id="{22d7e8ef-6858-407a-b994-080d1b377908}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[LogFeederEntries := _fb.bLogFeederEntries;
+]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ed83cacf-d3cc-4cde-86b3-578f7b21a35a}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_fb.bLogFeederEntries := LogFeederEntries;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Reset" Id="{79731249-b062-4e54-8eeb-562b87724ed0}">
+      <Declaration><![CDATA[METHOD Reset
+VAR_INPUT
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR
+	pCmd : POINTER TO FeederCommand;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT IsAlreadyExecuting() THEN
+	command := RESET;
+	SetupFeedback(Feedback);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetupFeedback" Id="{ad8afd8a-e417-4389-824b-d719d3e8a85d}">
+      <Declaration><![CDATA[METHOD SetupFeedback : I_CommandFeedbackReadWrite
+VAR_INPUT
+	feedback : REFERENCE TO I_CommandFeedback;
+END_VAR
+VAR
+	pFeedback : POINTER TO CommandFeedback;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF feedback <> 0 THEN 
+	feedback.Release();
+END_IF
+
+IF IsAlreadyExecuting() THEN
+
+	IF __ISVALIDREF(feedback) THEN
+		feedback := commandFeedback;
+		feedback.AddReference();
+	END_IF
+	
+	RETURN;
+END_IF
+
+IF commandFeedback <> 0 THEN 
+	commandFeedback.Release();
+END_IF
+
+pFeedback := __NEW(CommandFeedback);
+commandFeedback := pFeedback^;
+
+IF __ISVALIDREF(feedback) THEN
+	feedback := commandFeedback;
+	feedback.AddReference();
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

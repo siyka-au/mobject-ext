@@ -3,8 +3,15 @@
   <Itf Name="I_Nci" Id="{9cb56599-d602-0d93-2451-e9202554fbf0}">
     <Declaration><![CDATA[INTERFACE I_Nci EXTENDS __System.IQueryInterface]]></Declaration>
     <Folder Name="Configuration" Id="{f2118258-b57f-4767-99e7-bc1e8d2cf535}" />
+    <Folder Name="Internal Properties" Id="{b7a6d487-0c96-4278-b620-a2223f2f2444}" />
     <Folder Name="Methods" Id="{871b622b-8363-44ca-a967-d80a64f97c1f}" />
     <Folder Name="Properties" Id="{9d345953-5f88-4a51-aeba-4340a76db315}" />
+    <Property Name="_InternalNciPlcRef" Id="{501217d0-dbd1-4753-948a-144452194aad}" FolderPath="Internal Properties\">
+      <Declaration><![CDATA[PROPERTY _InternalNciPlcRef : REFERENCE TO NciPlc]]></Declaration>
+      <Get Name="Get" Id="{b9b0c6f2-7619-4abd-8e5c-cdd6991ef2b2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Method Name="AddAxisToGroup" Id="{e7dbd1f1-f487-4c9a-8ae2-674c9fc9e2ea}" FolderPath="Configuration\">
       <Declaration><![CDATA[METHOD AddAxisToGroup
 VAR_INPUT
@@ -46,7 +53,7 @@ END_VAR]]></Declaration>
       </Get>
     </Property>
     <Property Name="ChannelType" Id="{1b75734a-c502-444b-9e7f-64c819b2f69b}" FolderPath="Properties\">
-      <Declaration><![CDATA[PROPERTY ChannelType : NCIChannelType]]></Declaration>
+      <Declaration><![CDATA[PROPERTY ChannelType : ChannelType]]></Declaration>
       <Get Name="Get" Id="{4f39029a-e97a-4221-b4d5-d4926f3c3b5d}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>

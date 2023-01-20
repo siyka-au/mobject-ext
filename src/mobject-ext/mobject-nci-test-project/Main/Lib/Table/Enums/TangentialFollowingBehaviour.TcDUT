@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="TangentialFollowingBehaviour" Id="{46bdb690-e2ba-4bab-bcfe-1942a8836205}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE TangentialFollowingBehaviour :
+(
+	IGNORE_ALL := Tc2_PlcInterpolation.E_TangentialFollowingBehavior.E_TfIngoreAll, // ignore critical angle
+	ERROR_ON_EXCEEDING_CRITICAL_ANGLE := Tc2_PlcInterpolation.E_TangentialFollowingBehavior.E_TfErrorOnCritical1 // if angle becomes bigger than critical angle 1 ==> error
+) INT;
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,862 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Table" Id="{59162d18-0ee0-4cf5-a92a-47a2b71f5b59}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK Table IMPLEMENTS I_Table
+VAR
+	_fb : FB_NciFeedTablePreparation;
+	_table : ST_NciFeedGroupTable;
+	
+	_stopped : STRING;
+	_errorId : UDINT;
+	_filledRows : INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="_InternalTable" Id="{58136a9d-fe87-4a07-86bf-28af7e84c4d0}">
+      <Declaration><![CDATA[PROPERTY _InternalTable : REFERENCE TO Tc2_PlcInterpolation.ST_NciFeedGroupTable]]></Declaration>
+      <Get Name="Get" Id="{c802491e-4974-4916-9c66-579775e4f6a4}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_InternalTable REF= _table;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="AddAxisDynamics" Id="{c9b688c8-c844-4a2a-aac1-e47eec851813}">
+      <Declaration><![CDATA[METHOD AddAxisDynamics : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	axis : mobject_motion.I_Axis;
+	acceleration : LREAL(0.000001-99999999);
+	deceleration : LREAL(0.000001-99999999);
+	jerk : LREAL(0.000001-99999999);
+END_VAR
+VAR
+	entry : ST_NciAxisDynamics;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.nAxis := axis.AxisId;
+entry.fAcc := acceleration;
+entry.fDec := deceleration;
+entry.fJerk := jerk;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeAxisDynamics,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddAxisDynamics := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddBaseFrame" Id="{2d830661-64a0-4be4-b0ce-ae13155622a1}">
+      <Declaration><![CDATA[METHOD AddBaseFrame : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	shiftX : LREAL;
+	shiftY : LREAL;
+	shiftZ : LREAL;
+	rotationX : LREAL;
+	rotationY : LREAL;
+	rotationZ : LREAL;
+	shiftQ1 : LREAL;
+	shiftQ2 : LREAL;
+	shiftQ3 : LREAL;
+	shiftQ4 : LREAL;
+	shiftQ5 : LREAL;
+END_VAR
+VAR
+	entry : ST_NciBaseFrame;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fShiftX := shiftX;
+entry.fShiftY := shiftY;
+entry.fShiftZ := shiftZ;
+entry.fRotX := rotationX;
+entry.fRotY := rotationY;
+entry.fRotZ := rotationZ;
+entry.fShiftQ1 := shiftQ1;
+entry.fShiftQ2 := shiftQ2;
+entry.fShiftQ3 := shiftQ3;
+entry.fShiftQ4 := shiftQ4;
+entry.fShiftQ5 := shiftQ5;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeBaseFrame,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddBaseFrame := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddBaseFrame3D" Id="{1b840118-50a3-4dba-ac58-e7bc5fe05011}">
+      <Declaration><![CDATA[METHOD AddBaseFrame3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	shiftX : LREAL;
+	shiftY : LREAL;
+	shiftZ : LREAL;
+	rotationX : LREAL;
+	rotationY : LREAL;
+	rotationZ : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddBaseFrame3D := AddBaseFrame(
+	displayIndex,
+	shiftX, shiftY, shiftZ,
+	rotationX, rotationY, rotationZ,
+	0, 0, 0, 0, 0
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddBezier3rdOrder" Id="{d5f88368-fb96-4702-ada4-647eda08d402}">
+      <Declaration><![CDATA[METHOD AddBezier3rdOrder : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	controlPoint1X : LREAL;
+	controlPoint1Y : LREAL;
+	controlPoint1Z : LREAL;
+	controlPoint2X : LREAL;
+	controlPoint2Y : LREAL;
+	controlPoint2Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR
+VAR
+	entry : ST_NciGeoBezier3;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fControlPoint1X := controlPoint1X;
+entry.fControlPoint1Y := controlPoint1Y;
+entry.fControlPoint1Z := controlPoint1Z;
+entry.fControlPoint2X := controlPoint2X;
+entry.fControlPoint2Y := controlPoint2Y;
+entry.fControlPoint2Z := controlPoint2Z;
+entry.fEndPosX := endPositionX;
+entry.fEndPosY := endPositionY;
+entry.fEndPosZ := endPositionZ;
+entry.fEndPosQ1 := endPositionQ1;
+entry.fEndPosQ2 := endPositionQ2;
+entry.fEndPosQ3 := endPositionQ3;
+entry.fEndPosQ4 := endPositionQ4;
+entry.fEndPosQ5 := endPositionQ5;
+entry.fVelo := velocity;
+entry.bAccurateStop := accurateStop;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeGeoBezier3,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddBezier3rdOrder := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddBezier3rdOrder3D" Id="{90533534-41d5-4b8f-9a47-4920a8bba202}">
+      <Declaration><![CDATA[METHOD AddBezier3rdOrder3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	controlPoint1X : LREAL;
+	controlPoint1Y : LREAL;
+	controlPoint1Z : LREAL;
+	controlPoint2X : LREAL;
+	controlPoint2Y : LREAL;
+	controlPoint2Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddBezier3rdOrder3D := AddBezier3rdOrder(
+	displayIndex,
+	controlPoint1X, controlPoint1Y, controlPoint1Z,
+	controlPoint2X, controlPoint2Y, controlPoint2Z,
+	endPositionX, endPositionY, endPositionZ,
+	0, 0, 0, 0, 0,
+	velocity,
+	accurateStop
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddBezier5thOrder" Id="{768fcc9d-d1c2-47a5-bab0-0b773ea03856}">
+      <Declaration><![CDATA[METHOD AddBezier5thOrder : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	controlPoint1X : LREAL;
+	controlPoint1Y : LREAL;
+	controlPoint1Z : LREAL;
+	controlPoint2X : LREAL;
+	controlPoint2Y : LREAL;
+	controlPoint2Z : LREAL;
+	controlPoint3X : LREAL;
+	controlPoint3Y : LREAL;
+	controlPoint3Z : LREAL;
+	controlPoint4X : LREAL;
+	controlPoint4Y : LREAL;
+	controlPoint4Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR
+VAR
+	entry : ST_NciGeoBezier5;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fControlPoint1X := controlPoint1X;
+entry.fControlPoint1Y := controlPoint1Y;
+entry.fControlPoint1Z := controlPoint1Z;
+entry.fControlPoint2X := controlPoint2X;
+entry.fControlPoint2Y := controlPoint2Y;
+entry.fControlPoint2Z := controlPoint2Z;
+entry.fControlPoint3X := controlPoint3X;
+entry.fControlPoint3Y := controlPoint3Y;
+entry.fControlPoint3Z := controlPoint3Z;
+entry.fControlPoint4X := controlPoint4X;
+entry.fControlPoint4Y := controlPoint4Y;
+entry.fControlPoint4Z := controlPoint4Z;
+entry.fEndPosX := endPositionX;
+entry.fEndPosY := endPositionY;
+entry.fEndPosZ := endPositionZ;
+entry.fEndPosQ1 := endPositionQ1;
+entry.fEndPosQ2 := endPositionQ2;
+entry.fEndPosQ3 := endPositionQ3;
+entry.fEndPosQ4 := endPositionQ4;
+entry.fEndPosQ5 := endPositionQ5;
+entry.fVelo := velocity;
+entry.bAccurateStop := accurateStop;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeGeoBezier5,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddBezier5thOrder := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddBezier5thOrder3D" Id="{6c695a21-d481-4b70-91e1-da433a8f6892}">
+      <Declaration><![CDATA[METHOD AddBezier5thOrder3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	controlPoint1X : LREAL;
+	controlPoint1Y : LREAL;
+	controlPoint1Z : LREAL;
+	controlPoint2X : LREAL;
+	controlPoint2Y : LREAL;
+	controlPoint2Z : LREAL;
+	controlPoint3X : LREAL;
+	controlPoint3Y : LREAL;
+	controlPoint3Z : LREAL;
+	controlPoint4X : LREAL;
+	controlPoint4Y : LREAL;
+	controlPoint4Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddBezier5thOrder3D := AddBezier5thOrder(
+	displayIndex,
+	controlPoint1X, controlPoint1Y, controlPoint1Z,
+	controlPoint2X, controlPoint2Y, controlPoint2Z,
+	controlPoint3X, controlPoint3Y, controlPoint3Z,
+	controlPoint4X, controlPoint4Y, controlPoint4Z,
+	endPositionX, endPositionY, endPositionZ,
+	0, 0, 0, 0, 0,
+	velocity,
+	accurateStop
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddCircleCIP" Id="{1993b774-ee2a-4084-bf57-ba803bb6351a}">
+      <Declaration><![CDATA[METHOD AddCircleCIP : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	arcPointX : LREAL;
+	arcPointY : LREAL;
+	arcPointZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR
+VAR
+	entry : ST_NciGeoCircleCIP;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fEndPosX := endPositionX;
+entry.fEndPosY := endPositionY;
+entry.fEndPosZ := endPositionZ;
+entry.fCIPPosX := arcPointX;
+entry.fCIPPosY := arcPointY;
+entry.fCIPPosZ := arcPointZ;
+entry.fEndPosQ1 := endPositionQ1;
+entry.fEndPosQ2 := endPositionQ2;
+entry.fEndPosQ3 := endPositionQ3;
+entry.fEndPosQ4 := endPositionQ4;
+entry.fEndPosQ5 := endPositionQ5;
+entry.fVelo := velocity;
+entry.bAccurateStop := accurateStop;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeGeoCircleCIP,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddCircleCIP := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddCircleCIP3D" Id="{16a132ac-edd2-4a86-9c0e-a5bdd7ca3c4b}">
+      <Declaration><![CDATA[METHOD AddCircleCIP3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	arcPointX : LREAL;
+	arcPointY : LREAL;
+	arcPointZ : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddCircleCIP3D := AddCircleCIP(
+	displayIndex,
+	endPositionX, endPositionY, endPositionZ,
+	arcPointX, arcPointY, arcPointZ,
+	0, 0, 0, 0, 0,
+	velocity,
+	accurateStop
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddCircleOnPlane" Id="{ab9e2afb-4da1-4459-b464-aa1953da5d04}">
+      <Declaration><![CDATA[METHOD AddCircleOnPlane : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	centerX : LREAL;
+	centerY : LREAL;
+	centerZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	plane : StandardPlane := StandardPlane.XY;
+	clockwise : BOOL;	
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR
+VAR
+	entry: ST_NciGeoCirclePlane;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fEndPosX := endPositionX;
+entry.fEndPosY := endPositionY;
+entry.fEndPosZ := endPositionZ;
+entry.fCenterX := centerX;
+entry.fCenterY := centerY;
+entry.fCenterZ := centerZ;
+entry.fEndPosQ1 := endPositionQ1;
+entry.fEndPosQ2 := endPositionQ2;
+entry.fEndPosQ3 := endPositionQ3;
+entry.fEndPosQ4 := endPositionQ4;
+entry.fEndPosQ5 := endPositionQ5;
+entry.nPlane := plane;
+entry.bClockwise := clockwise;
+entry.fVelo := velocity;
+entry.bAccurateStop := accurateStop;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeGeoCirclePlane,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddCircleOnPlane := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddCircleOnPlane3D" Id="{4d29e5ba-7892-413f-ae85-e5c601974f36}">
+      <Declaration><![CDATA[METHOD AddCircleOnPlane3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	centerX : LREAL;
+	centerY : LREAL;
+	centerZ : LREAL;
+	plane : StandardPlane := StandardPlane.XY;
+	clockwise : BOOL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddCircleOnPlane3D := AddCircleOnPlane(
+	displayIndex,
+	endPositionX,
+	endPositionY,
+	endPositionZ,
+	centerX ,
+	centerY,
+	centerZ,
+	0, 0, 0, 0, 0,
+	plane,
+	clockwise,	
+	velocity,
+	accurateStop
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddDwellTime" Id="{85506703-5108-460a-8ae3-29d5b1eb0b12}">
+      <Declaration><![CDATA[METHOD AddDwellTime : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	dwellTime : LREAL(0.000001-99999999); // seconds
+END_VAR
+VAR
+	entry: ST_NciDwellTime;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fDwellTime := dwellTime;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeDwellTime,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddDwellTime := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddFeedrateInterpolation" Id="{abfd7b6c-2d57-4aa0-b541-20f14bcb430e}">
+      <Declaration><![CDATA[METHOD AddFeedrateInterpolation : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	interpolationType : FeedrateInterpolation;
+END_VAR
+VAR
+	entry : ST_NciFeedrateIpol;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.eFeedrateIpol := interpolationType;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeFeedrateIpol,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+ AddFeedrateInterpolation:= _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddLine" Id="{6af79330-da5a-4362-a3e9-c4e02127b9a9}">
+      <Declaration><![CDATA[METHOD AddLine : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	rapidTraverse : BOOL;
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR
+VAR
+	entry : ST_NciGeoLine;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fEndPosX := endPositionX;
+entry.fEndPosY := endPositionY;
+entry.fEndPosZ := endPositionZ;
+entry.fEndPosQ1 := endPositionQ1;
+entry.fEndPosQ2 := endPositionQ2;
+entry.fEndPosQ3 := endPositionQ3;
+entry.fEndPosQ4 := endPositionQ4;
+entry.fEndPosQ5 := endPositionQ5;
+entry.fVelo := velocity;
+entry.bRapidTraverse := rapidTraverse;
+entry.bAccurateStop := accurateStop;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeGeoLine,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddLine := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddLine3D" Id="{b3962469-8f0b-4933-bbf4-cea7aa6e5ee2}">
+      <Declaration><![CDATA[METHOD AddLine3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	rapidTraverse : BOOL;
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddLine3D := AddLine(
+	displayIndex,
+	endPositionX,
+	endPositionY,
+	endPositionZ,
+	0, 0, 0, 0, 0,
+	velocity,
+	rapidTraverse,
+	accurateStop
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddMFunctionWithHandshake" Id="{ea5b16be-5020-4eee-9e51-8e4eb9c2d10f}">
+      <Declaration><![CDATA[METHOD AddMFunctionWithHandshake : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	functionNumber : INT(0..159);
+END_VAR
+VAR
+	entry : ST_NciMFuncHsk;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.nMFunc := functionNumber;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeMFuncHsk,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+ AddMFunctionWithHandshake := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddPathDynamics" Id="{bf0a7c94-cf1a-4f10-8493-ec901c65bc72}">
+      <Declaration><![CDATA[METHOD AddPathDynamics : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	acceleration : LREAL(0.000001-99999999);
+	deceleration : LREAL(0.000001-99999999);
+	jerk : LREAL(0.000001-99999999);
+END_VAR
+VAR
+	entry : ST_NciPathDynamics;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nDisplayIndex := displayIndex;
+entry.fAcc := acceleration;
+entry.fDec := deceleration;
+entry.fJerk := jerk;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypePathDynamics,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddPathDynamics := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddReference" Id="{bf3eac9d-5726-4886-a224-eb9105cbbb87}">
+      <Declaration><![CDATA[METHOD AddReference]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddStart" Id="{0aff247d-c14b-4817-9473-d4eddbd39da2}">
+      <Declaration><![CDATA[METHOD AddStart : BOOL
+VAR_INPUT
+	x : LREAL;
+	y : LREAL;
+	z : LREAL;
+	q1 : LREAL;
+	q2 : LREAL;
+	q3 : LREAL;
+	q4 : LREAL;
+	q5 : LREAL;
+END_VAR
+VAR
+	entry : ST_NciGeoStart;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.fPosX := x;
+entry.fPosY := y;
+entry.fPosZ := z;
+entry.fPosQ1 := q1;
+entry.fPosQ2 := q2;
+entry.fPosQ3 := q3;
+entry.fPosQ4 := q4;
+entry.fPosQ5 := q5;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeGeoStart,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+AddStart := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AddStart3D" Id="{2a090461-743e-4da8-8eea-88c674e929ac}">
+      <Declaration><![CDATA[METHOD AddStart3D : BOOL
+VAR_INPUT
+	x : LREAL;
+	y : LREAL;
+	z : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddStart3D := AddStart(x, y, z, 0, 0, 0, 0, 0);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="DisableTangentialFollowing" Id="{0e53d2d8-efd3-4d67-8206-d874cf816509}">
+      <Declaration><![CDATA[METHOD DisableTangentialFollowing : BOOL
+VAR
+	entry : ST_NciTangentialFollowingDesc;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.bTangOn := FALSE;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeTfDesc,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+DisableTangentialFollowing := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="DisableVertexSmoothing" Id="{60412a89-ef33-4113-82e1-ed369327ddb9}">
+      <Declaration><![CDATA[METHOD DisableVertexSmoothing : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[DisableVertexSmoothing := EnableVertexSmoothing(
+	displayIndex,
+	VertexSmoothingBlendingType.NONE,
+	VertexSmoothingSubType.NONE,
+	0
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EnableTangentialFollowing" Id="{bc04643a-92a6-4acd-aaee-0f429c0d86f2}">
+      <Declaration><![CDATA[METHOD EnableTangentialFollowing : BOOL
+VAR_INPUT
+	tangentialAxis : NciAxis; // axis used for tangential following
+	pathAxis1 : NciAxis; // describing the plane e.g. x
+	pathAxis2 : NciAxis; // e.g. y ==> g17, xy plane
+	offset : LREAL; // geo tangent is 0 degree, counting is mathmatical positive
+	criticalAngle : LREAL(0.000001-90);
+	behaviour : TangentialFollowingBehaviour;
+END_VAR
+VAR
+	entry : ST_NciTangentialFollowingDesc;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.bTangOn := TRUE;
+entry.nTangAxis := tangentialAxis;
+entry.nPathAxis1 := pathAxis1;
+entry.nPathAxis2 := pathAxis2;
+entry.fOffset := offset;
+entry.fCriticalAngle1 := criticalAngle;
+entry.nTfBehavior := behaviour;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeTfDesc,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+EnableTangentialFollowing := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EnableVertexSmoothing" Id="{d1118b77-a80d-4547-b16b-6b195fb3f946}">
+      <Declaration><![CDATA[METHOD EnableVertexSmoothing : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	blendType : VertexSmoothingBlendingType;
+	subType : VertexSmoothingSubType;
+	radius : LREAL(0.000001-99999999);
+END_VAR
+VAR
+	entry : ST_NciVertexSmoothing;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[entry.nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeVertexSmoothing;
+entry.nDisplayIndex := displayIndex;
+entry.nType := blendType;
+entry.nSubtype :=	subType;
+entry.fRadius :=	radius;
+
+_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeVertexSmoothing,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+EnableVertexSmoothing := _fb.bError;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="End" Id="{2f3f9392-649b-452d-b693-fac8229271ae}">
+      <Declaration><![CDATA[METHOD End : BOOL
+VAR
+	entry : ST_NciEndOfTables;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	stFeedGroupTable := _table,
+	pEntry := ADR(entry),
+	nEntryType := Tc2_PlcInterpolation.E_NciEntryType.E_NciEntryTypeEndOfTables,
+	bResetTable := FALSE,
+	bResetAll := FALSE,
+	nFilledRows => _filledRows
+);
+
+End := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ErrorId" Id="{f4e1beb3-2a39-4700-a39b-04ba09f8778e}">
+      <Declaration><![CDATA[PROPERTY ErrorId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{105dc9bd-2ae2-44c7-8274-48ba52853a02}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorId := _fb.nErrorId;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="FilledRows" Id="{6cbd3997-07bc-4187-9c61-7ae082c7a13e}">
+      <Declaration><![CDATA[PROPERTY FilledRows : INT]]></Declaration>
+      <Get Name="Get" Id="{6ae5f1dc-7657-4da4-bb46-c40fa1301377}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FilledRows := _filledRows;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="HasError" Id="{87e36c8a-94a2-49fb-b284-1d79850c966e}">
+      <Declaration><![CDATA[PROPERTY HasError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{8ab7970f-c403-4e73-b592-aba4e50c4ed6}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasError := _fb.bError;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="ResetAll" Id="{55fddf7a-e7ea-4752-adc5-0cbbc94290b7}">
+      <Declaration><![CDATA[METHOD ResetAll : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	stFeedGroupTable := _table,
+	bResetAll := TRUE
+);
+
+ResetAll := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ResetTable" Id="{53b82f7d-fa9f-4577-ac9c-22ccd621f88f}">
+      <Declaration><![CDATA[METHOD ResetTable : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	stFeedGroupTable := _table,
+	bResetTable := TRUE
+);
+
+ResetTable := _fb.bError;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

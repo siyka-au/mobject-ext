@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FeedTableCommand" Id="{47449ea4-f3a6-4cd2-ad0d-de8d8af22b7e}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'linkalways'} 
+{attribute 'no_explicit_call' := 'This FB is a CLASS and must be accessed using methods or properties'}
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FeedTableCommand EXTENDS Command
+VAR
+	_nci : I_Nci;
+	_fb : REFERENCE TO FB_NciFeedTable;
+	_table : I_Table;
+	_null : ST_NciFeedGroupTable;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CleanUp" Id="{047e7829-343c-4868-91e4-b3d7d4faa214}">
+      <Declaration><![CDATA[METHOD CleanUp]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	bExecute := FALSE,
+	bReset := FALSE,
+	stNciToPlc := _nci._InternalNciPlcRef.nciToPlc,
+	stFeedGroupTable := _null
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{64023528-108f-4dd7-b70d-71b580ccf5bb}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	nci : I_Nci;
+	fb : REFERENCE TO FB_NciFeedTable;
+	table : I_Table;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nci <> 0 THEN
+	nci := nci;
+END_IF
+
+IF __ISVALIDREF(fb) THEN
+	_fb REF= fb;
+END_IF
+
+IF table <> 0 THEN
+	_table := table;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnAbort" Id="{67b2f407-3231-4886-b77a-843fc7e83188}">
+      <Declaration><![CDATA[METHOD PROTECTED OnAbort
+VAR_INPUT
+	CommandState : I_CommandAbortingState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CleanUp();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WhileBusy" Id="{5a186f95-98b6-4199-8ba9-6ff883d335f1}">
+      <Declaration><![CDATA[METHOD PROTECTED  WhileBusy
+VAR_INPUT
+	CommandState : I_CommandBusyState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fb(
+	bExecute := TRUE,
+	bReset := FALSE,
+	stNciToPlc := _nci._InternalNciPlcRef.nciToPlc,
+	stFeedGroupTable := _table._InternalTable,
+);
+
+IF NOT _fb.bFeedBusy THEN
+	RETURN;
+END_IF
+
+IF _fb.bError THEN
+	CleanUp();
+	CommandState.SetError(_fb.nErrorId);
+	RETURN;
+END_IF
+
+CleanUp();
+
+CommandState.SetDOne();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

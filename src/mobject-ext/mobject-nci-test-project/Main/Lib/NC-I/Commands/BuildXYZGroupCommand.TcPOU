@@ -61,8 +61,8 @@ IF _fb.bBusy THEN
 END_IF
 
 IF _fb.bErr THEN
-	_fb(bExecute := FALSE);
 	CommandState.SetError(_fb.nErrId);
+	_fb(bExecute := FALSE);
 	RETURN;
 END_IF
 

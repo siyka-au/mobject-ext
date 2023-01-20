@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_Table" Id="{b9e2bb9c-a08a-4f58-8eb9-e5c9a8be8fa8}">
+    <Declaration><![CDATA[INTERFACE I_Table EXTENDS __System.IQueryInterface]]></Declaration>
+    <Property Name="_InternalTable" Id="{eb338fac-d341-4c8d-aae0-e9c298b1cee9}">
+      <Declaration><![CDATA[PROPERTY INTERNAL _InternalTable : REFERENCE TO ST_NciFeedGroupTable]]></Declaration>
+      <Get Name="Get" Id="{be1b842d-b22c-49a3-88ec-7f08cd801d55}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="AddAxisDynamics" Id="{fafdd9bf-7911-4cfe-bfd0-e07e98c2a959}">
+      <Declaration><![CDATA[METHOD AddAxisDynamics : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+    axis : I_Axis;
+    acceleration : LREAL(0.000001-99999999);
+    deceleration : LREAL(0.000001-99999999);
+    jerk: LREAL(0.000001-99999999);
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddBaseFrame" Id="{8c681a79-8cf6-479c-8bb8-7b289c8b6aab}">
+      <Declaration><![CDATA[METHOD AddBaseFrame : BOOL
+VAR_INPUT
+    displayIndex : UDINT;
+    shiftX : LREAL;
+    shiftY : LREAL;
+    shiftZ : LREAL;
+    rotationX : LREAL;
+    rotationY : LREAL;
+    rotationZ : LREAL;
+    shiftQ1 : LREAL;
+    shiftQ2 : LREAL;
+    shiftQ3 : LREAL;
+    shiftQ4 : LREAL;
+    shiftQ5 : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddBaseFrame3D" Id="{85c7371c-86bb-4f9f-b810-99da511f2cc9}">
+      <Declaration><![CDATA[METHOD AddBaseFrame3D : BOOL
+VAR_INPUT
+    displayIndex : UDINT;
+    shiftX : LREAL;
+    shiftY : LREAL;
+    shiftZ : LREAL;
+    rotationX : LREAL;
+    rotationY : LREAL;
+    rotationZ : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddBezier3rdOrder" Id="{94e9672d-e977-477f-b34a-b2ccc54760ff}">
+      <Declaration><![CDATA[METHOD AddBezier3rdOrder : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+    controlPoint1X : LREAL;
+    controlPoint1Y : LREAL;
+    controlPoint1Z : LREAL;
+    controlPoint2X : LREAL;
+    controlPoint2Y : LREAL;
+    controlPoint2Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddBezier3rdOrder3D" Id="{471fbfbf-3078-462d-bfc9-3215f0d258a3}">
+      <Declaration><![CDATA[METHOD AddBezier3rdOrder3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+    controlPoint1X : LREAL;
+    controlPoint1Y : LREAL;
+    controlPoint1Z : LREAL;
+    controlPoint2X : LREAL;
+    controlPoint2Y : LREAL;
+    controlPoint2Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddBezier5thOrder" Id="{033adb74-0070-4d93-a198-390969314404}">
+      <Declaration><![CDATA[METHOD AddBezier5thOrder : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+    controlPoint1X : LREAL;
+    controlPoint1Y : LREAL;
+    controlPoint1Z : LREAL;
+    controlPoint2X : LREAL;
+    controlPoint2Y : LREAL;
+    controlPoint2Z : LREAL;
+    controlPoint3X : LREAL;
+    controlPoint3Y : LREAL;
+    controlPoint3Z : LREAL;
+    controlPoint4X : LREAL;
+    controlPoint4Y : LREAL;
+    controlPoint4Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddBezier5thOrder3D" Id="{a4c8c0b8-fde2-40fe-b394-9a395230b959}">
+      <Declaration><![CDATA[METHOD AddBezier5thOrder3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+    controlPoint1X : LREAL;
+    controlPoint1Y : LREAL;
+    controlPoint1Z : LREAL;
+    controlPoint2X : LREAL;
+    controlPoint2Y : LREAL;
+    controlPoint2Z : LREAL;
+    controlPoint3X : LREAL;
+    controlPoint3Y : LREAL;
+    controlPoint3Z : LREAL;
+    controlPoint4X : LREAL;
+    controlPoint4Y : LREAL;
+    controlPoint4Z : LREAL;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddCircleCIP" Id="{53e1d2d1-15ef-4504-a18d-fc2a601d8ac3}">
+      <Declaration><![CDATA[METHOD AddCircleCIP : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	arcPointX : LREAL;
+	arcPointY : LREAL;
+	arcPointZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddCircleCIP3D" Id="{2ccc73ff-4c5d-45dc-a5f4-19c0032c8689}">
+      <Declaration><![CDATA[METHOD AddCircleCIP3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	arcPointX : LREAL;
+	arcPointY : LREAL;
+	arcPointZ : LREAL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddCircleOnPlane" Id="{edf18835-9674-4360-9642-6d5beefdbe24}">
+      <Declaration><![CDATA[METHOD AddCircleOnPlane : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	centerX : LREAL;
+	centerY : LREAL;
+	centerZ : LREAL;
+	endPositionQ1 : LREAL;
+	endPositionQ2 : LREAL;
+	endPositionQ3 : LREAL;
+	endPositionQ4 : LREAL;
+	endPositionQ5 : LREAL;
+	plane : StandardPlane := StandardPlane.XY;
+	clockwise : BOOL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddCircleOnPlane3D" Id="{c5dfecf0-734c-462c-913e-f6886143613b}">
+      <Declaration><![CDATA[METHOD AddCircleOnPlane3D : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	endPositionX : LREAL;
+	endPositionY : LREAL;
+	endPositionZ : LREAL;
+	centerX : LREAL;
+	centerY : LREAL;
+	centerZ : LREAL;
+	plane : StandardPlane := StandardPlane.XY;
+	clockwise : BOOL;
+	velocity : LREAL(0.000001-99999999);
+	accurateStop : BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddDwellTime" Id="{e6da76a3-1c4d-4197-8784-10780fd314e8}">
+      <Declaration><![CDATA[METHOD AddDwellTime : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+    dwellTime : LREAL(0.000001-99999999); // seconds
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddFeedrateInterpolation" Id="{49985776-a8c4-454d-b18e-cbd018a70bb9}">
+      <Declaration><![CDATA[METHOD AddFeedrateInterpolation : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	interpolationType : FeedrateInterpolation;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddLine" Id="{2c87b96e-5a51-4ed0-bbdc-03e2477f6dde}">
+      <Declaration><![CDATA[METHOD AddLine : BOOL
+VAR_INPUT
+    displayIndex: UDINT;
+    endPositionX: LREAL;
+    endPositionY: LREAL;
+    endPositionZ: LREAL;
+    endPositionQ1: LREAL;
+    endPositionQ2: LREAL;
+    endPositionQ3: LREAL;
+    endPositionQ4: LREAL;
+    endPositionQ5: LREAL;
+    velocity: LREAL(0.000001-99999999);
+    rapidTraverse: BOOL;
+    accurateStop: BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddLine3D" Id="{ae6c926d-f1e1-42d8-823b-be11d7ba0bc4}">
+      <Declaration><![CDATA[METHOD AddLine3D : BOOL
+VAR_INPUT
+    displayIndex: UDINT;
+    endPositionX: LREAL;
+    endPositionY: LREAL;
+    endPositionZ: LREAL;
+    velocity: LREAL(0.000001-99999999);
+    rapidTraverse: BOOL;
+    accurateStop: BOOL; // velocity at end == 0
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddMFunctionWithHandshake" Id="{9b6ebc9a-bc27-4a94-9fb7-5a48f9d3932c}">
+      <Declaration><![CDATA[METHOD AddMFunctionWithHandshake : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+    functionNumber : INT(0..159);
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddPathDynamics" Id="{1f4486de-572c-446a-a2cc-b279fcf21ffb}">
+      <Declaration><![CDATA[METHOD AddPathDynamics : BOOL
+VAR_INPUT
+    displayIndex : UDINT;
+    acceleration : LREAL(0.000001-99999999);
+    deceleration : LREAL(0.000001-99999999);
+    jerk : LREAL(0.000001-99999999);
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddStart" Id="{643d6931-37de-4afc-b6bb-48d25dcb7905}">
+      <Declaration><![CDATA[METHOD AddStart : BOOL
+VAR_INPUT
+	x : LREAL;
+	y : LREAL;
+	z : LREAL;
+	q1 : LREAL;
+	q2 : LREAL;
+	q3 : LREAL;
+	q4 : LREAL;
+	q5 : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AddStart3D" Id="{10ae5bb1-d283-4c1a-b628-b15f50839527}">
+      <Declaration><![CDATA[METHOD AddStart3D : BOOL
+VAR_INPUT
+	x : LREAL;
+	y : LREAL;
+	z : LREAL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="DisableTangentialFollowing" Id="{9eb606fe-1d92-4ee2-943d-45f57b8d1b70}">
+      <Declaration><![CDATA[METHOD DisableTangentialFollowing : BOOL]]></Declaration>
+    </Method>
+    <Method Name="DisableVertexSmoothing" Id="{dd8affed-c1bb-4b5c-9f60-085134e20d1c}">
+      <Declaration><![CDATA[METHOD DisableVertexSmoothing : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="EnableTangentialFollowing" Id="{e65189d7-e86d-4ed1-bd31-4da2528b3387}">
+      <Declaration><![CDATA[METHOD EnableTangentialFollowing : BOOL
+VAR_INPUT
+    tangentialAxis : NciAxis; // axis used for tangential following
+    pathAxis1 : NciAxis; // describing the plane e.g. x
+    pathAxis2 : NciAxis; // e.g. y ==> g17, xy plane
+    offset : LREAL; // geo tangent is 0 degree, counting is mathmatical positive
+	criticalAngle : LREAL(0.000001-90);
+    behaviour : TangentialFollowingBehaviour;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="EnableVertexSmoothing" Id="{70fbecd6-7f76-4c63-981f-d4ed866c8fda}">
+      <Declaration><![CDATA[METHOD EnableVertexSmoothing : BOOL
+VAR_INPUT
+	displayIndex : UDINT;
+	blendType : VertexSmoothingBlendingType;
+	subType : VertexSmoothingSubType; 
+	radius : LREAL(0.000001-99999999);
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="End" Id="{80782166-b611-4f2e-99b3-be2898520caa}">
+      <Declaration><![CDATA[METHOD End : BOOL]]></Declaration>
+    </Method>
+    <Property Name="ErrorId" Id="{3c894e33-5eff-4236-8a84-c3a986cc117b}">
+      <Declaration><![CDATA[PROPERTY ErrorId : UDINT]]></Declaration>
+      <Get Name="Get" Id="{3c903b1d-856f-4b34-961b-09778e250a55}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="FilledRows" Id="{66545515-389f-4511-a799-46305dfc3fb1}">
+      <Declaration><![CDATA[PROPERTY FilledRows : INT]]></Declaration>
+      <Get Name="Get" Id="{904d3356-a13b-4772-b936-9a4b90b72de5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="HasError" Id="{6a9df3ac-8e65-4c5a-9432-0f5e159b913a}">
+      <Declaration><![CDATA[PROPERTY HasError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{072daca0-aed0-4398-b9b6-cf7f26d82d3c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="ResetAll" Id="{33c77471-28cc-46cb-b368-55da1b4253cf}">
+      <Declaration><![CDATA[METHOD ResetAll : BOOL]]></Declaration>
+    </Method>
+    <Method Name="ResetTable" Id="{c7d9bfe3-9fe6-4ca8-a683-d38e1dd19ce4}">
+      <Declaration><![CDATA[METHOD ResetTable : BOOL]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
