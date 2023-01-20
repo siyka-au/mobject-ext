@@ -2,20 +2,30 @@
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{787a6fb9-bdf5-4618-ab17-11f10671b290}</ProjectGuid>
+    <ProjectGuid>{5710b580-85a3-4c34-b0b9-9f8a04e3c785}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>mobject_kinetic_transformation</Name>
+    <Name>mobject_kinematic_transformation</Name>
     <ProgramVersion>3.1.4023.0</ProgramVersion>
-    <Application>{20ecf469-a441-439f-9670-d1aaab51dda7}</Application>
-    <TypeSystem>{7c2da2c8-6a8c-44ea-a981-03dc7dd6ba89}</TypeSystem>
-    <Implicit_Task_Info>{069b74a9-3dd0-463d-b35a-3e246531a39b}</Implicit_Task_Info>
-    <Implicit_KindOfTask>{f23819b6-35e4-4b79-b1dd-df1bb746f8fa}</Implicit_KindOfTask>
-    <Implicit_Jitter_Distribution>{7264ecd4-4989-4cc8-9ec5-921face65294}</Implicit_Jitter_Distribution>
-    <LibraryReferences>{fcb8237c-11ba-42c4-b464-d73888efe3d3}</LibraryReferences>
+    <Application>{8ac5085b-89a0-400f-8ef1-d456fbd1eb25}</Application>
+    <TypeSystem>{a9fc148a-97de-4039-9abc-67b7924747ea}</TypeSystem>
+    <Implicit_Task_Info>{075ee837-9841-425c-b5c5-eb0fe28d7203}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{beb05c9c-edc2-48b3-bc38-74daed084830}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{1320aff2-c08b-4056-a04d-a1671971db45}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{30bf579d-d140-4cb5-b54a-b0ce84b24a5a}</LibraryReferences>
   </PropertyGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="mobject-core">
+      <DefaultResolution>mobject-core, * (mobject.io)</DefaultResolution>
+      <Namespace>mobject_core</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_NcKinematicTransformation">
+      <DefaultResolution>Tc2_NcKinematicTransformation, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_NcKinematicTransformation</Namespace>
+    </PlaceholderReference>
+  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>

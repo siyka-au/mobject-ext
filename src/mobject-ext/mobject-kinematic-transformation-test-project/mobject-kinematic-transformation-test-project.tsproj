@@ -1888,7 +1888,14 @@ External Setpoint Generation:
 	<ImageDatas>
 		<ImageData Id="1000">424d360500000000000036040000280000001000000010000000010008000000000000000000c40e0000c40e00000001000000010000000000ff000080ff008000ff008080ff800000ff800080ff808000ffc0c0c0ffc0dcc0fff0caa6ff002040ff002060ff002080ff0020a0ff0020c0ff0020e0ff004000ff004020ff004040ff004060ff004080ff0040a0ff0040c0ff0040e0ff006000ff006020ff006040ff006060ff006080ff0060a0ff0060c0ff0060e0ff008000ff008020ff008040ff008060ff008080ff0080a0ff0080c0ff0080e0ff00a000ff00a020ff00a040ff00a060ff00a080ff00a0a0ff00a0c0ff00a0e0ff00c000ff00c020ff00c040ff00c060ff00c080ff00c0a0ff00c0c0ff00c0e0ff00e000ff00e020ff00e040ff00e060ff00e080ff00e0a0ff00e0c0ff00e0e0ff400000ff400020ff400040ff400060ff400080ff4000a0ff4000c0ff4000e0ff402000ff402020ff402040ff402060ff402080ff4020a0ff4020c0ff4020e0ff404000ff404020ff404040ff404060ff404080ff4040a0ff4040c0ff4040e0ff406000ff406020ff406040ff406060ff406080ff4060a0ff4060c0ff4060e0ff408000ff408020ff408040ff408060ff408080ff4080a0ff4080c0ff4080e0ff40a000ff40a020ff40a040ff40a060ff40a080ff40a0a0ff40a0c0ff40a0e0ff40c000ff40c020ff40c040ff40c060ff40c080ff40c0a0ff40c0c0ff40c0e0ff40e000ff40e020ff40e040ff40e060ff40e080ff40e0a0ff40e0c0ff40e0e0ff800000ff800020ff800040ff800060ff800080ff8000a0ff8000c0ff8000e0ff802000ff802020ff802040ff802060ff802080ff8020a0ff8020c0ff8020e0ff804000ff804020ff804040ff804060ff804080ff8040a0ff8040c0ff8040e0ff806000ff806020ff806040ff806060ff806080ff8060a0ff8060c0ff8060e0ff808000ff808020ff808040ff808060ff808080ff8080a0ff8080c0ff8080e0ff80a000ff80a020ff80a040ff80a060ff80a080ff80a0a0ff80a0c0ff80a0e0ff80c000ff80c020ff80c040ff80c060ff80c080ff80c0a0ff80c0c0ff80c0e0ff80e000ff80e020ff80e040ff80e060ff80e080ff80e0a0ff80e0c0ff80e0e0ffc00000ffc00020ffc00040ffc00060ffc00080ffc000a0ffc000c0ffc000e0ffc02000ffc02020ffc02040ffc02060ffc02080ffc020a0ffc020c0ffc020e0ffc04000ffc04020ffc04040ffc04060ffc04080ffc040a0ffc040c0ffc040e0ffc06000ffc06020ffc06040ffc06060ffc06080ffc060a0ffc060c0ffc060e0ffc08000ffc08020ffc08040ffc08060ffc08080ffc080a0ffc080c0ffc080e0ffc0a000ffc0a020ffc0a040ffc0a060ffc0a080ffc0a0a0ffc0a0c0ffc0a0e0ffc0c000ffc0c020ffc0c040ffc0c060ffc0c080ffc0c0a0fff0fbffffa4a0a0ff808080ff0000ffff00ff00ff00ffffffff0000ffff00ffffffff00ffffffffffafefffffffffffffffffffffffffffff075556aff6ffffffffffffffffffffffff565556efffffffffffffffffffffffff0756f957f6ffffffffffffffffffffffffef9ff957f6ffffffffeddbf6ffffffffffff5ff954fcfcfcfcfc04049b07ffffffffff2532fcfcfcfcc90404db09ffffffffff79faffffffffede4f6ffffffffffffff79faffffffffffffffffffffffffffff79faffffffffffffffffffffffffffff79faffffffffffffffffffffffffff08793908ffffffffffffffffffffffffbd6a6abdfffffffffffffffffffffffff67272f6ffffffffffffffffffffffffffb4b4ffffffffffffffffffffffffffff0808ffffffffffffffffff</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{B119419C-1DFD-44A7-91CF-2EC72716F312}" Target64Bit="true" ShowHideConfigurations="#x3c6">
+	<Project ProjectGUID="{958C2E83-7C68-4334-BA62-3663E8231796}" Target64Bit="true" ShowHideConfigurations="#x3c6">
+		<System>
+			<Tasks>
+				<Task Id="5" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+			</Tasks>
+		</System>
 		<Motion>
 			<NC>
 				<SafTask Priority="4" CycleTime="20000" AmsPort="501" IoAtBegin="true" SafTaskInfo="256">
@@ -2212,7 +2219,7 @@ External Setpoint Generation:
 						</Var>
 					</Vars>
 				</Axis>
-				<Axis Id="3" CreateSymbols="true" AxisType="1" GroupId="5">
+				<Axis Id="3" CreateSymbols="true" AxisType="1">
 					<Name>MCS 1</Name>
 					<AxisPara>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
@@ -2365,7 +2372,7 @@ External Setpoint Generation:
 						</Var>
 					</Vars>
 				</Axis>
-				<Axis Id="4" CreateSymbols="true" AxisType="1" GroupId="6">
+				<Axis Id="4" CreateSymbols="true" AxisType="1">
 					<Name>MCS 2</Name>
 					<AxisPara>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
@@ -2564,7 +2571,7 @@ External Setpoint Generation:
 							</SubVar>
 						</Var>
 					</Vars>
-					<Group Id="3" CreateSymbols="true" GroupType="4" SetpointGeneratorType="1">
+					<Group Id="5" CreateSymbols="true" GroupType="4" SetpointGeneratorType="1">
 						<Name>XY Group</Name>
 						<Parameter ChannelId="2">
 							<Dxd EnableSoftPositionLimits="true" VeloVertexFactorC0="0.1" VeloVertexFactorC1="1" CriticalVertexAngleLow="10" CriticalVertexAngleHigh="75"/>
@@ -2593,15 +2600,15 @@ External Setpoint Generation:
 							<Type GUID="{56354211-98EF-4057-9322-975DEAD0E29D}" Namespace="MC">NCTOPLC_NCICHANNEL_REF</Type>
 						</Var>
 					</Vars>
-					<Group Id="4" GroupType="12" SetpointGeneratorType="1">
+					<Group Id="6" GroupType="12" SetpointGeneratorType="1">
 						<Name>Transformation Group</Name>
 						<Parameter ChannelId="3">
 							<Dxd EnableSoftPositionLimits="true" VeloVertexFactorC0="0.1" VeloVertexFactorC1="1" CriticalVertexAngleLow="10" CriticalVertexAngleHigh="75"/>
 							<Encoder NoMotionWindow="1" NoMotionFilterTime="0.01"/>
 							<Fifo FifoDimension="1" FifoLength="1000" FifoOverrideType="2" FifoOverrideChangeTime="1" TimeUnitFifo="0.01"/>
-							<Kinematic OidKinematicTrafo="#x01010020"/>
+							<Kinematic OidKinematicTrafo="#x01010010"/>
 						</Parameter>
-						<Module Id="#x01010020" KeepUnrestoredLinks="2">
+						<Module Id="#x01010010" KeepUnrestoredLinks="2">
 							<Name>Machine Orientation (Static Trafo2D)</Name>
 							<ImageId>1000</ImageId>
 							<TmcDesc GUID="{DA0CC0F1-A703-411A-A618-3CEC2A47BAE7}">
@@ -2743,7 +2750,7 @@ External Setpoint Generation:
 										<Value>MC Object</Value>
 									</Property>
 								</Properties>
-								<ParentOTCID>#x05070040</ParentOTCID>
+								<ParentOTCID>#x05070060</ParentOTCID>
 								<ParameterValues>
 									<Value>
 										<Name>Spatial reference</Name>
@@ -2751,7 +2758,7 @@ External Setpoint Generation:
 									</Value>
 									<Value>
 										<Name>Definition direction</Name>
-										<EnumText>fromReference</EnumText>
+										<EnumText>toReference</EnumText>
 									</Value>
 									<Value>
 										<Name>Tool offset OID</Name>
@@ -2793,7 +2800,7 @@ External Setpoint Generation:
 			</NC>
 		</Motion>
 		<Plc>
-			<Project GUID="{23889E4F-71FB-45BB-9F25-7070F9D9CD4A}" Name="Main" PrjFilePath="Main\Main.plcproj" TmcFilePath="Main\Main.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+			<Project GUID="{32DE5096-2CEA-4275-82C3-EDFDC14982AD}" Name="Main" PrjFilePath="Main\Main.plcproj" TmcFilePath="Main\Main.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
 				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2">
 					<Name>Main Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
