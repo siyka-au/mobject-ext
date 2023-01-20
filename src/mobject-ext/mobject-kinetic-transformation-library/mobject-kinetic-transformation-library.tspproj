@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
+	<Project ProjectGUID="{74E4EC01-A9AA-44DD-9E29-9CC06CD66FC3}" Target64Bit="true" ShowHideConfigurations="#x106">
+		<Plc>
+			<Project GUID="{787A6FB9-BDF5-4618-AB17-11F10671B290}" Name="mobject-kinetic-transformation" PrjFilePath="mobject-kinetic-transformation\mobject-kinetic-transformation.plcproj" TmcFilePath="mobject-kinetic-transformation\mobject-kinetic-transformation.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e"/>
+		</Plc>
+	</Project>
+</TcSmProject>
