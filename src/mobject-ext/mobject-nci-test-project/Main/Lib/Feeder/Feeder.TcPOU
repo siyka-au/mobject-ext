@@ -21,10 +21,18 @@ VAR
 	command : (NONE, RESET, FEED);
 	
 	commandFeedback : I_CommandFeedbackReadWrite;
+	commandHasCompleted : BOOL;
+	disposeOnceComplete : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[(*
+	Beckhoff have put multiple functions into this function block that would
+	normally be a few different function blocks. As such we emulate the
+	I_Command behaviour internally as sharing a single function block across
+	command instances seems a bit iffy.
+*)]]></ST>
     </Implementation>
+    <Folder Name="Private" Id="{a1d31e47-2ba5-44af-8981-fc30e42a9a1f}" />
     <Property Name="ChannelDone" Id="{ed0fa9b1-077c-4f88-8925-58f7dfbbd88b}">
       <Declaration><![CDATA[PROPERTY ChannelDone : BOOL]]></Declaration>
       <Get Name="Get" Id="{3b7f5a0c-857f-4eec-9ba9-a9db8c40851f}">
@@ -34,6 +42,27 @@ END_VAR]]></Declaration>
         </Implementation>
       </Get>
     </Property>
+    <Method Name="ClearFeedback" Id="{645ee78f-8bc7-4ce0-8477-8b44494c673e}" FolderPath="Private\">
+      <Declaration><![CDATA[METHOD ClearFeedback]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[commandFeedback.Release();
+commandFeedback := 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CompleteTheCommand" Id="{3d4cc3e1-4125-4e9c-8fad-85c94608003d}" FolderPath="Private\">
+      <Declaration><![CDATA[METHOD CompleteTheCommand]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ClearFeedback();
+
+IF disposeOnceComplete THEN
+	// DisposeCommand();
+END_IF
+
+// OnExecuteComplete();
+
+commandHasCompleted := TRUE;]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="CyclicCall" Id="{de7ced26-3d49-47db-b260-0f80a2759ab5}">
       <Declaration><![CDATA[METHOD  CyclicCall]]></Declaration>
       <Implementation>
@@ -44,12 +73,6 @@ END_VAR]]></Declaration>
 			bReset := FALSE,
 			stNciToPlc := _nci._InternalNciPlcRef.nciToPlc,
 			stFeedGroupTable := _table,
-			bFeedingDone => _feedDone,
-			bChannelDone => _channelDone,
-			bFeedBusy => _feedBusy,
-			bResetBusy => _resetBusy,
-			bError => _error,
-			nErrorId => _errorId
 		);
 		
 		CASE command OF
@@ -69,11 +92,6 @@ END_VAR]]></Declaration>
 			bReset := TRUE,
 			stNciToPlc := _nci._InternalNciPlcRef.nciToPlc,
 			stFeedGroupTable := _table,
-			bChannelDone => _channelDone,
-			bFeedBusy => _feedBusy,
-			bResetBusy => _resetBusy,
-			bError => _error,
-			nErrorId => _errorId
 		);
 		
 		IF NOT _fb.bResetBusy THEN		
@@ -133,19 +151,27 @@ END_IF]]></ST>
 VAR_INPUT
 	table : I_Table;
 	feedback : REFERENCE TO I_CommandFeedback;
-END_VAR
-VAR
-	pCmd : POINTER TO FeederCommand;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF NOT IsAlreadyExecuting() THEN
 	_table := table._InternalTable;
 	command := FEED;
-	SetupFeedback(Feedback);
+	SetupFeedback(feedback);
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="IsAlreadyExecuting" Id="{138794bd-91e6-4dd8-b703-e7ba40a043b8}">
+    <Method Name="HasCompleted" Id="{89ca7c60-b9cc-4d49-a9cd-6adbfc3aeb56}" FolderPath="Private\">
+      <Declaration><![CDATA[METHOD PRIVATE HasCompleted : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF commandFeedback = 0 THEN
+	HasCompleted := commandHasCompleted;
+	RETURN;
+END_IF
+
+HasCompleted := NOT commandFeedback.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsAlreadyExecuting" Id="{138794bd-91e6-4dd8-b703-e7ba40a043b8}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD PRIVATE IsAlreadyExecuting : BOOL]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF commandFeedback = 0 THEN
@@ -153,6 +179,16 @@ END_IF]]></ST>
 END_IF
 
 IsAlreadyExecuting := commandFeedback.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsStillBusyExecuting" Id="{cf7ee9af-95c6-40d7-91b6-b1968bc42e59}" FolderPath="Private\">
+      <Declaration><![CDATA[METHOD PRIVATE IsStillBusyExecuting : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF commandFeedback = 0 THEN
+	RETURN;
+END_IF
+
+IsStillBusyExecuting := commandFeedback.Busy AND NOT commandFeedback.Aborting;]]></ST>
       </Implementation>
     </Method>
     <Property Name="LogFeederEntries" Id="{37494741-7336-4f81-ac4d-dd7d269806bc}">
@@ -175,9 +211,6 @@ IsAlreadyExecuting := commandFeedback.Busy;]]></ST>
       <Declaration><![CDATA[METHOD Reset
 VAR_INPUT
 	feedback : REFERENCE TO I_CommandFeedback;
-END_VAR
-VAR
-	pCmd : POINTER TO FeederCommand;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF NOT IsAlreadyExecuting() THEN
@@ -186,7 +219,7 @@ END_VAR]]></Declaration>
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="SetupFeedback" Id="{ad8afd8a-e417-4389-824b-d719d3e8a85d}">
+    <Method Name="SetupFeedback" Id="{ad8afd8a-e417-4389-824b-d719d3e8a85d}" FolderPath="Private\">
       <Declaration><![CDATA[METHOD SetupFeedback : I_CommandFeedbackReadWrite
 VAR_INPUT
 	feedback : REFERENCE TO I_CommandFeedback;

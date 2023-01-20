@@ -15,15 +15,16 @@ VAR
 	errorMessage: STRING;
 	errorId : UDINT;
 	velocity : LREAL := 1000;
-	
-	task : Task;
+
 	axis1 : Axis;
 	axis2 : Axis;
 	nci : Nci;
 	table : Table;
-	fbFeedTable: FB_NciFeedTable; (* is responsible that the prepared table is transfered to nc-kernel *)
+	feeder : Feeder(nci := nci);
+
+	task : Task;
+	state : (INIT, IDLE, RESETTING_GROUP, BUILDING_GROUP, RESETTING_FEEDER, BUILDING_TABLE, FEEDING_TABLE, MOVING, DONE, ERROR) := INIT;
 	feedback : I_CommandFeedback;
-	state : (INIT, IDLE, RESETTING_GROUP, BUILDING_GROUP, RESETTING_FEEDER, BUILDING_TABLE, FEEDING_TABLE, MOVING, DONE, ERROR) := INIT;	
 END_VAR
 VAR CONSTANT
 	timeout : TIME := T#1S;
@@ -74,33 +75,20 @@ CASE state OF
 	IDLE:
 		IF start THEN
 			start := FALSE;
+			feeder.Reset(feedback);
 			state := RESETTING_FEEDER;
 			errorMessage := '';
 			errorId := 0;
 		END_IF
 
-	RESETTING_FEEDER:
-		fbFeedTable(
-			bExecute := FALSE,
-			bReset := TRUE,
-			stFeedGroupTable := table._InternalTable,
-			stNciToPlc := nci._InternalNciPlcRef.nciToPlc
-		);
-		
-		IF NOT fbFeedTable.bResetBusy THEN
-			fbFeedTable(
-				bExecute := FALSE,
-				bReset := FALSE,
-				stFeedGroupTable := table._InternalTable,
-				stNciToPlc := nci._InternalNciPlcRef.nciToPlc
-			);
-
-			IF NOT fbFeedTable.bError THEN
-				state := BUILDING_TABLE;
-			ELSE
+	RESETTING_FEEDER:		
+		IF feedback <> 0 AND_THEN NOT feedback.Busy THEN
+			IF feedback.Error THEN
 				errorMessage := 'RESETTING_FEEDER';
-				errorId := fbFeedTable.nErrorId;
+				errorId := feedback.ErrorId;
 				state := ERROR;
+			ELSE
+				state := BUILDING_TABLE;
 			END_IF
 		END_IF
 		
@@ -110,6 +98,7 @@ CASE state OF
 			errorMessage := 'ResetTable';
 			errorId := table.ErrorId;
 			state := ERROR;
+			RETURN;
 		ELSIF table.EnableVertexSmoothing(0,
 				VertexSmoothingBlendingType.PARABOLIC,
 				VertexSmoothingSubType.ADAPTIVE_TOLERANCE_RADIUS,
@@ -117,10 +106,12 @@ CASE state OF
 			errorMessage := 'EnableVertexSmoothing';
 			errorId := table.ErrorId;
 			state := ERROR;
+			RETURN;
 		ELSIF table.AddStart3D(0, 0, 0) THEN
 			errorMessage := 'Start3D';
 			errorId := table.ErrorId;
 			state := ERROR;
+			RETURN;
 		ELSIF table.AddCircleOnPlane3D(
 				10,
 				1000, 1000, 0,
@@ -132,49 +123,30 @@ CASE state OF
 			errorMessage := 'AddCircleOnPlane3D';
 			errorId := table.ErrorId;
 			state := ERROR;
+			RETURN;
 		ELSIF table.End() THEN
 			errorMessage := 'End';
 			errorId := table.ErrorId;
 			state := ERROR;
+			RETURN;
 		END_IF
 		
+		feeder.FeedTable(table, feedback);
 		state := FEEDING_TABLE;		
 		
 	FEEDING_TABLE:
-		fbFeedTable(
-			bExecute := TRUE,
-			bReset := FALSE,
-			bLogFeederEntries := FALSE,
-			stFeedGroupTable := table._InternalTable,
-			stNciToPlc := nci._InternalNciPlcRef.nciToPlc
-		);
-		
-		IF NOT fbFeedTable.bFeedBusy THEN // all commands fed to NC-kernel
-			fbFeedTable(
-				bExecute := FALSE,
-				bReset := FALSE,
-				stFeedGroupTable := table._InternalTable,
-				stNciToPlc := nci._InternalNciPlcRef.nciToPlc
-			);
-
-			IF NOT fbFeedTable.bError THEN
-				state := MOVING;
-			ELSE
+		IF feedback <> 0 AND_THEN NOT feedback.Busy THEN
+			IF feedback.Error THEN
 				errorMessage := 'FEEDING_TABLE';
-				errorId := fbFeedTable.nErrorId;
+				errorId := feedback.ErrorId;
 				state := ERROR;
+			ELSE
+				state := MOVING;
 			END_IF
 		END_IF
 		
 	MOVING:
-		fbFeedTable(
-			bExecute := FALSE,
-			bReset := FALSE,
-			stFeedGroupTable := table._InternalTable,
-			stNciToPlc := nci._InternalNciPlcRef.nciToPlc
-		);
-		
-		IF fbFeedTable.bChannelDone THEN // end of movement
+		IF feeder.ChannelDone THEN // end of movement
 			state := DONE;
 		ELSIF reset THEN
 			reset := FALSE;

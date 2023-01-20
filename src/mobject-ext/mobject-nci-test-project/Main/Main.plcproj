@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Lib" />
     <Folder Include="Lib\Feeder" />
-    <Folder Include="Lib\Feeder\Commands" />
     <Folder Include="Lib\NC-I" />
     <Folder Include="Lib\NC-I\Commands" />
     <Folder Include="Lib\Table" />
@@ -27,12 +26,6 @@
     <Folder Include="Programs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lib\Feeder\Commands\FeederCommand.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\Feeder\Commands\FeedTableCommand.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Lib\Feeder\Feeder.TcPOU">
       <SubType>Code</SubType>
     </Compile>
